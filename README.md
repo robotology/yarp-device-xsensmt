@@ -25,7 +25,7 @@ Yes, this is a YARP plugin
   * class name:     yarp::dev::XsensMT
   * base class:     yarp::dev::DeviceDriver
 ~~~
-If this is not the case, there could be some problems in finding the plugin. In that case, just move yourself to the ``${CMAKE_INSTALL_PREFIX}/share/yarp` directory and launch the device from there.
+If this is not the case, there could be some problems in finding the plugin. In that case, just move yourself to the `${CMAKE_INSTALL_PREFIX}/share/yarp` directory and launch the device from there.
 
 ##### Device use 
 To launch the `xsensmt` device, you can connect the Xsens IMU (for example the MTI-300) to your Linux computer and the default configuration parameters should be sufficient to work fine.
@@ -37,4 +37,4 @@ This should open a YARP port `/inertial` , that you can read from the command li
 ~~~
 yarp read ... /inertial
 ~~~
-If you need to change the configuration parameters, check the device documentation in .
+If you need to change the configuration parameters, check the device documentation in https://github.com/loc2/xsensmt-yarp-driver/blob/master/xsensmt/XsensMT.h#L41 .
