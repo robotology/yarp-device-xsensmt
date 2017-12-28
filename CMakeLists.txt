@@ -12,13 +12,11 @@ find_package(YARP REQUIRED)
 list(APPEND CMAKE_MODULE_PATH ${YARP_MODULE_PATH})
 include(YarpPlugin)
 include(YarpInstallationHelpers)
-set(YARP_FORCE_DYNAMIC_PLUGINS TRUE)
 
 yarp_configure_plugins_installation(yarp)
 
-# Compile the plugins by default
-set(COMPILE_BY_DEFAULT ON)
 option(BUILD_SHARED_LIBS ON)
+set(YARP_FORCE_DYNAMIC_PLUGINS TRUE)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 # Compile XSens-provided code as a static library 

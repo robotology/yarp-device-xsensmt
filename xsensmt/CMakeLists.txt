@@ -5,7 +5,8 @@
 
 yarp_prepare_plugin(xsensmt TYPE yarp::dev::XsensMT
                             INCLUDE XsensMT.h
-                            CATEGORY device)
+                            CATEGORY device
+                            DEFAULT ON)
 
 if(ENABLE_xsensmt)
 
