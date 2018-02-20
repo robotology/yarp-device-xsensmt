@@ -226,35 +226,39 @@ void XsensMT::sensorReadLoop()
             m_bufferMutex.lock();
             
             // Euler angles are expressed in degree in YARP, 
-            m_sensorBuffer[0]  = euler.roll(); //roll
-            m_sensorBuffer[1]  = euler.pitch(); //pitch
-            m_sensorBuffer[2]  = euler.yaw(); //yaw
+            if (packet.containsOrientation()) {
+                m_sensorBuffer[0]  = euler.roll(); //roll
+                m_sensorBuffer[1]  = euler.pitch(); //pitch
+                m_sensorBuffer[2]  = euler.yaw(); //yaw
+            } else {
+              yWarning() << "xsensmt: Missing orientation message, skipping orientation update.";
+            }
 
             // Accelerometers are expressed in m/s^2 in both YARP and in the Xsens interface
-            if (acc.size() == 3) {
+            if (packet.containsCalibratedAcceleration()) {
                 m_sensorBuffer[3]  = acc[0]; //accel-X
                 m_sensorBuffer[4]  = acc[1]; //accel-Y
                 m_sensorBuffer[5]  = acc[2]; //accel-Z
             } else {
-              yWarning() << "xsensmt: Malformed accelerometer message, skipping accelerometer update.";
+              yWarning() << "xsensmt: Missing accelerometer message, skipping accelerometer update.";
             }
             
             // Gyroscope data are expressed in rad/s in the Xsens interface, so they have to be converted in deg/s
-            if (gyro.size() == 3) {
+            if (packet.containsCalibratedGyroscopeData()) {
                 m_sensorBuffer[6]  = gyro[0]*CTRL_RAD2DEG;  //gyro-X
                 m_sensorBuffer[7]  = gyro[1]*CTRL_RAD2DEG;  //gyro-Y
                 m_sensorBuffer[8]  = gyro[2]*CTRL_RAD2DEG;  //gyro-Z
             } else {
-                yWarning() << "xsensmt: Malformed gyroscope message, skipping gyroscope update.";
+                yWarning() << "xsensmt: Missing gyroscope message, skipping gyroscope update.";
             }
             
             // Magnetometers 
-            if (mag.size() == 3) {
+            if (packet.containsCalibratedMagneticField()) {
                 m_sensorBuffer[9]  = mag[0];  //magn-X
                 m_sensorBuffer[10] = mag[1];  //magn-Y
                 m_sensorBuffer[11] = mag[2];  //magn-Z
             } else {
-                yWarning() << "xsensmt: Malformed magnetometer message, skipping magnetometer update.";
+                yWarning() << "xsensmt: Missing magnetometer message, skipping magnetometer update.";
             }
 
             // TODO(traversaro): update sensor available logic
