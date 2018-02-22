@@ -296,8 +296,8 @@ static T setBitsEnabled(T field, T bits, bool cond)
 	\returns XRV_OK if the device was opened successfully
 */
 XsResultValue SerialInterface::open(const XsPortInfo& portInfo,
-						uint32_t readBufSize,
-						uint32_t writeBufSize,
+						XsFilePos readBufSize,
+						XsFilePos writeBufSize,
 						PortOptions options)
 {
 	m_endTime = 0;
@@ -375,7 +375,7 @@ XsResultValue SerialInterface::open(const XsPortInfo& portInfo,
 	applyHwControlLinesOptions(options, portInfo.linesOptions(), tmpFail);
 	fail = static_cast<XsResultValue>(tmpFail);
 
-	if (!SetupComm(m_handle,readBufSize,writeBufSize))	// Set queue size
+	if (!SetupComm(m_handle, (DWORD) readBufSize, (DWORD) writeBufSize))	// Set queue size
 		fail = XRV_ERROR;
 
 	// Remove any 'old' data in buffer
@@ -530,16 +530,16 @@ XsResultValue SerialInterface::open(const XsPortInfo& portInfo,
 	\returns XRV_OK if no error occurred. It can be that no data is available and XRV_OK will be
 			returned. Check data.size() for the number of bytes that were read.
 */
-XsResultValue SerialInterface::readData(XsSize maxLength, XsByteArray& data)
+XsResultValue SerialInterface::readData(XsFilePos maxLength, XsByteArray& data)
 {
 	if (!isOpen())
 		return (m_lastResult = XRV_NOPORTOPEN);
 
 #ifdef _WIN32
 	DWORD length;
-	data.setSize(maxLength);
+	data.setSize((XsSize) maxLength);
 	BOOL rres = ::ReadFile(m_handle, data.data(), (DWORD) maxLength, &length, NULL);
-	data.pop_back(maxLength-length);
+	data.pop_back((XsSize) (maxLength-length));
 	JLTRACE(gJournal, "ReadFile result " << rres << ", length " << length);
 
 	if (!rres)
@@ -708,10 +708,10 @@ XsResultValue SerialInterface::setTimeout (const uint32_t ms)
 	\param data The buffer to put the read data in.
 	\returns XRV_OK if \a maxLength bytes were read, XRV_TIMEOUT if less was read, XRV_TIMEOUTNODATA if nothing was read
 */
-XsResultValue SerialInterface::waitForData(XsSize maxLength, XsByteArray& data)
+XsResultValue SerialInterface::waitForData(XsFilePos maxLength, XsByteArray& data)
 {
 	data.clear();
-	data.reserve(maxLength);
+	data.reserve((XsSize) maxLength);
 
 	//char *data = (char *)&_data[0];
 	JLTRACE(gJournal, "timeout=" << m_timeout << ", maxLength=" << maxLength);
@@ -720,7 +720,7 @@ XsResultValue SerialInterface::waitForData(XsSize maxLength, XsByteArray& data)
 	uint32_t eTime = XsTime_getTimeOfDay(NULL, NULL) + timeout;
 //	uint32_t newLength = 0;
 
-	while ((data.size() < maxLength) && (XsTime_getTimeOfDay(NULL, NULL) <= eTime))
+	while (((XsFilePos) data.size() < maxLength) && (XsTime_getTimeOfDay(NULL, NULL) <= eTime))
 	{
 		XsByteArray raw;
 
@@ -730,7 +730,7 @@ XsResultValue SerialInterface::waitForData(XsSize maxLength, XsByteArray& data)
 	}
 	JLTRACE(gJournal, "Read " << data.size() << " of " << maxLength << " bytes");
 
-	if (data.size() < maxLength)
+	if ((XsFilePos) data.size() < maxLength)
 		return (m_lastResult = XRV_TIMEOUT);
 	else
 		return (m_lastResult = XRV_OK);
@@ -739,9 +739,9 @@ XsResultValue SerialInterface::waitForData(XsSize maxLength, XsByteArray& data)
 /*! \copydoc IoInterface::writeData
 	\note The default timeout is respected in this operation.
 */
-XsResultValue SerialInterface::writeData(const XsByteArray& data, XsSize* written)
+XsResultValue SerialInterface::writeData(const XsByteArray& data, XsFilePos* written)
 {
-	XsSize bytes;
+	XsFilePos bytes;
 	if (written == NULL)
 		written = &bytes;
 

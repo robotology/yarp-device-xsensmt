@@ -585,7 +585,7 @@ bool UsbInterface::isOpen (void) const
 }
 
 /*! \brief Open a communication channel to the given USB port name. */
-XsResultValue UsbInterface::open(const XsPortInfo &portInfo, uint32_t, uint32_t, PortOptions)
+XsResultValue UsbInterface::open(const XsPortInfo &portInfo, XsFilePos, XsFilePos, PortOptions)
 {
 	d->m_endTime = 0;
 
@@ -833,12 +833,12 @@ XsResultValue UsbInterface::open(const XsPortInfo &portInfo, uint32_t, uint32_t,
 	\returns XRV_OK if no error occurred. It can be that no data is available and XRV_OK will be
 			returned. Check data.size() for the number of bytes that were read.
 */
-XsResultValue UsbInterface::readData(XsSize maxLength, XsByteArray& data)
+XsResultValue UsbInterface::readData(XsFilePos maxLength, XsByteArray& data)
 {
-	XsSize length = 0;
-	data.setSize(maxLength);
+	XsFilePos length = 0;
+	data.setSize((XsSize) maxLength);
 	XsResultValue res = readData(maxLength, data.data(), &length);
-	data.pop_back(maxLength - length);
+	data.pop_back((XsSize) (maxLength - length));
 	return res;
 }
 
@@ -851,10 +851,10 @@ XsResultValue UsbInterface::readData(XsSize maxLength, XsByteArray& data)
 	\returns XRV_OK if no error occurred. It can be that no data is available and XRV_OK will be
 			returned. Check *length for the number of bytes that were read.
 */
-XsResultValue UsbInterface::readData(const XsSize maxLength, void *data, XsSize* length)
+XsResultValue UsbInterface::readData(XsFilePos maxLength, void *data, XsFilePos* length)
 {
 	JLTRACE(gJournal, "maxLength=" << maxLength << ", data=" << JLHEXLOG(data) << ", length=" << JLHEXLOG(length));
-	XsSize ln;
+	XsFilePos ln;
 	if (length == NULL)
 		length = &ln;
 
@@ -862,15 +862,15 @@ XsResultValue UsbInterface::readData(const XsSize maxLength, void *data, XsSize*
 		return (d->m_lastResult = XRV_NOPORTOPEN);
 
 #ifdef USE_WINUSB
-	XsSize remaining = 0;
+	XsFilePos remaining = 0;
 	::EnterCriticalSection(&d->m_mutex);
 	remaining = *length = d->m_varBuffer.size();
 	if (*length > maxLength)
 		*length = maxLength;
 	if (*length)
 	{
-		memcpy(data, d->m_varBuffer.data(), *length);
-		d->m_varBuffer.erase(0, *length);
+		memcpy(data, d->m_varBuffer.data(), (XsSize) *length);
+		d->m_varBuffer.erase(0, (XsSize) *length);
 		remaining = d->m_varBuffer.size();
 	}
 
@@ -984,18 +984,18 @@ bool UsbInterface::getRawIo(void)
 	\param length An optional pointer to storage for the actual number of bytes read.
 	\returns XRV_OK if the requested data was read
 */
-XsResultValue UsbInterface::waitForData(const XsSize maxLength, void* data, XsSize* length)
+XsResultValue UsbInterface::waitForData(XsFilePos maxLength, void* data, XsFilePos* length)
 {
 	JLTRACE(gJournal, "timeout=" << d->m_timeout << ", data=" << data << ", length=" << length);
 	uint32_t timeout = d->m_timeout;
 
 	char *bdata = (char *)data;
 
-	XsSize ln;
+	XsFilePos ln;
 	if (length == NULL)
 		length = &ln;
 	uint32_t eTime = XsTime::getTimeOfDay() + timeout;
-	XsSize newLength = 0;
+	XsFilePos newLength = 0;
 
 	*length = 0;
 	while ((*length < maxLength) && (XsTime::getTimeOfDay() <= eTime))
@@ -1018,9 +1018,9 @@ XsResultValue UsbInterface::waitForData(const XsSize maxLength, void* data, XsSi
 	\param data The data to be written
 	\param written An optional pointer to storage for the actual number of bytes that were written
 	\returns XRV_OK if the data was successfully written
-	\sa writeData(const XsSize, const void *, XsSize*)
+	\sa writeData(XsFilePos, const void *, XsFilePos*)
 */
-XsResultValue UsbInterface::writeData(const XsByteArray& data, XsSize* written)
+XsResultValue UsbInterface::writeData(const XsByteArray& data, XsFilePos* written)
 {
 	return writeData(data.size(), data.data(), written);
 }
@@ -1032,11 +1032,11 @@ XsResultValue UsbInterface::writeData(const XsByteArray& data, XsSize* written)
 	\param data A pointer to a memory buffer that contains the bytes to send
 	\param written An optional pointer to storage for the actual number of bytes that were written
 	\returns XRV_OK if the data was successfully written
-	\sa writeData(const XsByteArray&, XsSize*)
+	\sa writeData(const XsByteArray&, XsFilePos*)
 */
-XsResultValue UsbInterface::writeData(const XsSize length, const void *data, XsSize* written)
+XsResultValue UsbInterface::writeData(XsFilePos length, const void *data, XsFilePos* written)
 {
-	XsSize bytes;
+	XsFilePos bytes;
 	if (written == NULL)
 		written = &bytes;
 

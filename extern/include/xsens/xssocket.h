@@ -38,7 +38,8 @@ enum NetworkLayerProtocol {
 };
 
 enum XsSocketOption {
-	XSO_ReuseAddress	/*!< \brief Allow bind reuse local addresses */
+	XSO_ReuseAddress,	/*!< \brief Allow bind to reuse a local port (using different local addresses) */
+	XSO_ReusePort		/*!< \brief Allow bind to reuse the exact local address */
 };
 
 #ifdef WIN32

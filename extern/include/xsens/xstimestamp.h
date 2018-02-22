@@ -54,6 +54,9 @@ struct XsTimeStamp {
 	/*! \brief Construct a timestamp with \a t as the time in milliseconds. */
 	inline XsTimeStamp(int t) : m_msTime(t) {}
 
+	/*! \brief Construct a timestamp with \a t as the time in seconds. */
+	inline explicit XsTimeStamp(double t) : m_msTime((int64_t)(t*1000.0)) {}
+
 	/*! \brief Construct a copy of \a other. */
 	inline XsTimeStamp(const XsTimeStamp& other) : m_msTime(other.m_msTime) {}
 

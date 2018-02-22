@@ -26,48 +26,33 @@
 	SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef DEVICECLASS_H
-#define DEVICECLASS_H
+#ifndef SIMPLEPROTOCOLMANAGER_H
+#define SIMPLEPROTOCOLMANAGER_H
 
-#include <xsens/xsresultvalue.h>
-#include <xsens/xsbytearray.h>
-#include <xsens/xsdeviceid.h>
-#include <xsens/xsportinfo.h>
-#include <xsens/xsoutputmode.h>
-#include <xsens/xsoutputsettings.h>
-#include <xsens/xsoutputconfigurationarray.h>
-#include <xcommunication/messageextractor.h>
-#include <xcommunication/simpleprotocolmanager.h>
+#include "iprotocolmanager.h"
+#include "protocolhandler.h"
 
-#include <memory>
-
-class StreamInterface;
-
-class DeviceClass
+/*! \brief A very basic protocol manager
+	\details This protocol manager supports only the xbus protocol
+*/
+class SimpleProtocolManager : public IProtocolManager
 {
 public:
-	DeviceClass(void);
-	~DeviceClass(void);
+	/*! \copydoc IProtocolManager::findMessage
+	*/
+	MessageLocation findMessage(XsMessage& rcv, const XsByteArray& raw) override
+	{
+		return m_protocolHandler.findMessage(rcv, raw);
+	}
 
-	bool openPort(const XsPortInfo& portInfo);
-	void close();
-
-	XsResultValue readDataToBuffer(XsByteArray& raw);
-	XsResultValue processBufferedData(XsByteArray& rawIn, std::deque<XsMessage>& messages);
-	bool waitForMessage(XsXbusMessageId xmid, XsMessage& rcv);
-	bool writeMessage(const XsMessage& msg);
-	bool gotoConfig();
-	bool gotoMeasurement();
-	XsString getProductCode();
-	XsDeviceId getDeviceId();
-	bool setDeviceMode(const XsOutputMode& outputMode, const XsOutputSettings& outputSettings);
-	bool setOutputConfiguration(XsOutputConfigurationArray& config);
-
+	/*! \copydoc IProtocolManager::validateMessage
+	*/
+	bool validateMessage(XsMessage const& msg) const override
+	{
+		return msg.isChecksumOk();
+	}
 private:
-	std::unique_ptr<StreamInterface> m_streamInterface;
-	std::shared_ptr<SimpleProtocolManager> m_protocolManager;
-	std::unique_ptr<MessageExtractor> m_messageExtractor;
-
+	ProtocolHandler m_protocolHandler; //!< Standard protocol handler; used for finding messages.
 };
 
 #endif

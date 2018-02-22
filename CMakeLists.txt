@@ -21,7 +21,8 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 # Compile XSens-provided code as a static library 
 # The code in this directory is directly extracted from the 
-# src_cpp example provided in the MT Software Suite 
+# src_cpp example provided in the MT Software Suite, see
+# the comments in the contained CMakeLists.txt for more info
 add_subdirectory(extern)
 
 # Compile YARP device 

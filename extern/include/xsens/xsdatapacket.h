@@ -1300,6 +1300,20 @@ struct XsDataPacket {
 		return m_toa;
 	}
 
+	/*! \brief Set the estimated time of sampling of the data packet
+		\param t The estimated time of sampling
+	*/
+	inline void setEstimatedTimeOfSampling(XsTimeStamp t)
+	{
+		m_etos = t;
+	}
+
+	/*! \brief Return the estimated time of sampling of the data packet. Only valid for live streams. The behaviour for file streams is undefined and may change in the future. */
+	inline XsTimeStamp estimatedTimeOfSampling() const
+	{
+		return m_etos;
+	}
+
 	/*! \brief Set the packet ID of the data packet
 		\param t The packet ID to set
 	*/
@@ -1415,8 +1429,9 @@ struct XsDataPacket {
 	struct XSNOEXPORT DataPacketPrivate* d;
 
 	XsDeviceId			m_deviceId;					//!< The device Id to which the message belongs
-	XsTimeStamp			m_toa;						//!< Time of arrival (live packets only)
+	XsTimeStamp			m_toa;						//!< Time Of Arrival (live packets only)
 	int64_t				m_packetId;					//!< 64 bit packet id, based on, depending on availability: (1) packet counter (2) sample time (3) arrival order
+	XsTimeStamp			m_etos;						//!< Estimated Time of Sampling (live packets only)
 };
 
 #endif

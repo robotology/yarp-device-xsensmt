@@ -74,9 +74,9 @@ const char* XsResultValue_toString(XsResultValue result)
 		case XRV_READINITFAILED:		return "Failure during reading of settings. File may be old or corrupt.";
 		case XRV_NOXMFOUND:				return "Could not find any MVN-compatible hardware, check connections and Xbus Master LEDs";
 		case XRV_ONLYONEXMFOUND:		return "Found only one responding Xbus Master, check connections and Xbus Master LEDs";
-		case XRV_DEVICECOUNTZERO:		return "No xsens devices found, check cables";
+		case XRV_DEVICECOUNTZERO:		return "No xsens devices found, check connections";
 		case XRV_MTLOCATIONINVALID:		return "One or more sensors are not where they were expected, check locations";
-		case XRV_INSUFFICIENTMTS:		return "Not enough sensors were found, check cables";
+		case XRV_INSUFFICIENTMTS:		return "Not enough sensors were found, check connections";
 		case XRV_INITFUSIONFAILED:		return "Failure during initialization of Fusion Engine. Source file may be old or corrupt.";
 		case XRV_OTHER:					return "Something else was received than was requested";
 		case XRV_NOFILEOPEN:			return "No file open";

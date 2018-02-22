@@ -49,7 +49,7 @@ struct XsSyncSetting {
 	int32_t			m_offset;					/*!< The time between reception of a line change and the execution of the sync action, in microseconds. */
 	uint16_t		m_skipFirst;				/*!< The number of frames to skip before executing the action. */
 	uint16_t		m_skipFactor;				/*!< The number of frames to skip between 2 actions. */
-	uint16_t		m_clockPeriod;				/*!< The frequency of the external clock in milliseconds, only valid when action is STE_ResetTimer. */
+	uint16_t		m_clockPeriod;				/*!< The frequency of the external clock in milliseconds, only valid when function is XSF_ClockBiasEstimation. */
 	uint8_t			m_triggerOnce;				/*!< Whether the action is repeated for each frame. */
 	uint8_t			m_padding;					/*!< Padding to get at a 4 byte boundary so memcpy/memcmp works with sizeof(XsSyncSetting) */
 #ifdef __cplusplus
@@ -113,23 +113,21 @@ struct XsSyncSetting {
 	*/
 	inline bool operator == (const XsSyncSetting& other) const
 	{
-		return (this == &other) ||
-			(m_line == other.m_line &&
-			 m_function == other.m_function &&
-			 m_polarity == other.m_polarity &&
-			 m_pulseWidth == other.m_pulseWidth &&
-			 m_offset == other.m_offset &&
-			 m_skipFirst == other.m_skipFirst &&
-			 m_skipFactor == other.m_skipFactor &&
-			 m_clockPeriod == other.m_clockPeriod &&
-			 m_triggerOnce == other.m_triggerOnce);
+		return (this == &other) || XsSyncSetting_compare(this, &other) == 0;
+	}
+
+	/*! \brief Return true if \a other is not identical to this
+	*/
+	inline bool operator != (const XsSyncSetting& other) const
+	{
+		return (this != &other) && XsSyncSetting_compare(this, &other) != 0;
 	}
 
 	/*! \brief Return true if \a other is less than this
 	*/
 	inline bool operator < (const XsSyncSetting& other) const
 	{
-		return XsSyncSetting_compare(this, &other) < 0;
+		return (this != &other) && XsSyncSetting_compare(this, &other) < 0;
 	}
 #endif
 };

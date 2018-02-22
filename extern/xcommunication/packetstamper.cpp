@@ -43,6 +43,23 @@ const int64_t PacketStamper::MTSCBOUNDARY = 0x00010000LL;
 //! \brief 8 bit Sample Counter boundary
 const int64_t PacketStamper::SC8BOUNDARY = 0x00000100LL;
 
+//! \brief Default constructor
+PacketStamper::PacketStamper()
+{
+	resetTosEstimation();
+}
+
+//! \brief Reset the Time Of Sampling estimation parameters
+void PacketStamper::resetTosEstimation()
+{
+	m_t0Est = 0;
+	m_pid0Est = 0;
+	m_tPerPidEst = 0.0;
+	m_t0New = 0;
+	m_pid0New = 0;
+	m_tPerPidNew = 0.0;
+}
+
 /*! \brief Calculate the new large packet counter value based on \a frameCounter and the \a lastCounter
 	\details Wraparound is at the given \a boundary
 	\param[in] frameCounter The frame counter
@@ -109,6 +126,7 @@ int64_t PacketStamper::stampPacket(XsDataPacket& pack, XsDataPacket& highestPack
 //	JLDEBUG(gJournal, "XsensDeviceAPI", "%s [%08x] old = %I64d new = %I64d diff = %I64d\n", __FUNCTION__, did, lastCounter, newCounter, (newCounter-lastCounter));
 
 	pack.setPacketId(newCounter);
+	estimateTos(pack);
 	if (newCounter > lastCounter)
 		highestPacket = pack;
 
@@ -135,4 +153,102 @@ int64_t PacketStamper::calculateLargeSampleTime(int64_t frameTime, int64_t lastT
 		return lastTime + dt;				// normal increment
 
 	return lastTime + dt - 864000000;		// negative wraparound
+}
+
+void PacketStamper::estimateTos(XsDataPacket& pack)
+{
+	int64_t toa = pack.timeOfArrival().msTime();
+	int64_t tos = toa;
+	int64_t pid = pack.packetId();
+
+	// update
+	bool commit = false;
+	if (m_tPerPidNew > 0.0)
+	{
+		int64_t dpid = pid - m_pid0New;
+		if (dpid >= 100)
+		{
+			int64_t dt = (int64_t) (dpid * m_tPerPidNew);
+			int64_t tosEst = m_t0New + dt;
+
+			// enough samples to assume the estimate is decent
+			int64_t dtos = tos - tosEst;
+			if (dtos <= 0 && dt < 2000)	// we only allow t0 corrections for the first 2 seconds
+			{
+				m_t0New += dtos;
+				commit = true;
+			}
+			else if (dtos <= m_tPerPidNew)	// else we have some data arrival timing glitch
+			{
+				m_tPerPidNew = (0.01 * (double) (toa - m_t0New) / (double) (pid - m_pid0New)) + (m_tPerPidNew * 0.99);
+				commit = true;
+			}
+
+			// after 20 seconds we commit the new estimation values
+			if (dt >= 20000)
+			{
+				if (commit)
+				{
+					m_t0Est = m_t0New;
+					m_pid0Est = m_pid0New;
+					m_tPerPidEst = m_tPerPidNew;
+
+					// and we restart estimation
+					dt = 900000;
+				}
+				// after 15 minutes without valid data points, we reset the stamping
+				if (dt >= 900000)
+				{
+					// restart
+					m_t0New = toa;
+					m_pid0New = pid;
+					m_tPerPidNew = 0.0;
+				}
+			}
+			else
+				commit = false;
+		}
+	}
+	else
+	{
+		// initial estimation
+		if (m_t0New == 0)
+		{
+			m_t0New = toa;
+			m_pid0New = pid;
+		}
+		else if (toa < m_t0New || pid < m_pid0New)
+			m_t0New = 0;
+		else if (pid - m_pid0New >= 10)
+		{
+			m_tPerPidNew = (double) (toa - m_t0New) / (double) (pid - m_pid0New);
+			if (m_t0Est == 0)
+			{
+				m_t0Est = m_t0New;
+				m_pid0Est = m_pid0New;
+				m_tPerPidEst = m_tPerPidNew;
+			}
+		}
+	}
+
+	// estimate
+	if (m_tPerPidEst > 0.0)
+	{
+		int64_t dpid = pid - m_pid0Est;
+		int64_t tosEst = m_t0Est + (int64_t) (dpid * m_tPerPidEst);
+
+		int64_t dtos = tos - tosEst;
+		if (dtos <= 0)
+			m_t0Est += dtos;
+		else
+			tos = tosEst;
+	}
+
+	if (commit)
+	{
+		m_pid0New = pid;
+		m_t0New = tos;
+	}
+
+	pack.setEstimatedTimeOfSampling(tos);
 }

@@ -26,48 +26,34 @@
 	SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef DEVICECLASS_H
-#define DEVICECLASS_H
+#ifndef IPROTOCOLMANAGER_H
+#define IPROTOCOLMANAGER_H
 
-#include <xsens/xsresultvalue.h>
-#include <xsens/xsbytearray.h>
-#include <xsens/xsdeviceid.h>
-#include <xsens/xsportinfo.h>
-#include <xsens/xsoutputmode.h>
-#include <xsens/xsoutputsettings.h>
-#include <xsens/xsoutputconfigurationarray.h>
-#include <xcommunication/messageextractor.h>
-#include <xcommunication/simpleprotocolmanager.h>
+#include <xsens/xsmessage.h>
+#include "messagelocation.h"
 
-#include <memory>
-
-class StreamInterface;
-
-class DeviceClass
+/*! \brief Interface class for protocol manager
+\details Describes the interfaces of a manager of different protocols \sa ProtocolHandler
+*/
+class IProtocolManager
 {
 public:
-	DeviceClass(void);
-	~DeviceClass(void);
 
-	bool openPort(const XsPortInfo& portInfo);
-	void close();
+	//! \brief Destructor
+	virtual ~IProtocolManager() {}
 
-	XsResultValue readDataToBuffer(XsByteArray& raw);
-	XsResultValue processBufferedData(XsByteArray& rawIn, std::deque<XsMessage>& messages);
-	bool waitForMessage(XsXbusMessageId xmid, XsMessage& rcv);
-	bool writeMessage(const XsMessage& msg);
-	bool gotoConfig();
-	bool gotoMeasurement();
-	XsString getProductCode();
-	XsDeviceId getDeviceId();
-	bool setDeviceMode(const XsOutputMode& outputMode, const XsOutputSettings& outputSettings);
-	bool setOutputConfiguration(XsOutputConfigurationArray& config);
+	/*! \brief Will let all supported protocols attempt finding a message in the given raw data
+		\param rcv: If a message has been found it will be stored in this input variable
+		\param raw: The input raw byte array in which to look for a message
+		\returns A MessageLocation object describing the best possible found message \sa MessageLocation
+	*/
+	virtual MessageLocation findMessage(XsMessage& rcv, const XsByteArray& raw) = 0;
 
-private:
-	std::unique_ptr<StreamInterface> m_streamInterface;
-	std::shared_ptr<SimpleProtocolManager> m_protocolManager;
-	std::unique_ptr<MessageExtractor> m_messageExtractor;
-
+	/*! \brief Performs a sanity check on the given message
+		\param msg: The message to check
+		\returns true if the message passes the protocol managers sanity checks
+	*/
+	virtual bool validateMessage(XsMessage const &msg) const = 0;
 };
 
 #endif

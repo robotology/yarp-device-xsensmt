@@ -203,14 +203,20 @@ extern Journaller* gJournal;
 #if !defined(HAVE_JOURNALLER) && !defined(JLDEBUG)
 #define JLTRACE(...)		((void)0)
 #define JLTRACE_NODEC(...)	((void)0)
+#define JLTRACEG(...)		((void)0)
 #define JLDEBUG(...)		((void)0)
 #define JLDEBUG_NODEC(...)	((void)0)
+#define JLDEBUGG(...)		((void)0)
 #define JLALERT(...)		((void)0)
 #define JLALERT_NODEC(...)	((void)0)
+#define JLALERTG(...)		((void)0)
 #define JLERROR(...)		((void)0)
 #define JLERROR_NODEC(...)	((void)0)
+#define JLERRORG(...)		((void)0)
 #define JLFATAL(...)		((void)0)
 #define JLFATAL_NODEC(...)	((void)0)
+#define JLFATALG(...)		((void)0)
+
 #endif
 
 #endif

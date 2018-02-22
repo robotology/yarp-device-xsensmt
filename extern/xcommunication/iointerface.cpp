@@ -56,8 +56,8 @@
 */
 
 // IOInterface functions
-/*! \copydoc SerialInterface::open(const XsPortInfo&, uint32_t, uint32_t, PortOptions) */
-XsResultValue IoInterface::open ( const XsPortInfo&, uint32_t, uint32_t, PortOptions)
+/*! \copydoc SerialInterface::open(const XsPortInfo&, XsFilePos, XsFilePos, PortOptions) */
+XsResultValue IoInterface::open ( const XsPortInfo&, XsFilePos, XsFilePos, PortOptions)
 {
 	return XRV_INVALIDOPERATION;
 }
@@ -67,8 +67,8 @@ XsResultValue IoInterface::setTimeout (uint32_t ms)
 	(void) ms;
 	return XRV_INVALIDOPERATION;
 }
-/*! \copydoc SerialInterface::waitForData(XsSize, XsByteArray&) */
-XsResultValue IoInterface::waitForData (XsSize maxLength, XsByteArray& data)
+/*! \copydoc SerialInterface::waitForData(XsFilePos, XsByteArray&) */
+XsResultValue IoInterface::waitForData (XsFilePos maxLength, XsByteArray& data)
 {
 	(void) maxLength;
 	(void) data;
@@ -98,8 +98,8 @@ XsResultValue IoInterface::create(const XsString& filename)
 	(void) filename;
 	return XRV_INVALIDOPERATION;
 }
-/*! \copydoc IoInterfaceFile::deleteData(XsFilePos, XsSize) */
-XsResultValue IoInterface::deleteData(XsFilePos start, XsSize length)
+/*! \copydoc IoInterfaceFile::deleteData(XsFilePos, XsFilePos) */
+XsResultValue IoInterface::deleteData(XsFilePos start, XsFilePos length)
 {
 	(void) start;
 	(void) length;

@@ -30,9 +30,10 @@
 #include <xsens/xsmessage.h>
 #include <xsens/xsresultvalue.h>
 #include <iomanip>
-#define DUMP_BUFFER_ON_ERROR
+#define DUMP_BUFFER_ON_ERROR	512		// this define doubles as the maximum buffer dump size, set to 0 to remove limit
 #ifdef DUMP_BUFFER_ON_ERROR
 #include <sstream>
+#include <algorithm>
 #endif
 
 /*! \class ProtocolHandler
@@ -81,6 +82,9 @@ inline std::string dumpBuffer(const uint8_t* buff, XsSize sz)
 #ifdef DUMP_BUFFER_ON_ERROR
 	std::ostringstream ostr;
 	ostr << std::hex << std::setfill('0');
+#if DUMP_BUFFER_ON_ERROR > 0
+	sz = std::min<XsSize>(sz, DUMP_BUFFER_ON_ERROR);
+#endif
 	for (XsSize i = 0; i < sz; ++i)
 		ostr << " " << std::setw(2) << (int) buff[i];
 	return ostr.str();
@@ -97,7 +101,7 @@ inline std::string dumpBuffer(const uint8_t* buff, XsSize sz)
 MessageLocation ProtocolHandler::findMessage(XsMessage& rcv, const XsByteArray& raw) const
 {
 	JLTRACE(gJournal, "Entry");
-	MessageLocation rv(-1,0,-1);
+	MessageLocation rv(-1,0,-1,0);
 	rcv.clear();
 
 	int bufferSize = (int) raw.size();
@@ -150,6 +154,17 @@ MessageLocation ProtocolHandler::findMessage(XsMessage& rcv, const XsByteArray& 
 			{
 				// found 'valid' message that isn't actually valid... happens inside GPS raw data
 				// skip to next preamble
+				// and completely ignore this message, since it cannot be valid
+				if (rv.m_incompletePos == pre)
+				{
+					rv.m_incompletePos = -1;
+					rv.m_incompleteSize = 0;
+				}
+				if (rv.m_startPos == pre)
+				{
+					rv.m_startPos = -1;
+					rv.m_size = 0;
+				}
 				continue;
 			}
 
@@ -213,7 +228,7 @@ MessageLocation ProtocolHandler::findMessage(XsMessage& rcv, const XsByteArray& 
 					rv.m_incompletePos = -1;
 				JLALERT(gJournal,
 					"Invalid checksum for msg at offset " << pre << " bufferSize = " << bufferSize
-					<< " buffer: " << dumpBuffer(raw.data(), raw.size()));
+					<< " buffer at offset: " << dumpBuffer(raw.data()+pre, raw.size()-pre));
 			}
 		}
 	}
