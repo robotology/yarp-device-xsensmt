@@ -125,10 +125,8 @@ bool XsensMT::open(yarp::os::Searchable &config)
     yInfo("xsensmt: Configuring the device of type %s.", m_portInfo.deviceId().toString().c_str());
     if (m_portInfo.deviceId().isMt9c() || m_portInfo.deviceId().isLegacyMtig())
     {
-        XsOutputMode outputMode = XOM_Orientation; // output orientation data
-        XsOutputSettings outputSettings = XOS_OrientationMode_Quaternion; // output orientation data as quaternion
-
-        yInfo("xsensmt: Device of type %s is not supported by the driver, aborting.", m_portInfo.deviceId().toString().c_str());
+        yError("xsensmt: Device of type %s is not supported by the driver, aborting.", m_portInfo.deviceId().toString().c_str());
+	return false;
      }
      else if (m_portInfo.deviceId().isMtMk4() || m_portInfo.deviceId().isFmt_X000())
      {
