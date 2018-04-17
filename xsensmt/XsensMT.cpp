@@ -9,6 +9,7 @@
 #include <yarp/os/Thread.h>
 #include <yarp/os/Time.h>
 #include <yarp/os/Semaphore.h>
+#include <yarp/os/SystemClock.h>
 #include <yarp/os/Stamp.h>
 
 #include <chrono>
@@ -18,6 +19,7 @@
 #include <xcommunication/int_xsdatapacket.h>
 #include <xcommunication/legacydatapacket.h>
 #include <xsens/xsdatapacket.h>
+#include <xsens/xsmessagearray.h>
 
 #include "XsensMT.h"
 
@@ -187,7 +189,7 @@ yarp::os::Stamp XsensMT::getLastInputStamp()
 void XsensMT::sensorReadLoop()
 {
     XsByteArray data;
-    XsMessageArray msgs;
+    std::deque<XsMessage> msgs;
  
     XsEuler euler;
     XsVector acc;
@@ -198,7 +200,7 @@ void XsensMT::sensorReadLoop()
     {
         m_xsensDevice.readDataToBuffer(data);
         m_xsensDevice.processBufferedData(data, msgs);
-        for (XsMessageArray::iterator it = msgs.begin(); it != msgs.end(); ++it)
+        for (std::deque<XsMessage>::iterator it = msgs.begin(); it != msgs.end(); ++it)
         {
             // Retrieve a packet
             XsDataPacket packet;

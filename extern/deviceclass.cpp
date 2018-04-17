@@ -33,13 +33,14 @@
 #include <xcommunication/streaminterface.h>
 
 DeviceClass::DeviceClass(void)
+	: m_streamInterface {}
+	, m_protocolManager { new SimpleProtocolManager }
 {
+	m_messageExtractor.reset(new MessageExtractor(m_protocolManager));
 }
 
 DeviceClass::~DeviceClass(void)
 {
-	if (m_streamInterface)
-		delete m_streamInterface;
 }
 
 /*! \brief Open an IO device
@@ -49,9 +50,9 @@ DeviceClass::~DeviceClass(void)
 bool DeviceClass::openPort(const XsPortInfo& portInfo)
 {
 	if (portInfo.isUsb())
-		m_streamInterface = new UsbInterface();
+		m_streamInterface.reset(new UsbInterface);
 	else
-		m_streamInterface = new SerialInterface();
+		m_streamInterface.reset(new SerialInterface);
 
 	if (m_streamInterface->open(portInfo) != XRV_OK)
 		return false;
@@ -90,39 +91,9 @@ XsResultValue DeviceClass::readDataToBuffer(XsByteArray& raw)
 	\param messages The messages found in the data
 	\return The messages that were read.
 */
-XsResultValue DeviceClass::processBufferedData(XsByteArray& rawIn, XsMessageArray& messages)
+XsResultValue DeviceClass::processBufferedData(XsByteArray& rawIn, std::deque<XsMessage>& messages)
 {
-	ProtocolHandler protocol;
-
-	if (rawIn.size())
-		m_dataBuffer.append(rawIn);
-
-	int popped = 0;
-	messages.clear();
-
-	for(;;)
-	{
-		XsByteArray raw(m_dataBuffer.data()+popped, m_dataBuffer.size()-popped);
-		XsMessage message;
-		MessageLocation location = protocol.findMessage(message, raw);
-
-		if (location.isValid())
-		{
-			// message is valid, remove data from cache
-			popped += location.m_size + location.m_startPos;
-			messages.push_back(message);
-		}
-		else
-		{
-			if (popped)
-				m_dataBuffer.pop_front(popped);
-
-			if (messages.empty())
-				return XRV_TIMEOUTNODATA;
-
-			return XRV_OK;
-		}
-	}
+	return m_messageExtractor->processNewData(rawIn, messages);
 }
 
 /*! \brief Wait for the requested XsXbusMessageId
@@ -133,13 +104,13 @@ XsResultValue DeviceClass::processBufferedData(XsByteArray& rawIn, XsMessageArra
 bool DeviceClass::waitForMessage(XsXbusMessageId xmid, XsMessage& rcv)
 {
 	XsByteArray data;
-	XsMessageArray msgs;
+	std::deque<XsMessage> msgs;
 	bool foundAck = false;
 	do
 	{
 		readDataToBuffer(data);
 		processBufferedData(data, msgs);
-		for (XsMessageArray::iterator it = msgs.begin(); it != msgs.end(); ++it)
+		for (auto it = msgs.begin(); it != msgs.end(); ++it)
 			if ((*it).getMessageId() == xmid)
 			{
 				foundAck = true;

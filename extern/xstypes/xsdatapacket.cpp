@@ -362,6 +362,7 @@ void XsDataPacket_construct(XsDataPacket* thisPtr)
 	thisPtr->m_deviceId = 0;
 	thisPtr->m_toa = 0;
 	thisPtr->m_packetId = -1;
+	thisPtr->m_etos = 0;
 }
 
 /*! \brief Clears and frees data in an XsDataPacket
@@ -399,6 +400,7 @@ void XsDataPacket_copy(XsDataPacket* copy, XsDataPacket const* src)
 	copy->m_deviceId = src->m_deviceId;
 	copy->m_toa = src->m_toa;
 	copy->m_packetId = src->m_packetId;
+	copy->m_etos = src->m_etos;
 }
 
 /*! \brief Swaps the XsDataPackets in \a thisPtr and \a other
@@ -410,6 +412,7 @@ void XsDataPacket_swap(XsDataPacket* thisPtr, XsDataPacket* other)
 	std::swap(thisPtr->m_deviceId, other->m_deviceId);
 	std::swap(thisPtr->m_toa, other->m_toa);
 	std::swap(thisPtr->m_packetId, other->m_packetId);
+	std::swap(thisPtr->m_etos, other->m_etos);
 }
 
 /*! \brief Returns whether the datapacket is empty
@@ -1737,7 +1740,7 @@ void XsDataPacket_setSampleTimeCoarse(XsDataPacket* thisPtr, uint32_t counter)
 	}
 }
 
-/*! \brief Return the full 64-bit sample time of a packet, combined from the fine and coarse sample times
+/*! \brief Return the full 64-bit sample time of a packet, combined from the fine and coarse sample times or received directly from the device. The 64-bit sample time runs at 10kHz.
 */
 uint64_t XsDataPacket_sampleTime64(const XsDataPacket* thisPtr)
 {
@@ -2118,7 +2121,8 @@ XsDataPacket* XsDataPacket_merge(XsDataPacket* thisPtr, const XsDataPacket* othe
 	thisPtr->d->merge(*other->d, over);
 
 	// do additional handling for 'unique' items
-	auto keepOne = [&](XsDataIdentifier id1, XsDataIdentifier id2) {
+	auto keepOne = [&](XsDataIdentifier id1, XsDataIdentifier id2)
+	{
 		if (genericContains(thisPtr, id1) &&
 			genericContains(thisPtr, id2))
 		{
@@ -2141,6 +2145,7 @@ XsDataPacket* XsDataPacket_merge(XsDataPacket* thisPtr, const XsDataPacket* othe
 		thisPtr->m_deviceId = other->m_deviceId;
 		thisPtr->m_toa = other->m_toa;
 		thisPtr->m_packetId = other->m_packetId;
+		thisPtr->m_etos = other->m_etos;
 	}
 
 	return thisPtr;

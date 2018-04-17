@@ -36,13 +36,22 @@ struct XsDataPacket;
 class PacketStamper
 {
 public:
+	PacketStamper();
+	void resetTosEstimation();
+
 	static const int64_t AWINDABOUNDARY;
 	static const int64_t MTSCBOUNDARY;
 	static const int64_t SC8BOUNDARY;
 
 	static int64_t calculateLargePacketCounter(int64_t frameCounter, int64_t lastCounter, int64_t boundary);
 	static int64_t calculateLargeSampleTime(int64_t frameTime, int64_t lastTime);
-	static int64_t stampPacket(XsDataPacket& pack, XsDataPacket& highest);
+	int64_t stampPacket(XsDataPacket& pack, XsDataPacket& highest);
+
+private:
+	int64_t m_t0Est, m_t0New;
+	int64_t m_pid0Est, m_pid0New;
+	double m_tPerPidEst, m_tPerPidNew;
+	void estimateTos(XsDataPacket& pack);
 };
 
 #endif

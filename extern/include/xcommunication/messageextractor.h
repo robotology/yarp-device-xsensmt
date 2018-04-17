@@ -26,48 +26,30 @@
 	SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef DEVICECLASS_H
-#define DEVICECLASS_H
+#ifndef MESSAGEEXTRACTOR_H
+#define MESSAGEEXTRACTOR_H
 
 #include <xsens/xsresultvalue.h>
-#include <xsens/xsbytearray.h>
-#include <xsens/xsdeviceid.h>
-#include <xsens/xsportinfo.h>
-#include <xsens/xsoutputmode.h>
-#include <xsens/xsoutputsettings.h>
-#include <xsens/xsoutputconfigurationarray.h>
-#include <xcommunication/messageextractor.h>
-#include <xcommunication/simpleprotocolmanager.h>
-
+#include <xsens/xsmessage.h>
+#include <deque>
 #include <memory>
+#include "iprotocolmanager.h"
 
-class StreamInterface;
-
-class DeviceClass
+class MessageExtractor
 {
 public:
-	DeviceClass(void);
-	~DeviceClass(void);
+	MessageExtractor(std::shared_ptr<IProtocolManager> protocolManager);
 
-	bool openPort(const XsPortInfo& portInfo);
-	void close();
-
-	XsResultValue readDataToBuffer(XsByteArray& raw);
-	XsResultValue processBufferedData(XsByteArray& rawIn, std::deque<XsMessage>& messages);
-	bool waitForMessage(XsXbusMessageId xmid, XsMessage& rcv);
-	bool writeMessage(const XsMessage& msg);
-	bool gotoConfig();
-	bool gotoMeasurement();
-	XsString getProductCode();
-	XsDeviceId getDeviceId();
-	bool setDeviceMode(const XsOutputMode& outputMode, const XsOutputSettings& outputSettings);
-	bool setOutputConfiguration(XsOutputConfigurationArray& config);
+	XsResultValue processNewData(XsByteArray const& newData, std::deque<XsMessage> &messages);
+	void clearBuffer();
 
 private:
-	std::unique_ptr<StreamInterface> m_streamInterface;
-	std::shared_ptr<SimpleProtocolManager> m_protocolManager;
-	std::unique_ptr<MessageExtractor> m_messageExtractor;
-
+	static const int m_maxIncompleteRetryCount;
+	XsByteArray m_buffer;
+	int m_retryTimeout;
+	std::shared_ptr<IProtocolManager> m_protocolManager;
 };
 
+
 #endif
+

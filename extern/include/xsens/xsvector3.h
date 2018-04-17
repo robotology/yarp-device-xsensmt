@@ -66,9 +66,9 @@ public:
 	//! \brief Constructs a vector3 using the values \a x, \a y, \a z
 	XsVector3(XsReal x, XsReal y, XsReal z)	: XsVector(m_fixedData, 3, XSDF_FixedSize)
 	{
-		m_fixedData[0] = x;
-		m_fixedData[1] = y;
-		m_fixedData[2] = z;
+		m_data[0] = x;
+		m_data[1] = y;
+		m_data[2] = z;
 	}
 
 	//! \brief Return a 3-element zero vector

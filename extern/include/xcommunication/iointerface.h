@@ -86,11 +86,11 @@ public:
 
 	/*! \brief Write the data contained in \a data to the device
 		\param data The data to write to the device.
-		\param written An optional %XsSize value that will receive the number of bytes that were
+		\param written An optional %XsFilePos value that will receive the number of bytes that were
 		actually written.
 		\returns XRV_OK if the data was written successfully
 	*/
-	virtual XsResultValue writeData(const XsByteArray& data, XsSize* written = NULL) = 0;
+	virtual XsResultValue writeData(const XsByteArray& data, XsFilePos* written = NULL) = 0;
 
 	/*! \brief Read at most \a maxLength bytes from the device into \a data
 		\param maxLength The maximum number of bytes to read. Depending on the device type and timeout
@@ -99,7 +99,7 @@ public:
 		\returns XRV_OK if all data was read successfully, XRV_TIMEOUT if some data was read, but not
 		\a maxLength, XRV_TIMEOUTNODATA if no data was read at all.
 	*/
-	virtual XsResultValue readData(XsSize maxLength, XsByteArray& data) = 0;
+	virtual XsResultValue readData(XsFilePos maxLength, XsByteArray& data) = 0;
 
 	//! Options for flow control and stopbits which must be used when opening a port
 	enum PortOptions {
@@ -112,16 +112,16 @@ public:
 		PO_XsensDefaults	= (PO_NoFlowControl|PO_TwoStopBits)
 	};
 	// SerialInterface overridable functions
-	virtual XsResultValue open(const XsPortInfo& portInfo, uint32_t readBufSize = XS_DEFAULT_READ_BUFFER_SIZE, uint32_t writeBufSize = XS_DEFAULT_WRITE_BUFFER_SIZE, PortOptions options = PO_XsensDefaults);
+	virtual XsResultValue open(const XsPortInfo& portInfo, XsFilePos readBufSize = XS_DEFAULT_READ_BUFFER_SIZE, XsFilePos writeBufSize = XS_DEFAULT_WRITE_BUFFER_SIZE, PortOptions options = PO_XsensDefaults);
 	virtual XsResultValue setTimeout (uint32_t ms);
-	virtual XsResultValue waitForData (XsSize maxLength, XsByteArray& data);
+	virtual XsResultValue waitForData (XsFilePos maxLength, XsByteArray& data);
 	virtual void cancelIo(void) const;
 
 	// IOInterfaceFile overridable functions
 	virtual XsResultValue appendData(const XsByteArray& bdata);
 	virtual XsResultValue closeAndDelete(void);
 	virtual XsResultValue create(const XsString& filename);
-	virtual XsResultValue deleteData(XsFilePos start, XsSize length);
+	virtual XsResultValue deleteData(XsFilePos start, XsFilePos length);
 	virtual XsResultValue find(const XsByteArray& needleV, XsFilePos& pos);
 	virtual XsFilePos getFileSize(void) const;
 	virtual XsResultValue getName(XsString& filename) const;

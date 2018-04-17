@@ -52,6 +52,8 @@
 #	endif
 #endif
 
+static const XsFilePos fileBlockSize = 4096;
+
 /*! Default constructor, initializes all members to their default values.
 */
 IoInterfaceFile::IoInterfaceFile()
@@ -95,8 +97,7 @@ XsResultValue IoInterfaceFile::appendData(const XsByteArray& bdata)
 		m_reading = false;
 		m_handle->seek_r(0); //lint !e534
 	}
-	size_t bytesWritten = m_handle->write(bdata.data(), 1, bdata.size());
-	(void)bytesWritten;
+	XsFilePos bytesWritten = m_handle->write(bdata.data(), 1, bdata.size());
 	m_writePos = m_handle->tell();
 	m_fileSize = m_writePos;
 
@@ -212,7 +213,7 @@ XsResultValue IoInterfaceFile::create(const XsString& filename)
 	\param length The total number of bytes to delete
 	\returns XRV_OK if the data was deleted successfully
 */
-XsResultValue IoInterfaceFile::deleteData(XsFilePos start, XsSize length)
+XsResultValue IoInterfaceFile::deleteData(XsFilePos start, XsFilePos length)
 {
 	if (!m_handle)
 		return m_lastResult = XRV_NOFILEOPEN;
@@ -224,22 +225,22 @@ XsResultValue IoInterfaceFile::deleteData(XsFilePos start, XsSize length)
 	XsFilePos wPos = start;
 	XsFilePos rPos = wPos + length;
 
-	size_t read1;
+	XsFilePos read1;
 	XsFilePos endPos = (start + (XsFilePos) length);
 	if (endPos < m_fileSize)
 	{
 		XsFilePos remaining = m_fileSize - endPos;
-		char buffer[512];
+		char buffer[m_fileBlockSize];
 
 		// copy data
 		m_handle->seek(rPos);
 
 		while (remaining > 0)
 		{
-			if (remaining >= 512)
-				read1 = m_handle->read(buffer,1,512);
+			if (remaining >= m_fileBlockSize)
+				read1 = m_handle->read(buffer, 1, m_fileBlockSize);
 			else
-				read1 = m_handle->read(buffer,1,(size_t) remaining);
+				read1 = m_handle->read(buffer, 1, (size_t) remaining);
 
 			remaining -= read1;
 			rPos += read1;
@@ -256,7 +257,7 @@ XsResultValue IoInterfaceFile::deleteData(XsFilePos start, XsSize length)
 		m_fileSize = start;
 	}
 
-	XsResultValue truncateResult = m_handle->truncate((int32_t) m_fileSize);
+	XsResultValue truncateResult = m_handle->truncate(m_fileSize);
 
 	m_writePos = start;
 	m_handle->seek(wPos);
@@ -278,7 +279,7 @@ XsResultValue IoInterfaceFile::find(const XsByteArray& needleV, XsFilePos& pos)
 	if (!m_handle)
 		return m_lastResult = XRV_NOFILEOPEN;
 
-	XsSize needleLength = needleV.size();
+	XsFilePos needleLength = needleV.size();
 
 	pos = 0;
 	if (needleLength == 0)
@@ -288,13 +289,13 @@ XsResultValue IoInterfaceFile::find(const XsByteArray& needleV, XsFilePos& pos)
 
 	gotoRead();
 
-	char buffer[512];
-	uint32_t bufferPos, needlePos = 0;
-	size_t readBytes;
+	char buffer[m_fileBlockSize];
+	XsFilePos bufferPos, needlePos = 0;
+	XsFilePos readBytes;
 	if (m_readPos & 0x1FF)										// read a block of data
-		readBytes = m_handle->read(buffer, 1, (512-((size_t) m_readPos & 0x1FF)));
+		readBytes = m_handle->read(buffer, 1, (m_fileBlockSize-(m_readPos & (m_fileBlockSize-1))));
 	else
-		readBytes = m_handle->read(buffer, 1, 512);		// read a block of data
+		readBytes = m_handle->read(buffer, 1, m_fileBlockSize);		// read a block of data
 
 	while (readBytes > 0)
 	{
@@ -322,7 +323,7 @@ XsResultValue IoInterfaceFile::find(const XsByteArray& needleV, XsFilePos& pos)
 			++bufferPos;
 		}
 		if (needlePos < needleLength)
-			readBytes = m_handle->read(buffer, 1, 512);	// read next block
+			readBytes = m_handle->read(buffer, 1, m_fileBlockSize);	// read next block
 		else
 		{
 			m_readPos = m_readPos + bufferPos - readBytes - needleLength; // or without needleLength
@@ -427,14 +428,14 @@ XsResultValue IoInterfaceFile::insertData(XsFilePos start, const XsByteArray& da
 
 	gotoWrite();
 
-	XsSize length = data.size();
+	XsFilePos length = data.size();
 	XsFilePos rPos = start;
 	XsFilePos wPos = rPos + length;
 
-	size_t read1, read2;
+	XsFilePos read1, read2;
 	XsFilePos remaining = m_fileSize - start;
-	size_t bsize = (length > 512)?length:512;
-	char* bufferRoot = (char*) malloc(bsize*2);
+	XsFilePos bsize = (length > m_fileBlockSize) ? length : m_fileBlockSize;
+	char* bufferRoot = (char*) malloc((XsSize) (bsize*2));
 	if (!bufferRoot)
 		return XRV_OUTOFMEMORY;
 	char* buffer1 = bufferRoot;
@@ -447,10 +448,10 @@ XsResultValue IoInterfaceFile::insertData(XsFilePos start, const XsByteArray& da
 	if (data.size() == 0)
 		return m_lastResult = XRV_OK;
 
-	if (remaining >= (XsFilePos) bsize)
+	if (remaining >= bsize)
 		read1 = m_handle->read(buffer1, 1, bsize);
 	else
-		read1 = m_handle->read(buffer1, 1, (size_t) remaining);
+		read1 = m_handle->read(buffer1, 1, remaining);
 
 	remaining -= read1;
 	rPos += read1;
@@ -462,10 +463,10 @@ XsResultValue IoInterfaceFile::insertData(XsFilePos start, const XsByteArray& da
 		btemp = buffer1; buffer1 = buffer2; buffer2 = btemp;
 
 		// read next block
-		if (remaining >= (XsFilePos) bsize)
+		if (remaining >= bsize)
 			read1 = m_handle->read(buffer1, 1, bsize);
 		else
-			read1 = m_handle->read(buffer1, 1, (size_t) remaining);
+			read1 = m_handle->read(buffer1, 1, remaining);
 
 		remaining -= read1;
 		rPos += read1;
@@ -560,7 +561,7 @@ XsResultValue IoInterfaceFile::open(const XsString& filename, bool createNew, bo
 	\note This function reads exactly the number of bytes as requested from the file unless the end
 	of file boundary is encountered.
 */
-XsResultValue IoInterfaceFile::readData(XsSize maxLength, XsByteArray& data)
+XsResultValue IoInterfaceFile::readData(XsFilePos maxLength, XsByteArray& data)
 {
 	if (!m_handle)
 		return m_lastResult = XRV_NOFILEOPEN;
@@ -571,13 +572,13 @@ XsResultValue IoInterfaceFile::readData(XsSize maxLength, XsByteArray& data)
 		return m_lastResult = XRV_OK;
 	}
 
-	XsSize length;
+	XsFilePos length;
 
 	gotoRead();
-	data.setSize(maxLength);
+	data.setSize((XsSize) maxLength);
 
 	length = m_handle->read(data.data(), 1, maxLength);
-	if (m_handle->eof())
+	if (m_handle->eof() && length <= 0)
 	{
 		data.clear();
 		return (m_lastResult = XRV_ENDOFFILE);
@@ -585,8 +586,27 @@ XsResultValue IoInterfaceFile::readData(XsSize maxLength, XsByteArray& data)
 
 	m_readPos += length;
 	if (length < maxLength)
-		data.pop_back(maxLength - length);
+		data.pop_back((XsSize) (maxLength - length));
 	return m_lastResult = XRV_OK;
+}
+
+/*! \brief This function will read blocks of data aligned to \a blockSize
+	\details The Function will read as much data as is necessary to align to the block size + \a blockCount blocks.
+	So the given blockCount is an indication for the minimum amount of data read, unless the end of file is encountered.
+	\param blockCount The number of blocks to read.
+	\param data A buffer for the data that was read from the file
+	\returns XRV_OK if the data was read successfully
+*/
+XsResultValue IoInterfaceFile::readDataBlocks(XsFilePos blockCount, XsByteArray& data)
+{
+	XsFilePos realign = (m_readPos & (m_fileBlockSize-1));
+	if (realign)
+		blockCount = m_fileBlockSize * blockCount + m_fileBlockSize - realign;
+	else
+		blockCount *= m_fileBlockSize;
+	if (blockCount == 0)
+		return XRV_OK;
+	return readData(blockCount, data);
 }
 
 /*! \brief Read data from the file and put it into the data buffer.
@@ -599,7 +619,7 @@ XsResultValue IoInterfaceFile::readData(XsSize maxLength, XsByteArray& data)
 	\param bdata		A buffer that will store the read data.
 	\returns XRV_OK if the data was read successfully
 */
-XsResultValue IoInterfaceFile::readTerminatedData(XsSize maxLength, unsigned char terminator, XsByteArray& bdata)
+XsResultValue IoInterfaceFile::readTerminatedData(XsFilePos maxLength, unsigned char terminator, XsByteArray& bdata)
 {
 	if (!m_handle)
 		return m_lastResult = XRV_NOFILEOPEN;
@@ -610,16 +630,16 @@ XsResultValue IoInterfaceFile::readTerminatedData(XsSize maxLength, unsigned cha
 		return m_lastResult = XRV_OK;
 	}
 
-	bdata.setSize(maxLength);
+	bdata.setSize((XsSize) maxLength);
 	char *data = (char *) bdata.data();
 
-	XsSize length;
-	int32_t readChar;
+	XsFilePos length;
+	int readChar;
 
 	gotoRead();
 
 	length = 0;
-	readChar = (uint32_t) m_handle->getc();
+	readChar = m_handle->getc();
 
 	while (!m_handle->eof() && !m_handle->error())
 	{
@@ -631,11 +651,11 @@ XsResultValue IoInterfaceFile::readTerminatedData(XsSize maxLength, unsigned cha
 			return m_lastResult = XRV_OK;
 		if ((unsigned char) readChar == terminator)
 		{
-			bdata.pop_back(maxLength - length);
+			bdata.pop_back((XsSize) (maxLength - length));
 			return m_lastResult = XRV_OK;
 		}
 	}
-	bdata.pop_back(maxLength - length);
+	bdata.pop_back((XsSize) (maxLength - length));
 	return m_lastResult = XRV_ENDOFFILE;
 }
 
@@ -694,22 +714,22 @@ XsResultValue IoInterfaceFile::setWritePosition(XsFilePos pos)
 /*! \copydoc IoInterface::writeData
 	\note The function writes the given data to the file at the current write position.
 */
-XsResultValue IoInterfaceFile::writeData(const XsByteArray& data, XsSize *written)
+XsResultValue IoInterfaceFile::writeData(const XsByteArray& data, XsFilePos *written)
 {
 	if (!m_handle)
 		return m_lastResult = XRV_NOFILEOPEN;
 	if (m_readOnly)
 		return m_lastResult = XRV_READONLY;
 
-	size_t length = data.size();
+	XsFilePos length = (XsFilePos) data.size();
 	if (length == 0)
 		return m_lastResult = XRV_OK;
 
 	gotoWrite();
-	size_t writeRes = m_handle->write(data.data(), 1, length);
-	if (writeRes == (size_t)EOF || writeRes < length)
+	XsFilePos writeRes = m_handle->write(data.data(), 1, length);
+	if (writeRes == (XsFilePos)EOF || writeRes < length)
 	{
-		int32_t err = (int32_t)errno;
+		int err = errno;
 		switch (err)
 		{
 		case 0:			break;
@@ -720,7 +740,7 @@ XsResultValue IoInterfaceFile::writeData(const XsByteArray& data, XsSize *writte
 	}
 	m_writePos += writeRes;
 	if (written)
-		*written = (uint32_t)writeRes;
+		*written = writeRes;
 
 	if (m_writePos > m_fileSize)
 		m_fileSize = m_writePos;
@@ -781,10 +801,24 @@ XsResultValue IoInterfaceFile::reserve(XsFilePos minSize)
 	if (minSize <= m_fileSize)
 		return XRV_OK;
 
-	auto rv = m_handle->resize((XsSize) minSize);
+	auto rv = m_handle->resize(minSize);
 	if (rv != XRV_OK)
 		return rv;
 
 	m_fileSize = minSize;
 	return XRV_OK;
+}
+
+/*!	\brief Flushes the buffers of a specified file and causes all buffered data to be written to a file.
+	\details This will ensure that the metadata is written to the file.
+	\note Only for Windows!
+	\returns XRV_OK if the buffers were flushed successfully
+*/
+XsResultValue IoInterfaceFile::flushFileBuffers()
+{
+#ifdef XSENS_WINDOWS
+	return FlushFileBuffers((HANDLE)_get_osfhandle(_fileno(m_handle->handle()))) ? XRV_ERROR : XRV_OK;
+#else
+	return XRV_OK;
+#endif
 }

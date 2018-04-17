@@ -55,7 +55,7 @@ public:
 	UsbInterface();
 	~UsbInterface();
 
-	XsResultValue open(const XsPortInfo &portInfo, uint32_t readBufSize = 0, uint32_t writeBufSize = 0, PortOptions = PO_XsensDefaults);
+	XsResultValue open(const XsPortInfo &portInfo, XsFilePos readBufSize = 0, XsFilePos writeBufSize = 0, PortOptions = PO_XsensDefaults) override;
 	XsResultValue close(void);
 	XsResultValue closeUsb(void);
 	XsResultValue flushData (void);
@@ -72,14 +72,14 @@ public:
 	void setRawIo(bool enable);
 	bool getRawIo(void);
 
-	virtual XsResultValue writeData(const XsByteArray& data, XsSize* written = NULL);
-	virtual XsResultValue readData(XsSize maxLength, XsByteArray& data);
+	XsResultValue writeData(const XsByteArray& data, XsFilePos* written = NULL) override;
+	XsResultValue readData(XsFilePos maxLength, XsByteArray& data) override;
 	using IoInterface::waitForData;
 
 	//lint -e1411 inherited definitions are also available (see above)
-	XsResultValue writeData(XsSize length, const void *data, XsSize* written = NULL);
-	XsResultValue readData(XsSize maxLength, void *data, XsSize* length = NULL);
-	XsResultValue waitForData(XsSize maxLength, void *data, XsSize* length = NULL);
+	XsResultValue writeData(XsFilePos length, const void *data, XsFilePos* written = NULL);
+	XsResultValue readData(XsFilePos maxLength, void *data, XsFilePos* length = NULL);
+	XsResultValue waitForData(XsFilePos maxLength, void *data, XsFilePos* length = NULL);
 	//lint +e1411
 
 	void getPortName(XsString& portname) const;

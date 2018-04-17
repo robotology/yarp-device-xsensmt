@@ -247,6 +247,10 @@ enum XsXbusMessageId {
 
 	XMID_KeepAlive					= 0x70,
 	XMID_KeepAliveAck				= 0x71,
+	XMID_ReqConnectionSettings		= 0x78,
+	XMID_ReqConnectionSettingsAck	= 0x79,
+	XMID_SetConnectionSettings		= 0x78,
+	XMID_SetConnectionSettingsAck	= 0x79,
 
 	XMID_CloseConnection			= 0x72,
 	XMID_CloseConnectionAck			= 0x73,

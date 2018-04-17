@@ -74,15 +74,16 @@ public:
 	XsResultValue flushData() override;
 	bool isOpen() const override;
 	XsResultValue getLastResult() const override;
-	XsResultValue writeData(const XsByteArray& data, XsSize *written = nullptr) override;
-	XsResultValue readData(XsSize maxLength, XsByteArray& data) override;
-	XsResultValue readTerminatedData(XsSize maxLength, unsigned char terminator, XsByteArray& bdata);
+	XsResultValue writeData(const XsByteArray& data, XsFilePos *written = nullptr) override;
+	XsResultValue readData(XsFilePos maxLength, XsByteArray& data) override;
+	XsResultValue readDataBlocks(XsFilePos blockCount, XsByteArray& data);
+	XsResultValue readTerminatedData(XsFilePos maxLength, unsigned char terminator, XsByteArray& bdata);
 
 	// Other functions
 	XsResultValue appendData(const XsByteArray& bdata);
 	XsResultValue closeAndDelete();
 	XsResultValue create(const XsString& filename);
-	XsResultValue deleteData(XsFilePos start, XsSize length);
+	XsResultValue deleteData(XsFilePos start, XsFilePos length);
 	XsResultValue find(const XsByteArray& data, XsFilePos& pos);
 	XsFilePos getFileSize() const;
 	XsTimeStamp getFileDate() const;
@@ -96,6 +97,10 @@ public:
 	XsResultValue setReadPosition(XsFilePos pos);
 	XsResultValue setWritePosition(XsFilePos pos = -1);
 	XsResultValue reserve(XsFilePos minSize);
+	XsResultValue flushFileBuffers();
+
+	//! \brief The default file block size
+	static const XsFilePos m_fileBlockSize = 4096;
 };
 
 #endif

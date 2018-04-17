@@ -81,13 +81,13 @@ public:
 	virtual ~SerialInterface();
 
 	// Function overrides
-	XsResultValue close (void);
+	XsResultValue close (void) override;
 	XsResultValue closeLive(void);
-	XsResultValue flushData (void);
+	XsResultValue flushData (void) override;
 	bool isOpen (void) const;
 	XsResultValue getLastResult(void) const;
-	XsResultValue writeData (const XsByteArray& data, XsSize* written = 0);
-	XsResultValue readData(XsSize maxLength, XsByteArray& data);
+	XsResultValue writeData (const XsByteArray& data, XsFilePos* written = 0) override;
+	XsResultValue readData(XsFilePos maxLength, XsByteArray& data) override;
 
 	void cancelIo(void) const;
 
@@ -99,9 +99,9 @@ public:
 	void getPortName(XsString& portname) const;
 	uint32_t getTimeout (void) const;
 
-	XsResultValue open ( const XsPortInfo& portInfo, uint32_t readBufSize = XS_DEFAULT_READ_BUFFER_SIZE, uint32_t writeBufSize = XS_DEFAULT_WRITE_BUFFER_SIZE, PortOptions options = PO_XsensDefaults);
+	XsResultValue open ( const XsPortInfo& portInfo, XsFilePos readBufSize = XS_DEFAULT_READ_BUFFER_SIZE, XsFilePos writeBufSize = XS_DEFAULT_WRITE_BUFFER_SIZE, PortOptions options = PO_XsensDefaults) override;
 	XsResultValue setTimeout (uint32_t ms);
-	XsResultValue waitForData (XsSize maxLength, XsByteArray& data);
+	XsResultValue waitForData (XsFilePos maxLength, XsByteArray& data) override;
 };
 
 SerialInterface::PortOptions operator|(SerialInterface::PortOptions lhs, SerialInterface::PortOptions rhs);
