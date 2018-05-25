@@ -194,6 +194,8 @@ bool XsensMT::open(yarp::os::Searchable &config)
 
     // start thread
     m_sensorThread = std::thread(std::bind(&XsensMT::sensorReadLoop, this));
+
+    return true;
 }
 
 bool XsensMT::close()
