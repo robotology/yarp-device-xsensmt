@@ -45,15 +45,15 @@ XsensMT::~XsensMT()
 bool XsensMT::read(Vector &out)
 {
     bool ret = false;
-    
+
     if (m_isSensorMeasurementAvailable)
-    { 
+    {
         std::unique_lock<std::mutex> lock(m_bufferMutex);
         for (int i = 0; i < m_nchannels; i++)
         {
             out[i]=m_sensorBuffer[i];
         }
-        m_lastReadStamp = m_lastStamp; 
+        m_lastReadStamp = m_lastStamp;
         //std::cerr << "Read data " << out.toString() << std::endl;
         lock.unlock();
 
@@ -63,14 +63,14 @@ bool XsensMT::read(Vector &out)
     {
         ret=false;
     }
-    
+
     double now = yarp::os::SystemClock::nowSystem();
     if (now-m_lastReadStamp.getTime() > m_timeoutInSecond)
     {
         yError("xsensmt: Sensor timeout, no sensor measurement received in the last %lf seconds.", now-m_lastReadStamp.getTime());
         m_isSensorMeasurementAvailable = false;
     }
-    
+
     return ret;
 }
 
@@ -90,9 +90,9 @@ bool XsensMT::open(yarp::os::Searchable &config)
     std::string comPortString = config.check("serial", yarp::os::Value("/dev/ttyUSB0"), "File of the serial device.").asString().c_str();
     int baudRate = config.check("baud", yarp::os::Value(115200), "Baud rate used by the serial communication.").asInt();
     m_timeoutInSecond = config.check("timeout", yarp::os::Value(0.1), "Timeout of the driver").asDouble();
-    
+
     m_portInfo = XsPortInfo(comPortString, XsBaud::numericToRate(baudRate));
-    
+
     yInfo("xsensmt: Opening serial port %s with baud rate %d.", comPortString.c_str(), baudRate);
     if (!m_xsensDevice.openPort(m_portInfo))
     {
@@ -102,12 +102,12 @@ bool XsensMT::open(yarp::os::Searchable &config)
 
     yInfo("xsensmt: Putting device into configuration mode.");
     // Put the device into configuration mode before configuring the device
-    if (!m_xsensDevice.gotoConfig()) 
+    if (!m_xsensDevice.gotoConfig())
     {
         yError("xsensmt: Could not put device in configuration mode.");
         return false;
     }
-    
+
     // Request the device Id to check the device type
     m_portInfo.setDeviceId(m_xsensDevice.getDeviceId());
 
@@ -117,7 +117,7 @@ bool XsensMT::open(yarp::os::Searchable &config)
         yError("xsensmt: No MTi / MTx / MTmk4 device found. Aborting.");
         return false;
     }
-    
+
     yInfo() << "xsensmt: Found a device with id: " << m_portInfo.deviceId().toString().toStdString() << " @ port: " << m_portInfo.portName().toStdString() << ", baudrate: " << m_portInfo.baudrate() << " .";
     yInfo() << "xsensmt: Device: " << m_xsensDevice.getProductCode().toStdString() << " opened.";
 
@@ -125,10 +125,8 @@ bool XsensMT::open(yarp::os::Searchable &config)
     yInfo("xsensmt: Configuring the device of type %s.", m_portInfo.deviceId().toString().c_str());
     if (m_portInfo.deviceId().isMt9c() || m_portInfo.deviceId().isLegacyMtig())
     {
-        XsOutputMode outputMode = XOM_Orientation; // output orientation data
-        XsOutputSettings outputSettings = XOS_OrientationMode_Quaternion; // output orientation data as quaternion
-
-        yInfo("xsensmt: Device of type %s is not supported by the driver, aborting.", m_portInfo.deviceId().toString().c_str());
+        yError("xsensmt: Device of type %s is not supported by the driver, aborting.", m_portInfo.deviceId().toString().c_str());
+        return false;
      }
      else if (m_portInfo.deviceId().isMtMk4() || m_portInfo.deviceId().isFmt_X000())
      {
@@ -147,6 +145,33 @@ bool XsensMT::open(yarp::os::Searchable &config)
            yError("xsensmt: Could not configure MTmk4 device. Aborting.");
            return false;
         }
+
+        // Paramater configuration
+
+        /// Profile configuration
+        // Possible profiles
+        // Profile numbers extracted from Document MT0101P.2018.B - MT Low Level Communication Documentation
+        // Documentation of setFilterProfile message, page 48
+        // https://xsens.com/download/usermanual/ISM/MT_LowLevelCommunicationProtocol_Documentation.pdf
+        uint16_t VRU_general = 43;
+        if (!this->setFilterProfile(VRU_general))
+        {
+           yError("xsensmt: Failing in sending SetFilterProfile message. Aborting.");
+           return false;
+        }
+
+        /// Options configuration
+        // Flags numbers extracted from Document MT0101P.2018.B - MT Low Level Communication Documentation
+        // Documentation of SetOptionFlags message, page 17
+        // https://xsens.com/download/usermanual/ISM/MT_LowLevelCommunicationProtocol_Documentation.pdf
+        uint32_t EnableAhs = 0x00000010;
+        uint32_t SetFlags = EnableAhs;
+        uint32_t ClearFlags = 0x0;
+        if (!this->setOptionFlags(SetFlags, ClearFlags))
+        {
+           yError("xsensmt: Failing in sending SetOptionFlags message. Aborting.");
+           return false;
+        }
      }
      else
      {
@@ -161,12 +186,12 @@ bool XsensMT::open(yarp::os::Searchable &config)
         yError("xsensmt: Could not put device into measurement mode. Aborting.");
         return false;
      }
-     
-    // Initialize the sensor in timeout mode 
+
+    // Initialize the sensor in timeout mode
     m_isSensorMeasurementAvailable = false;
     m_lastStamp.update(yarp::os::SystemClock::nowSystem()-2*m_timeoutInSecond);
     m_lastReadStamp = m_lastStamp;
-                        
+
     // start thread
     m_sensorThread = std::thread(std::bind(&XsensMT::sensorReadLoop, this));
 }
@@ -190,12 +215,12 @@ void XsensMT::sensorReadLoop()
 {
     XsByteArray data;
     std::deque<XsMessage> msgs;
- 
+
     XsEuler euler;
     XsVector acc;
     XsVector gyro;
     XsVector mag;
-    
+
     while (!m_isDeviceClosing)
     {
         m_xsensDevice.readDataToBuffer(data);
@@ -218,16 +243,16 @@ void XsensMT::sensorReadLoop()
                 packet.setMessage((*it));
                 packet.setDeviceId(m_portInfo.deviceId());
             }
-            
+
             // Get the euler data (for compatibility with the old xsensmtx icub-main driver)
             euler = packet.orientationEuler();
             acc = packet.calibratedAcceleration();
             gyro = packet.calibratedGyroscopeData();
             mag = packet.calibratedMagneticField();
-                        
+
             m_bufferMutex.lock();
-            
-            // Euler angles are expressed in degree in YARP, 
+
+            // Euler angles are expressed in degree in YARP,
             if (packet.containsOrientation()) {
                 m_sensorBuffer[0]  = euler.roll(); //roll
                 m_sensorBuffer[1]  = euler.pitch(); //pitch
@@ -244,7 +269,7 @@ void XsensMT::sensorReadLoop()
             } else {
               yWarning() << "xsensmt: Missing accelerometer message, skipping accelerometer update.";
             }
-            
+
             // Gyroscope data are expressed in rad/s in the Xsens interface, so they have to be converted in deg/s
             if (packet.containsCalibratedGyroscopeData()) {
                 m_sensorBuffer[6]  = gyro[0]*CTRL_RAD2DEG;  //gyro-X
@@ -253,8 +278,8 @@ void XsensMT::sensorReadLoop()
             } else {
                 yWarning() << "xsensmt: Missing gyroscope message, skipping gyroscope update.";
             }
-            
-            // Magnetometers 
+
+            // Magnetometers
             if (packet.containsCalibratedMagneticField()) {
                 m_sensorBuffer[9]  = mag[0];  //magn-X
                 m_sensorBuffer[10] = mag[1];  //magn-Y
@@ -269,10 +294,28 @@ void XsensMT::sensorReadLoop()
             m_bufferMutex.unlock();
         }
         msgs.clear();
-        // The Xsens API does not support a blocking read, so this delay 
-        // is necessary to avoid busy waiting, but influence the latency 
-        // of when a measurement is available in the YARP interface 
+        // The Xsens API does not support a blocking read, so this delay
+        // is necessary to avoid busy waiting, but influence the latency
+        // of when a measurement is available in the YARP interface
         std::this_thread::sleep_for(std::chrono::microseconds(10));
     }
 }
 
+bool XsensMT::setFilterProfile(const uint16_t profile)
+{
+    XsMessage snd(XMID_SetFilterProfile, 2), rcv;
+    snd.setDataShort(profile, 0);
+    m_xsensDevice.writeMessage(snd);
+    return m_xsensDevice.waitForMessage(XMID_SetFilterProfileAck, rcv);
+}
+
+bool XsensMT::setOptionFlags(const uint32_t setFlags, const uint32_t clearFlags)
+{
+    XsMessage snd(XMID_SetOptionFlags, 8), rcv;
+    // SetFlags (4 Bytes)
+    snd.setDataLong(setFlags, 0);
+    // ClearFlags (4 bytes)
+    snd.setDataLong(clearFlags, 4);
+    m_xsensDevice.writeMessage(snd);
+    return m_xsensDevice.waitForMessage(XMID_SetOptionFlagsAck, rcv);
+}
