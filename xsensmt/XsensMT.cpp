@@ -15,6 +15,7 @@
 #include <chrono>
 #include <iostream>
 #include <string>
+#include <functional>
 
 #include <xcommunication/int_xsdatapacket.h>
 #include <xcommunication/legacydatapacket.h>
