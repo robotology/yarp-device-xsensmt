@@ -88,6 +88,9 @@ bool XsensMT::calibrate(int ch, double v)
 
 bool XsensMT::open(yarp::os::Searchable &config)
 {
+    m_sensorName = config.check("sensor_name", Value("xsensmt"), "Inertial sensor name").asString();
+    m_frameName = config.check("frame_name", Value("sensor_imu_xsensmt"), "Inertial sensor frame name").asString();
+
     std::string comPortString = config.check("serial", yarp::os::Value("/dev/ttyUSB0"), "File of the serial device.").asString().c_str();
     int baudRate = config.check("baud", yarp::os::Value(115200), "Baud rate used by the serial communication.").asInt();
     m_timeoutInSecond = config.check("timeout", yarp::os::Value(0.1), "Timeout of the driver").asDouble();
@@ -321,4 +324,196 @@ bool XsensMT::setOptionFlags(const uint32_t setFlags, const uint32_t clearFlags)
     snd.setDataLong(clearFlags, 4);
     m_xsensDevice.writeMessage(snd);
     return m_xsensDevice.waitForMessage(XMID_SetOptionFlagsAck, rcv);
+}
+
+yarp::dev::MAS_status XsensMT::genericGetStatus(size_t sens_index) const
+{
+    if (sens_index != 0)
+    {
+        return yarp::dev::MAS_status::MAS_ERROR;
+    }
+    
+    return yarp::dev::MAS_status::MAS_OK;
+}
+
+bool XsensMT::genericGetSensorName(size_t sens_index, std::string& name) const
+{
+    if (sens_index != 0)
+    {
+        return false;
+    }
+    
+    name = m_sensorName;
+    return true;
+
+}
+
+bool XsensMT::genericGetFrameName(size_t sens_index, std::string& frameName) const
+{
+    if (sens_index != 0)
+    {
+        return false;
+    }
+    
+    frameName = m_frameName;
+    return true;
+}
+
+size_t XsensMT::getNrOfOrientationSensors() const
+{
+    return 1;
+}
+
+yarp::dev::MAS_status XsensMT::getOrientationSensorStatus(size_t sens_index) const
+{
+    return genericGetStatus(sens_index);
+}
+
+bool XsensMT::getOrientationSensorName(size_t sens_index, std::string& name) const
+{
+    return genericGetSensorName(sens_index, name);
+}
+
+
+bool XsensMT::getOrientationSensorFrameName(size_t sens_index, std::string& frameName) const
+{
+    return genericGetFrameName(sens_index, frameName);
+}
+
+bool XsensMT::getOrientationSensorMeasureAsRollPitchYaw(size_t sens_index, yarp::sig::Vector& rpy, double& timestamp) const
+{
+    if (sens_index != 0 || m_isSensorMeasurementAvailable == false)
+    {
+        return false;
+    }
+    
+    rpy.clear();
+    rpy.resize(3);    
+    std::lock_guard<std::mutex> guard(m_bufferMutex);
+    rpy[0] = m_sensorBuffer[0];
+    rpy[1] = m_sensorBuffer[1];
+    rpy[2] = m_sensorBuffer[2];
+    yarp::os::Stamp copyStamp(m_lastStamp);
+    timestamp = copyStamp.getTime();
+    return true;
+}
+
+
+size_t XsensMT::getNrOfThreeAxisLinearAccelerometers() const
+{
+    return 1;
+}
+
+yarp::dev::MAS_status XsensMT::getThreeAxisLinearAccelerometerStatus(size_t sens_index) const
+{
+    return genericGetStatus(sens_index);
+}
+
+bool XsensMT::getThreeAxisLinearAccelerometerName(size_t sens_index, std::string& name) const
+{
+    return genericGetSensorName(sens_index, name);
+}
+
+bool XsensMT::getThreeAxisLinearAccelerometerFrameName(size_t sens_index, std::string& frameName) const
+{
+    return genericGetFrameName(sens_index, frameName);
+}
+
+bool XsensMT::getThreeAxisLinearAccelerometerMeasure(size_t sens_index, yarp::sig::Vector& out, double& timestamp) const
+{
+    if (sens_index != 0 || m_isSensorMeasurementAvailable == false)
+    {
+        return false;
+    }
+    
+    out.clear();
+    out.resize(3);
+    std::lock_guard<std::mutex> guard(m_bufferMutex);
+    out[0] = m_sensorBuffer[3];
+    out[1] = m_sensorBuffer[4];
+    out[2] = m_sensorBuffer[5];
+    yarp::os::Stamp copyStamp(m_lastStamp);
+    timestamp = copyStamp.getTime();
+    return true;
+}
+
+
+size_t XsensMT::getNrOfThreeAxisGyroscopes() const
+{
+    return 1;
+}
+
+yarp::dev::MAS_status XsensMT::getThreeAxisGyroscopeStatus(size_t sens_index) const
+{
+    return genericGetStatus(sens_index);
+}
+
+bool XsensMT::getThreeAxisGyroscopeName(size_t sens_index, std::string& name) const
+{
+    return genericGetSensorName(sens_index, name);
+}
+
+
+bool XsensMT::getThreeAxisGyroscopeFrameName(size_t sens_index, std::string& frameName) const
+{
+    return genericGetFrameName(sens_index, frameName);
+}
+
+bool XsensMT::getThreeAxisGyroscopeMeasure(size_t sens_index, yarp::sig::Vector& out, double& timestamp) const
+{
+    if (sens_index != 0 || m_isSensorMeasurementAvailable == false)
+    {
+        return false;
+    }
+    
+    out.clear();
+    out.resize(3);    
+    std::lock_guard<std::mutex> guard(m_bufferMutex);
+    out[0] = m_sensorBuffer[6];
+    out[1] = m_sensorBuffer[7];
+    out[2] = m_sensorBuffer[8];
+    yarp::os::Stamp copyStamp(m_lastStamp);
+    timestamp = copyStamp.getTime();
+    return true;
+}
+
+
+
+size_t XsensMT::getNrOfThreeAxisMagnetometers() const
+{
+    return 1;
+}
+
+
+yarp::dev::MAS_status XsensMT::getThreeAxisMagnetometerStatus(size_t sens_index) const
+{
+    return genericGetStatus(sens_index);
+}
+
+bool XsensMT::getThreeAxisMagnetometerName(size_t sens_index, std::string& name) const
+{
+    return genericGetSensorName(sens_index, name);
+}
+
+bool XsensMT::getThreeAxisMagnetometerFrameName(size_t sens_index, std::string& frameName) const
+{
+    return genericGetFrameName(sens_index, frameName);
+}
+
+bool XsensMT::getThreeAxisMagnetometerMeasure(size_t sens_index, yarp::sig::Vector& out, double& timestamp) const
+{
+    if (sens_index != 0 || m_isSensorMeasurementAvailable == false)
+    {
+        return false;
+    }
+    
+    out.clear();
+    out.resize(3);
+    std::lock_guard<std::mutex> guard(m_bufferMutex);
+    out[0] = m_sensorBuffer[9];
+    out[1] = m_sensorBuffer[10];
+    out[2] = m_sensorBuffer[11];
+    yarp::os::Stamp copyStamp(m_lastStamp);
+    timestamp = copyStamp.getTime();
+    return true;
 }
