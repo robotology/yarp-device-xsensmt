@@ -13,11 +13,11 @@ list(APPEND CMAKE_MODULE_PATH ${YARP_MODULE_PATH})
 include(YarpPlugin)
 include(YarpInstallationHelpers)
 
-yarp_configure_plugins_installation(yarp)
-
 option(BUILD_SHARED_LIBS ON)
 set(YARP_FORCE_DYNAMIC_PLUGINS TRUE)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+
+yarp_configure_plugins_installation(xsensmt-yarp-driver)
 
 # Compile XSens-provided code as a static library 
 # The code in this directory is directly extracted from the 
