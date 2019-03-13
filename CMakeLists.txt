@@ -3,7 +3,7 @@
 # CopyPolicy: Released under the terms of the LGPLv2.1 or later, see LICENSE
 
 cmake_minimum_required(VERSION 3.5)
-project(x)
+project(xsensmt-yarp-driver)
 # Required by the XSens MT Software Suite
 set (CMAKE_CXX_STANDARD 11)
 
