@@ -1,4 +1,4 @@
-# xsensmt-yarp-driver
+# yarp-device-xsensmt
 YARP Device Driver for XSens MT* devices based on the MT Software Suite. 
 
 ## Rationale
