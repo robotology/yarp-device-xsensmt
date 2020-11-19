@@ -1,9 +1,9 @@
-# Copyright (C) 2017  iCub Facility, Istituto Italiano di Tecnologia
+# Copyright (C) 2017-2020 Fondazione Istituto Italiano di Tecnologia
 # Authors: Silvio Traversaro <silvio.traversaro@iit.it>
 # CopyPolicy: Released under the terms of the LGPLv2.1 or later, see LICENSE
 
 cmake_minimum_required(VERSION 3.5)
-project(xsensmt-yarp-driver)
+project(yarp-device-xsensmt)
 # Required by the XSens MT Software Suite
 set (CMAKE_CXX_STANDARD 11)
 
@@ -17,7 +17,7 @@ option(BUILD_SHARED_LIBS ON)
 set(YARP_FORCE_DYNAMIC_PLUGINS TRUE)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
-yarp_configure_plugins_installation(xsensmt-yarp-driver)
+yarp_configure_plugins_installation(yarp-device-xsensmt)
 
 # Compile XSens-provided code as a static library 
 # The code in this directory is directly extracted from the 
