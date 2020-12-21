@@ -6,17 +6,32 @@
 # in the MT Software Suite, version 2020.0.2, available from https://www.xsens.com/mt-software-suite/
 # If you want to update the code to a new version of the MT Software Suite, run make in the mtsdk
 # example directory and copy the xspublic files from the public directory in this directory.
+# Furthermore, you should update the CMake scripts options by inspecting the xspublic's Makefiles
 
 # Globbing should be avoided in general, but this is a library that we use directly as provided by Xsens 
 file(GLOB xscommon_SRCS ${CMAKE_CURRENT_SOURCE_DIR}/xspublic/xscommon/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/xspublic/xscommon/*.c)
-file(GLOB xstypes_SRCS ${CMAKE_CURRENT_SOURCE_DIR}/xspublic/xstypes/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/xspublic/xstypes/*.c)
-file(GLOB xscontroller_SRCS ${CMAKE_CURRENT_SOURCE_DIR}/xspublic/xscontroller/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/xspublic/xscontroller/*.c)
+add_library(xscommon STATIC ${xscommon_SRCS})
+target_include_directories(xscommon PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/xspublic)
+target_include_directories(xscommon PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/xspublic/xscommon)
+target_compile_options(xscommon PRIVATE "SHELL:-include xscommon_config.h" "SHELL:-include xstypes/xsens_compat.h")
 
-add_library(xsens_mt_software_suite STATIC ${xscommon_SRCS} ${xstypes_SRCS} ${xscontroller_SRCS})
-target_include_directories(xsens_mt_software_suite PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} 
-                                                          ${CMAKE_CURRENT_SOURCE_DIR}/xspublic
-                                                          ${CMAKE_CURRENT_SOURCE_DIR}/xspublic/xscommon
-                                                          ${CMAKE_CURRENT_SOURCE_DIR}/xspublic/xscontroller
-                                                          ${CMAKE_CURRENT_SOURCE_DIR}/xspublic/xstypes)
+
+file(GLOB xstypes_SRCS ${CMAKE_CURRENT_SOURCE_DIR}/xspublic/xstypes/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/xspublic/xstypes/*.c)
+# See EXCLUDE argument in xstypes' Makefile
+list(FILTER xstypes_SRCS EXCLUDE REGEX "xstypesdynlib")
+add_library(xstypes STATIC ${xstypes_SRCS})
+target_include_directories(xstypes PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/xspublic)
+target_include_directories(xstypes PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/xspublic/xstypes)
+
+
+file(GLOB xscontroller_SRCS ${CMAKE_CURRENT_SOURCE_DIR}/xspublic/xscontroller/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/xspublic/xscontroller/*.c)
+add_library(xscontroller STATIC ${xscontroller_SRCS})
+target_include_directories(xscontroller PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/xspublic)
+target_include_directories(xscontroller PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/xspublic/xscontroller)
+target_compile_options(xscontroller PRIVATE -include xscontrollerconfig.h)
+target_compile_definitions(xscontroller PRIVATE -DHAVE_JOURNALLER)
+
 find_package (Threads)
-target_link_libraries(xsens_mt_software_suite)
+
+add_library(xsens_mt_software_suite INTERFACE)
+target_link_libraries(xsens_mt_software_suite INTERFACE xscommon xstypes xscontroller)

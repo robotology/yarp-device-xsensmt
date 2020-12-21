@@ -17,12 +17,13 @@
 #include <string>
 #include <functional>
 
-#include <xcommunication/int_xsdatapacket.h>
-#include <xcommunication/legacydatapacket.h>
-#include <xsens/xsdatapacket.h>
-#include <xsens/xsmessagearray.h>
-
 #include "XsensMT.h"
+
+#include <xstypes/xseuler.h>
+#include <xstypes/xsvector.h>
+#include <xstypes/xsoutputconfiguration.h>
+#include <xstypes/xsoutputconfigurationarray.h>
+
 
 using namespace yarp::os;
 using namespace yarp::dev;
@@ -132,30 +133,33 @@ bool XsensMT::open(yarp::os::Searchable &config)
         return false;
     }
 
+    m_xsensDevice = new MtiBaseDevice(&m_xsensCommunicator);
+
     yInfo("xsensmt: Putting device into configuration mode.");
     // Put the device into configuration mode before configuring the device
-    if (!m_xsensDevice.gotoConfig())
+    if (!m_xsensDevice->gotoConfig())
     {
         yError("xsensmt: Could not put device in configuration mode.");
         return false;
     }
 
     // Request the device Id to check the device type
-    m_portInfo.setDeviceId(m_xsensDevice.getDeviceId());
+    m_portInfo.setDeviceId(m_xsensDevice->deviceId());
 
-    // Check if we have an MTi / MTx / MTmk4 device
-    if (!m_portInfo.deviceId().isMt9c() && !m_portInfo.deviceId().isLegacyMtig() && !m_portInfo.deviceId().isMtMk4() && !m_portInfo.deviceId().isFmt_X000())
+    // Check if we have an MTi
+    if (!m_portInfo.deviceId().isMti())
     {
-        yError("xsensmt: No MTi / MTx / MTmk4 device found. Aborting.");
+        yError("xsensmt: No MTi device found. Aborting.");
         return false;
     }
 
     yInfo() << "xsensmt: Found a device with id: " << m_portInfo.deviceId().toString().toStdString() << " @ port: " << m_portInfo.portName().toStdString() << ", baudrate: " << m_portInfo.baudrate() << " .";
-    yInfo() << "xsensmt: Device: " << m_xsensDevice.getProductCode().toStdString() << " opened.";
+    // TODO migrate to modern API
+    //yInfo() << "xsensmt: Device: " << m_xsensDevice.getProductCode().toStdString() << " opened.";
 
     // Configure the device. Note the differences between MTix and MTmk4
     yInfo("xsensmt: Configuring the device of type %s.", m_portInfo.deviceId().toString().c_str());
-    if (m_portInfo.deviceId().isMt9c() || m_portInfo.deviceId().isLegacyMtig())
+    if (m_portInfo.deviceId().isMti())
     {
         yError("xsensmt: Device of type %s is not supported by the driver, aborting.", m_portInfo.deviceId().toString().c_str());
         return false;
@@ -172,9 +176,9 @@ bool XsensMT::open(yarp::os::Searchable &config)
         configArray.push_back(acc);
         configArray.push_back(gyro);
         configArray.push_back(mag);
-        if (!m_xsensDevice.setOutputConfiguration(configArray))
+        if (!m_xsensDevice->setOutputConfiguration(configArray))
         {
-           yError("xsensmt: Could not configure MTmk4 device. Aborting.");
+           yError("xsensmt: Could not configure device. Aborting.");
            return false;
         }
 
@@ -213,7 +217,7 @@ bool XsensMT::open(yarp::os::Searchable &config)
 
      // Put the device in measurement mode
      yInfo() << "xsensmt: Putting device into measurement mode.";
-     if (!m_xsensDevice.gotoMeasurement())
+     if (!m_xsensDevice->gotoMeasurement())
      {
         yError("xsensmt: Could not put device into measurement mode. Aborting.");
         return false;
@@ -258,21 +262,15 @@ void XsensMT::sensorReadLoop()
 
     while (!m_isDeviceClosing)
     {
-        m_xsensDevice.readDataToBuffer(data);
-        m_xsensDevice.processBufferedData(data, msgs);
+        m_xsensCommunicator.readDataToBuffer(data);
+        m_xsensCommunicator.processBufferedData(data, msgs);
         for (std::deque<XsMessage>::iterator it = msgs.begin(); it != msgs.end(); ++it)
         {
             // Retrieve a packet
             XsDataPacket packet;
             if ((*it).getMessageId() == XMID_MtData) {
-                LegacyDataPacket lpacket(1, false);
-                lpacket.setMessage((*it));
-                lpacket.setXbusSystem(false);
-                lpacket.setDeviceId(m_portInfo.deviceId(), 0);
-                lpacket.setDataFormat(XOM_Orientation, XOS_OrientationMode_Quaternion,0);
                 yError("xsensmt: Legacy packet received, but the legacy packet is not currently supported by the driver. Ignoring message.");
                 continue;
-                //XsDataPacket_assignFromLegacyDataPacket(&packet, &lpacket, 0);
             }
             else if ((*it).getMessageId() == XMID_MtData2) {
                 packet.setMessage((*it));
@@ -338,10 +336,10 @@ void XsensMT::sensorReadLoop()
 
 bool XsensMT::setFilterProfile(const uint16_t profile)
 {
-    XsMessage snd(XMID_SetFilterProfile, 2), rcv;
+    XsMessage snd(XMID_SetFilterProfile, 2);
     snd.setDataShort(profile, 0);
-    m_xsensDevice.writeMessage(snd);
-    return m_xsensDevice.waitForMessage(XMID_SetFilterProfileAck, rcv);
+    m_xsensCommunicator.writeMessage(snd);
+    return true;
 }
 
 bool XsensMT::setOptionFlags(const uint32_t setFlags, const uint32_t clearFlags)
@@ -351,8 +349,8 @@ bool XsensMT::setOptionFlags(const uint32_t setFlags, const uint32_t clearFlags)
     snd.setDataLong(setFlags, 0);
     // ClearFlags (4 bytes)
     snd.setDataLong(clearFlags, 4);
-    m_xsensDevice.writeMessage(snd);
-    return m_xsensDevice.waitForMessage(XMID_SetOptionFlagsAck, rcv);
+    m_xsensCommunicator.writeMessage(snd);
+    return true;
 }
 
 yarp::dev::MAS_status XsensMT::genericGetStatus(size_t sens_index) const

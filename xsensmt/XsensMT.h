@@ -8,7 +8,11 @@
 #ifndef XSENS_MT_YARP_DRIVER
 #define XSENS_MT_YARP_DRIVER
 
-#include "deviceclass.h"
+#include <xstypes/xsdatapacket.h>
+#include <xstypes/xsportinfo.h>
+#include <xscontroller/serialportcommunicator.h>
+
+#include <xscontroller/mtibasedevice.h>
 
 #include <yarp/dev/DeviceDriver.h>
 #include <yarp/dev/IGenericSensor.h>
@@ -30,6 +34,27 @@ namespace dev
 }
 }
 
+
+// Expose protected methods
+namespace yarp
+{
+namespace dev
+{
+    class YARPSerialPortCommunicator: public SerialPortCommunicator {
+        public:
+        XsResultValue readDataToBuffer(XsByteArray& raw) override
+        {
+            return this->readDataToBuffer(raw);
+        }
+
+        XsResultValue processBufferedData(const XsByteArray& rawIn, std::deque<XsMessage>& messages) override
+        {
+            return this->processBufferedData(rawIn, messages);
+        }
+
+    };
+}
+}
 
 /**
  *
@@ -288,7 +313,8 @@ private:
     bool m_isSensorMeasurementAvailable{false};
 
     // Interface exposed by the Xsens MT Software suite
-    DeviceClass m_xsensDevice;
+    YARPSerialPortCommunicator m_xsensCommunicator;
+    MtiBaseDevice* m_xsensDevice;
     XsPortInfo m_portInfo;
 
     yarp::os::Stamp  m_lastReadStamp;
