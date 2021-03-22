@@ -226,6 +226,7 @@ bool XsensMT::close()
     {
         m_sensorThread.join();
     }
+    return true;
 }
 
 yarp::os::Stamp XsensMT::getLastInputStamp()
