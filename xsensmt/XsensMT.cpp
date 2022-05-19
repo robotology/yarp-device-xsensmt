@@ -109,8 +109,8 @@ bool XsensMT::open(yarp::os::Searchable &config)
     }
 
     std::string comPortString = config.check("serial", yarp::os::Value("/dev/ttyUSB0"), "File of the serial device.").asString().c_str();
-    int baudRate = config.check("baud", yarp::os::Value(115200), "Baud rate used by the serial communication.").asInt();
-    m_timeoutInSecond = config.check("timeout", yarp::os::Value(0.1), "Timeout of the driver").asDouble();
+    int baudRate = config.check("baud", yarp::os::Value(115200), "Baud rate used by the serial communication.").asInt32();
+    m_timeoutInSecond = config.check("timeout", yarp::os::Value(0.1), "Timeout of the driver").asFloat64();
 
     m_portInfo = XsPortInfo(comPortString, XsBaud::numericToRate(baudRate));
 
