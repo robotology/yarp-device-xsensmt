@@ -268,6 +268,8 @@ private:
     
     std::string m_sensorName;
     std::string m_frameName;
+    double m_outputPeriod;
+    double m_outputFrequency;
     
     // Send a SetFilterProfile message to set the filter profile
     bool setFilterProfile(const uint16_t profile);

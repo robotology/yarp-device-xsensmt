@@ -108,13 +108,24 @@ bool XsensMT::open(yarp::os::Searchable &config)
         yWarning() << "xsensmt -  Parameter \"frame_name\" not set. Using the same value as \"sensor_name\" for this parameter.";
     }
 
+    if (config.check("xsensmt_period") && config.find("xsensmt_period").isFloat64())
+    {
+        m_outputPeriod = config.find("xsensmt_period").asFloat64();
+    }
+    else
+    {
+        m_outputPeriod = 10; // 10ms
+        yWarning() << "xsensmt -  Parameter \"period\" not set. Using the value " << m_outputPeriod << " ms for this parameter.";
+    }
+    m_outputFrequency = 1/m_outputPeriod * 1000;
+
     std::string comPortString = config.check("serial", yarp::os::Value("/dev/ttyUSB0"), "File of the serial device.").asString().c_str();
     int baudRate = config.check("baud", yarp::os::Value(115200), "Baud rate used by the serial communication.").asInt32();
     m_timeoutInSecond = config.check("timeout", yarp::os::Value(0.1), "Timeout of the driver").asFloat64();
 
     m_portInfo = XsPortInfo(comPortString, XsBaud::numericToRate(baudRate));
 
-    yInfo("xsensmt: Opening serial port %s with baud rate %d.", comPortString.c_str(), baudRate);
+    yInfo("xsensmt: Opening serial port %s with baud rate %d and output period %4.2f ms.", comPortString.c_str(), baudRate, m_outputPeriod);
     if (!m_xsensDevice.openPort(m_portInfo))
     {
         yError("xsensmt: Could not open serial port.");
@@ -151,10 +162,10 @@ bool XsensMT::open(yarp::os::Searchable &config)
      }
      else if (m_portInfo.deviceId().isMtMk4() || m_portInfo.deviceId().isFmt_X000())
      {
-        XsOutputConfiguration euler(XDI_EulerAngles, 100);
-        XsOutputConfiguration acc(XDI_Acceleration, 100);
-        XsOutputConfiguration gyro(XDI_RateOfTurn, 100);
-        XsOutputConfiguration mag(XDI_MagneticField, 100);
+        XsOutputConfiguration euler(XDI_EulerAngles, m_outputFrequency);
+        XsOutputConfiguration acc(XDI_Acceleration, m_outputFrequency);
+        XsOutputConfiguration gyro(XDI_RateOfTurn, m_outputFrequency);
+        XsOutputConfiguration mag(XDI_MagneticField, m_outputFrequency);
 
         XsOutputConfigurationArray configArray;
         configArray.push_back(euler);
