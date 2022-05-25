@@ -108,14 +108,14 @@ bool XsensMT::open(yarp::os::Searchable &config)
         yWarning() << "xsensmt -  Parameter \"frame_name\" not set. Using the same value as \"sensor_name\" for this parameter.";
     }
 
-    if (config.check("xsensmt_period") && config.find("xsensmt_period").isFloat64())
+    if (config.check("xsensmt_period") && config.find("xsensmt_period").isString())
     {
         m_outputPeriod = config.find("xsensmt_period").asFloat64();
     }
     else
     {
         m_outputPeriod = 10; // 10ms
-        yWarning() << "xsensmt -  Parameter \"period\" not set. Using the value " << m_outputPeriod << " ms for this parameter.";
+        yWarning() << "xsensmt -  Parameter \"xsensmt_period\" not set. Using the value " << m_outputPeriod << " ms for this parameter.";
     }
     m_outputFrequency = 1/m_outputPeriod * 1000;
 
