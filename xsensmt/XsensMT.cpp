@@ -108,6 +108,11 @@ bool XsensMT::open(yarp::os::Searchable &config)
         yWarning() << "xsensmt -  Parameter \"frame_name\" not set. Using the same value as \"sensor_name\" for this parameter.";
     }
 
+    yDebug() << "xsensmt - test - xsensmt_period, check xsensmt_period: " << config.check("xsensmt_period");
+    yDebug() << "xsensmt - test - xsensmt_period, xsensmt_period is string: " << config.find("xsensmt_period").isString();
+    yDebug() << "xsensmt - test - xsensmt_period, xsensmt_period is int: " << config.find("xsensmt_period").isInt32();
+    yDebug() << "xsensmt - test - xsensmt_period, xsensmt_period is float: " << config.find("xsensmt_period").isFloat64();
+
     if (config.check("xsensmt_period") && config.find("xsensmt_period").isString())
     {
         m_outputPeriod = config.find("xsensmt_period").asFloat64();
