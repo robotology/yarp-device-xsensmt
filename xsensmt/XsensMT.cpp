@@ -113,7 +113,7 @@ bool XsensMT::open(yarp::os::Searchable &config)
     yDebug() << "xsensmt - test - xsensmt_period, xsensmt_period is int: " << config.find("xsensmt_period").isInt32();
     yDebug() << "xsensmt - test - xsensmt_period, xsensmt_period is float: " << config.find("xsensmt_period").isFloat64();
 
-    if (config.check("xsensmt_period") && config.find("xsensmt_period").isString())
+    if (config.check("xsensmt_period") && ( config.find("xsensmt_period").isInt32() || config.find("xsensmt_period").isFloat64()))
     {
         m_outputPeriod = config.find("xsensmt_period").asFloat64();
     }
