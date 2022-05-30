@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.0] - 2022-05-30
+
+Fixed compatibility with YARP 3.7 (https://github.com/robotology/yarp-device-xsensmt/pull/32).
+
 ## [0.1.1] - 2021-03-26
 
 Fixed the `system_error` raised on the `close` of the device(see [ref](https://github.com/robotology/yarp-device-xsensmt/issues/27))
