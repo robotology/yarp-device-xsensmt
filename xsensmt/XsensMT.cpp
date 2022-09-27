@@ -108,21 +108,16 @@ bool XsensMT::open(yarp::os::Searchable &config)
         yWarning() << "xsensmt -  Parameter \"frame_name\" not set. Using the same value as \"sensor_name\" for this parameter.";
     }
 
-    yDebug() << "xsensmt - test - xsensmt_period, check xsensmt_period: " << config.check("xsensmt_period");
-    yDebug() << "xsensmt - test - xsensmt_period, xsensmt_period is string: " << config.find("xsensmt_period").isString();
-    yDebug() << "xsensmt - test - xsensmt_period, xsensmt_period is int: " << config.find("xsensmt_period").isInt32();
-    yDebug() << "xsensmt - test - xsensmt_period, xsensmt_period is float: " << config.find("xsensmt_period").isFloat64();
-
     if (config.check("xsensmt_period") && ( config.find("xsensmt_period").isInt32() || config.find("xsensmt_period").isFloat64()))
     {
         m_outputPeriod = config.find("xsensmt_period").asFloat64();
     }
     else
     {
-        m_outputPeriod = 10; // 10ms
-        yWarning() << "xsensmt -  Parameter \"xsensmt_period\" not set. Using the value " << m_outputPeriod << " ms for this parameter.";
+        m_outputPeriod = 0.01; // 10ms
+        yWarning() << "xsensmt -  Parameter \"xsensmt_period\" not set. Using the default value " << m_outputPeriod << " seconds for this parameter.";
     }
-    m_outputFrequency = 1/m_outputPeriod * 1000;
+    m_outputFrequency = 1/m_outputPeriod;
 
     std::string comPortString = config.check("serial", yarp::os::Value("/dev/ttyUSB0"), "File of the serial device.").asString().c_str();
     int baudRate = config.check("baud", yarp::os::Value(115200), "Baud rate used by the serial communication.").asInt32();
@@ -130,7 +125,7 @@ bool XsensMT::open(yarp::os::Searchable &config)
 
     m_portInfo = XsPortInfo(comPortString, XsBaud::numericToRate(baudRate));
 
-    yInfo("xsensmt: Opening serial port %s with baud rate %d and output period %4.2f ms.", comPortString.c_str(), baudRate, m_outputPeriod);
+    yInfo("xsensmt: Opening serial port %s with baud rate %d and output period %4.4f seconds.", comPortString.c_str(), baudRate, m_outputPeriod);
     if (!m_xsensDevice.openPort(m_portInfo))
     {
         yError("xsensmt: Could not open serial port.");

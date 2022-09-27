@@ -46,6 +46,7 @@ namespace dev
 * | timeout        | double  |seconds| 0.1           | No        | If the device is not receiving any sensor measure for timeout seconds, it will start reporting an error. | - |
 * | sensor_name    | string  |       | sensor_imu_xsensmt       | No        | Name of the inertial sensor device. | |
 * | frame_name     | string  |       | set same as `sensor_name` | No    | Sensor frame in which the measurements are expressed. |
+* | xsensmt_period     | double  |    seconds   | 0.01  | No    | Period of querying the Xsens MT* device | The frequency of publishing the information is determined by the device that attaches this one |
 **/
 class yarp::dev::XsensMT : public yarp::dev::IGenericSensor,
                            public yarp::dev::IPreciselyTimed,
