@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.1] - 2022-09-28
+
+ Add parameter period to set the output frequency of XSens device  (https://github.com/robotology/yarp-device-xsensmt/pull/34)/
+
 ## [0.2.0] - 2022-05-30
 
 Fixed compatibility with YARP 3.7 (https://github.com/robotology/yarp-device-xsensmt/pull/32).
