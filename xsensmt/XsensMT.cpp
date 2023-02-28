@@ -127,7 +127,7 @@ bool XsensMT::open(yarp::os::Searchable &config)
     m_portInfo = XsPortInfo(comPortString, XsBaud::numericToRate(baudRate));
 
     yInfo("xsensmt: Opening serial port %s with baud rate %d and output period %4.4f seconds.", comPortString.c_str(), baudRate, m_outputPeriod);
-    if (!m_xsensDevice.openPort(m_portInfo))
+    if (!m_xsensCommunicator.openPort(m_portInfo))
     {
         yError("xsensmt: Could not open serial port.");
         return false;
@@ -159,13 +159,13 @@ bool XsensMT::open(yarp::os::Searchable &config)
 
     // Configure the device. Note the differences between MTix and MTmk4
     yInfo("xsensmt: Configuring the device of type %s.", m_portInfo.deviceId().toString().c_str());
-    if (m_portInfo.deviceId().isMti())
+    if (!m_portInfo.deviceId().isMti())
     {
         yError("xsensmt: Device of type %s is not supported by the driver, aborting.", m_portInfo.deviceId().toString().c_str());
         return false;
-     }
-     else if (m_portInfo.deviceId().isMtMk4() || m_portInfo.deviceId().isFmt_X000())
-     {
+    }
+    else if (m_portInfo.deviceId().isMtMk4() || m_portInfo.deviceId().isMtiX00())
+    {
         XsOutputConfiguration euler(XDI_EulerAngles, m_outputFrequency);
         XsOutputConfiguration acc(XDI_Acceleration, m_outputFrequency);
         XsOutputConfiguration gyro(XDI_RateOfTurn, m_outputFrequency);
@@ -208,20 +208,20 @@ bool XsensMT::open(yarp::os::Searchable &config)
            yError("xsensmt: Failing in sending SetOptionFlags message. Aborting.");
            return false;
         }
-     }
-     else
-     {
+    }
+    else
+    {
         yError("xsensmt: Unknown device while configuring. Aborting.");
         return false;
-     }
+    }
 
-     // Put the device in measurement mode
-     yInfo() << "xsensmt: Putting device into measurement mode.";
-     if (!m_xsensDevice->gotoMeasurement())
-     {
+    // Put the device in measurement mode
+    yInfo() << "xsensmt: Putting device into measurement mode.";
+    if (!m_xsensDevice->gotoMeasurement())
+    {
         yError("xsensmt: Could not put device into measurement mode. Aborting.");
         return false;
-     }
+    }
 
     // Initialize the sensor in timeout mode
     m_isSensorMeasurementAvailable = false;
