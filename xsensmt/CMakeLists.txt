@@ -15,9 +15,14 @@ if(ENABLE_xsensmt)
 
   yarp_add_plugin(xsensmt ${PLUGIN_SOURCES} ${PLUGIN_HEADERS})
 
-  target_link_libraries(xsensmt YARP::YARP_OS YARP::YARP_dev YARP::YARP_sig xsens_mt_software_suite)
+  target_link_libraries(xsensmt YARP::YARP_OS YARP::YARP_dev YARP::YARP_sig)
+  target_link_libraries(xsensmt xscontroller xscommon xstypes)
+
   target_include_directories(xsensmt PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} ${YARP_INCLUDE_DIRS})
   target_include_directories(xsensmt PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/extern/include)
+  target_include_directories(xsensmt PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/extern/xspublic/xscommon)
+  target_include_directories(xsensmt PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/extern/xspublic/xscontroller)
+  target_include_directories(xsensmt PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/extern/xspublic/xstypes)
   
   yarp_install(TARGETS xsensmt
          COMPONENT runtime
