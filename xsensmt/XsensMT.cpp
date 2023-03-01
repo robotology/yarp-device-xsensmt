@@ -5,6 +5,7 @@
  */
 
 
+#include <yarp/os/Log.h>
 #include <yarp/os/LogStream.h>
 #include <yarp/os/Thread.h>
 #include <yarp/os/Time.h>
@@ -24,6 +25,7 @@
 #include <xstypes/xsoutputconfiguration.h>
 #include <xstypes/xsoutputconfigurationarray.h>
 
+Journaller* gJournal;
 
 using namespace yarp::os;
 using namespace yarp::dev;
@@ -133,6 +135,7 @@ bool XsensMT::open(yarp::os::Searchable &config)
         return false;
     }
 
+    yDebug() << "[HOSAM] before MtiBaseDevice....";
     m_xsensDevice = new MtiBaseDevice(&m_xsensCommunicator);
 
     yInfo("xsensmt: Putting device into configuration mode.");
