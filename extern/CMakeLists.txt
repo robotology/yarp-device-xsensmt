@@ -8,6 +8,7 @@
 # example directory and copy the xspublic files from the public directory in this directory.
 # Furthermore, you should update the CMake scripts options by inspecting the xspublic's Makefiles
 
+find_package (Threads)
 
 # Globbing should be avoided in general, but this is a library that we use directly as provided by Xsens 
 file(GLOB xstypes_SRCS ${CMAKE_CURRENT_SOURCE_DIR}/xspublic/xstypes/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/xspublic/xstypes/*.c)
@@ -16,6 +17,7 @@ list(FILTER xstypes_SRCS EXCLUDE REGEX "xstypesdynlib")
 add_library(xstypes STATIC ${xstypes_SRCS})
 target_include_directories(xstypes PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/xspublic)
 target_include_directories(xstypes PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/xspublic/xstypes)
+target_link_libraries(xstypes PUBLIC ${CMAKE_THREAD_LIBS_INIT} ${CMAKE_DL_LIBS})
 
 
 file(GLOB xscommon_SRCS ${CMAKE_CURRENT_SOURCE_DIR}/xspublic/xscommon/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/xspublic/xscommon/*.c)
@@ -34,7 +36,6 @@ target_compile_options(xscontroller PRIVATE "SHELL:-include xscontrollerconfig.h
 target_compile_definitions(xscontroller PRIVATE -DHAVE_JOURNALLER)
 target_link_libraries(xscontroller PUBLIC xstypes xscommon)
 
-find_package (Threads)
 
 add_library(xsens_mt_software_suite INTERFACE)
 target_link_libraries(xsens_mt_software_suite INTERFACE xstypes xscommon xscontroller)

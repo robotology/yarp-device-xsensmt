@@ -27,4 +27,9 @@ if(ENABLE_xsensmt)
          
   yarp_install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/xsensmt.ini"  DESTINATION ${YARP_PLUGIN_MANIFESTS_INSTALL_DIR})
 
+  # Install the example file from Xsens
+  add_executable(xsensExample exampleScanDevicesAndReceiveData.cpp)
+  target_link_libraries(xsensExample PUBLIC xstypes xscommon xscontroller)
+  install(TARGETS xsensExample RUNTIME DESTINATION bin)
+
 endif()
