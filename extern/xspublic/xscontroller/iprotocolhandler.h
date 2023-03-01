@@ -1,5 +1,5 @@
 
-//  Copyright (c) 2003-2020 Xsens Technologies B.V. or subsidiaries worldwide.
+//  Copyright (c) 2003-2022 Xsens Technologies B.V. or subsidiaries worldwide.
 //  All rights reserved.
 //  
 //  Redistribution and use in source and binary forms, with or without modification,
@@ -100,6 +100,17 @@ public:
 	virtual void ignoreMaximumMessageSize(bool ignore)
 	{
 		(void) ignore;
+	}
+
+	/*! \brief Enables or disables the protocol handler if supported.
+		A disabled protocol handler ignores and discards all data provided through the \a findMessage function
+		\param enable : If true enables the protcol handler, if false it disables it.
+		\returns true if the protocol handler was correctly enabled or disabled, false if the protocol handler doesn't support this function
+	*/
+	virtual bool setEnable(bool enable)
+	{
+		(void) enable;
+		return false;
 	}
 };
 

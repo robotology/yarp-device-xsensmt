@@ -1,5 +1,5 @@
 
-//  Copyright (c) 2003-2020 Xsens Technologies B.V. or subsidiaries worldwide.
+//  Copyright (c) 2003-2022 Xsens Technologies B.V. or subsidiaries worldwide.
 //  All rights reserved.
 //  
 //  Redistribution and use in source and binary forms, with or without modification,
@@ -56,7 +56,7 @@ FileLoader::~FileLoader()
 
 /*! \brief Constructs new MtbFileCommunicator
 */
-Communicator *MtbFileCommunicator::construct()
+Communicator* MtbFileCommunicator::construct()
 {
 	return new MtbFileCommunicator;
 }
@@ -111,13 +111,13 @@ uint32_t MtbFileCommunicator::timeoutToMaxMessages(uint32_t timeout) const
 	\param timeout The timeout in ms
 	\details This one is nowhere near finished, but it does the trick for simple systems if a reply is available.
 	\returns True if successful
- */
-bool MtbFileCommunicator::doTransaction(const XsMessage &msg, XsMessage &rcv, uint32_t timeout)
+*/
+bool MtbFileCommunicator::doTransaction(const XsMessage& msg, XsMessage& rcv, uint32_t timeout)
 {
 	XsXbusMessageId expected = static_cast<XsXbusMessageId>(msg.getMessageId() + 1);
 	std::deque<XsMessage> messages = readMessagesFromStartOfFile(expected, (int) timeoutToMaxMessages(timeout));
 	rcv.clear();
-	for (const XsMessage &r : messages)
+	for (const XsMessage& r : messages)
 	{
 		if (r.getBusId() != msg.getBusId())
 			continue;
@@ -160,7 +160,7 @@ void MtbFileCommunicator::waitForLastTaskCompletion()
 	completeAllThreadedWork();
 }
 
-/* \brief Closes the log file
+/*  \brief Closes the log file
 */
 void MtbFileCommunicator::closeLogFile()
 {
@@ -312,6 +312,9 @@ public:
 	*/
 	bool exec() override
 	{
+		// short sleep to prevent thread starvation
+		XsTime::msleep(1);
+
 		if (m_thread.m_done)
 			return true;
 
@@ -320,7 +323,9 @@ public:
 			JLDEBUGG("Starting dedicated read thread");
 			m_thread.startThread();
 		}
-		return false;	// reschedule
+
+		// reschedule
+		return false;
 	}
 
 	/*! \brief Destroy this process task. */
@@ -412,7 +417,7 @@ XsResultValue MtbFileCommunicator::readLogFile(XsDevice* device)
 		{
 			res = readSinglePacketFromFile();
 		}
-		catch(...)
+		catch (...)
 		{
 			// Simply ignore the error and continue.
 			continue;
@@ -471,7 +476,7 @@ void MtbFileCommunicator::abortLoadLogFile()
 	\see closeLogFile
 	\returns True if successful
 */
-bool MtbFileCommunicator::openLogFile(const XsString &filename)
+bool MtbFileCommunicator::openLogFile(const XsString& filename)
 {
 	if (m_ioInterfaceFile)
 	{
@@ -480,7 +485,10 @@ bool MtbFileCommunicator::openLogFile(const XsString &filename)
 			return true;
 		return false;
 	}
-	m_ioInterfaceFile = std::shared_ptr<IoInterfaceFile>(new IoInterfaceFile, [](IoInterfaceFile *f) { f->close(); });
+	m_ioInterfaceFile = std::shared_ptr<IoInterfaceFile>(new IoInterfaceFile, [](IoInterfaceFile * f)
+	{
+		f->close();
+	});
 
 	setLastResult(m_ioInterfaceFile->open(filename, false, true));
 	if (lastResult() != XRV_OK)
@@ -586,7 +594,7 @@ XsFilePos MtbFileCommunicator::logFileReadPosition() const
 	if (m_extractedMessages->empty())
 		return pos;
 
-	return pos > 0 ? pos-1 : 0;
+	return pos > 0 ? pos - 1 : 0;
 }
 
 /*! \brief Restart reading from the start of the open log file.
@@ -632,8 +640,7 @@ XsMessage MtbFileCommunicator::readMessage(uint8_t msgId)
 	do
 	{
 		msg = readNextMessage();
-	}
-	while (!msg.empty() && msgId != 0 && msg.getMessageId() != msgId);
+	} while (!msg.empty() && msgId != 0 && msg.getMessageId() != msgId);
 
 	if (msgId == 0 || msg.getMessageId() == msgId)
 		return msg;
@@ -643,14 +650,15 @@ XsMessage MtbFileCommunicator::readMessage(uint8_t msgId)
 }
 
 /*!	\brief Read the next message from the open file.
- *	\returns The message that was read or an empty message if no message was found (end-of-file for example).
- */
+	\returns The message that was read or an empty message if no message was found (end-of-file for example).
+*/
 XsMessage MtbFileCommunicator::readNextMessage()
 {
 	while (m_extractedMessages->empty())
 	{
 		XsByteArray raw;
-		XsResultValue res = m_ioInterfaceFile->readDataBlocks(1, raw); (void)res;
+		XsResultValue res = m_ioInterfaceFile->readDataBlocks(1, raw);
+		(void)res;
 		if (raw.empty())
 		{
 			// end of file really reached
@@ -670,13 +678,13 @@ XsMessage MtbFileCommunicator::readNextMessage()
 */
 bool MtbFileCommunicator::isLoadLogFileInProgress() const
 {
-	return 	ThreadPool::instance()->doesTaskExist(m_loadFileTaskId);
+	return	ThreadPool::instance()->doesTaskExist(m_loadFileTaskId);
 }
 
 /*! \brief Add the protocol handler
-\param handler : The protocol hanlder to add
+    \param handler : The protocol hanlder to add
 */
-void MtbFileCommunicator::addProtocolHandler(IProtocolHandler *handler)
+void MtbFileCommunicator::addProtocolHandler(IProtocolHandler* handler)
 {
 	handler->ignoreMaximumMessageSize(true);
 	Communicator::addProtocolHandler(handler);
@@ -706,7 +714,7 @@ void MtbFileCommunicator::setGotoConfigTimeout(uint32_t timeout)
 	(void)timeout;
 }
 
-bool MtbFileCommunicator::writeMessage(const XsMessage &message)
+bool MtbFileCommunicator::writeMessage(const XsMessage& message)
 {
 	(void)message;
 	return false;
@@ -730,7 +738,7 @@ XsPortInfo MtbFileCommunicator::portInfo() const
 	return XsPortInfo();
 }
 
-bool MtbFileCommunicator::openPort(const XsPortInfo &portInfo, OpenPortStage stage, bool detectRs485)
+bool MtbFileCommunicator::openPort(const XsPortInfo& portInfo, OpenPortStage stage, bool detectRs485)
 {
 	(void)portInfo;
 	(void)stage;
@@ -745,7 +753,7 @@ bool MtbFileCommunicator::reopenPort(OpenPortStage stage, bool skipDeviceIdCheck
 	return false;
 }
 
-bool MtbFileCommunicator::isDockedAt(Communicator *other) const
+bool MtbFileCommunicator::isDockedAt(Communicator* other) const
 {
 	(void)other;
 	return false;

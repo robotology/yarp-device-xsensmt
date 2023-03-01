@@ -1,5 +1,5 @@
 
-//  Copyright (c) 2003-2020 Xsens Technologies B.V. or subsidiaries worldwide.
+//  Copyright (c) 2003-2022 Xsens Technologies B.V. or subsidiaries worldwide.
 //  All rights reserved.
 //  
 //  Redistribution and use in source and binary forms, with or without modification,
@@ -104,26 +104,35 @@ struct XsSimpleVersion
 			return true;
 		else if (m_major > other.m_major)
 			return false;
+
+		if (m_minor < other.m_minor)
+			return true;
+		else if (m_minor > other.m_minor)
+			return false;
+
+		if (m_revision < other.m_revision)
+			return true;
 		else
-		{
-			if (m_minor < other.m_minor)
-				return true;
-			else if (m_minor > other.m_minor)
-				return false;
-			else
-			{
-				if (m_revision < other.m_revision)
-					return true;
-				else
-					return false;
-			}
-		}
+			return false;
 	}
 
 	/*! \brief Test if the \a other version is lower or equal than this. */
 	inline bool operator <= (const XsSimpleVersion& other) const
 	{
-		return (*this == other) || (*this < other);
+		if (m_major < other.m_major)
+			return true;
+		else if (m_major > other.m_major)
+			return false;
+
+		if (m_minor < other.m_minor)
+			return true;
+		else if (m_minor > other.m_minor)
+			return false;
+
+		if (m_revision < other.m_revision)
+			return true;
+		else
+			return m_revision == other.m_revision;
 	}
 
 	/*! \brief Test if the \a other version is higher than this. */
@@ -135,7 +144,7 @@ struct XsSimpleVersion
 	/*! \brief Test if the \a other version is higher or equal than this. */
 	inline bool operator >= (const XsSimpleVersion& other) const
 	{
-		return (*this == other) || (*this > other);
+		return !(*this < other);
 	}
 
 	//! \brief \copybrief XsSimpleVersion_empty
@@ -145,16 +154,31 @@ struct XsSimpleVersion
 	}
 
 	//! \brief Return the \e major part of the version
-	inline int major() const { return (int) m_major; }
+	inline int major() const
+	{
+		return (int) m_major;
+	}
 	//! \brief Return the \e minor part of the version
-	inline int minor() const { return (int) m_minor; }
+	inline int minor() const
+	{
+		return (int) m_minor;
+	}
 	//! \brief Return the \e revision part of the version
-	inline int revision() const { return (int) m_revision; }
+	inline int revision() const
+	{
+		return (int) m_revision;
+	}
 
 	//! \brief \copybrief XsSimpleVersion_osVersion
 	inline static XsSimpleVersion osVersion()
 	{
-		static XsSimpleVersion rv = []() { XsSimpleVersion rv; XsSimpleVersion_osVersion(&rv); return rv; }();
+		static XsSimpleVersion rv = []()
+		{
+			XsSimpleVersion rv;
+			XsSimpleVersion_osVersion(&rv);
+			return rv;
+		}
+		();
 		return rv;
 	}
 

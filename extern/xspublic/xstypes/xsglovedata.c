@@ -1,5 +1,5 @@
 
-//  Copyright (c) 2003-2020 Xsens Technologies B.V. or subsidiaries worldwide.
+//  Copyright (c) 2003-2022 Xsens Technologies B.V. or subsidiaries worldwide.
 //  All rights reserved.
 //  
 //  Redistribution and use in source and binary forms, with or without modification,
@@ -107,7 +107,7 @@ void XsFingerData_construct(struct XsFingerData* thisPtr)
 }
 
 /*! \relates XsFingerData
-\brief Destruct an %XsFingerData object
+    \brief Destruct an %XsFingerData object
 */
 void XsFingerData_destruct(struct XsFingerData* thisPtr)
 {

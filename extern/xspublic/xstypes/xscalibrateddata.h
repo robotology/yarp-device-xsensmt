@@ -1,5 +1,5 @@
 
-//  Copyright (c) 2003-2020 Xsens Technologies B.V. or subsidiaries worldwide.
+//  Copyright (c) 2003-2022 Xsens Technologies B.V. or subsidiaries worldwide.
 //  All rights reserved.
 //  
 //  Redistribution and use in source and binary forms, with or without modification,
@@ -61,7 +61,11 @@ struct XsCalibratedData
 #ifdef __cplusplus
 	//! \brief Constructor \sa XsCalibratedData_construct
 	inline XsCalibratedData()
-	{}
+		: m_acc(0, 0, 0)
+		, m_gyr(0, 0, 0)
+		, m_mag(0, 0, 0)
+	{
+	}
 
 	//! \brief Copy constructor, copies the values from \a other to this
 	inline XsCalibratedData(const XsCalibratedData& other)

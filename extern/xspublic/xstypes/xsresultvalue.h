@@ -1,5 +1,5 @@
 
-//  Copyright (c) 2003-2020 Xsens Technologies B.V. or subsidiaries worldwide.
+//  Copyright (c) 2003-2022 Xsens Technologies B.V. or subsidiaries worldwide.
 //  All rights reserved.
 //  
 //  Redistribution and use in source and binary forms, with or without modification,
@@ -47,7 +47,8 @@ extern "C" {
 	\details These values are used to signal success or specific failures of functions
 	\sa XsResultValue_toString
 */
-enum XsResultValue {
+enum XsResultValue
+{
 	// general OK
 	XRV_OK						= 0,	//!< 0: Operation was performed successfully
 
@@ -87,6 +88,7 @@ enum XsResultValue {
 	XRV_ACCESSDENIED			= 51,	//!< 51: Request for control of the device was denied
 	XRV_FILEERROR				= 52,	//!< 52: Failure reading, writing, opening or closing a file
 	XRV_OUTPUTCONFIGERROR		= 53,	//!< 53: Erroneous output configuration, device can not go to measurement
+	XRV_FILE_SYSTEM_CORRUPT		= 54,	//!< 54: The internal file system of the device has become corrupt
 
 	// CMT / XDA / XME / etc
 	XRV_ERROR					= 256,	//!< 256: A generic error occurred
@@ -167,11 +169,14 @@ enum XsResultValue {
 	XRV_PERFORMANCE_OK			= 323,	//!< 323: The system running the application has recovered from a previously reported XRV_PERFORMANCE_WARNING.
 
 	// notifications
-	XRV_SHUTTINGDOWN			= 400,	//!< 400: The device is shutting down
+	XRV_SHUTTINGDOWN		= 400,	//!< 400: The device is shutting down
 	XRV_GNSSCONFIGURATIONERROR	= 401,	//!< 401: A configuration item was refused by the GNSS module
-	XRV_GNSSCOMMTIMEOUT			= 402,	//!< 402: The communication with the GNSS module timed out
-	XRV_GNSSERROR				= 403,	//!< 403: Communication between the device and the GNSS module failed
-	XRV_DEVICE_NOT_CALIBRATED	= 404	//!< 404: The EMTS of the device does not contain calibration data
+	XRV_GNSSCOMMTIMEOUT		= 402,	//!< 402: The communication with the GNSS module timed out
+	XRV_GNSSERROR			= 403,	//!< 403: Communication between the device and the GNSS module failed
+	XRV_DEVICE_NOT_CALIBRATED	= 404,	//!< 404: The EMTS of the device does not contain calibration data
+	XRV_GNSSCONNECTIONLOST 		= 405,	//!< 405: Connection lost with the GNSS module
+	XRV_GNSSLOWINPUTRATE		= 406,	//!< 406: GNSS input rate is too low
+	XRV_GNSSINCOMPLETEDATASET	= 407	//!< 407: Incomplete dataset for the GNSS module
 };
 /*! @} */
 typedef enum XsResultValue XsResultValue;
@@ -193,7 +198,7 @@ typedef enum XsDeviceErrorType XsDeviceErrorType;
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
-/* \brief Retrieve a string corresponding to the given result code.
+/*! \brief Retrieve a string corresponding to the given result code.
 
 	This function uses the XsResultText list to return a string with the relevant result
 	code in a textual format. If the supplied result code is invalid the

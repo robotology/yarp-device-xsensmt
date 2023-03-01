@@ -1,5 +1,5 @@
 
-//  Copyright (c) 2003-2020 Xsens Technologies B.V. or subsidiaries worldwide.
+//  Copyright (c) 2003-2022 Xsens Technologies B.V. or subsidiaries worldwide.
 //  All rights reserved.
 //  
 //  Redistribution and use in source and binary forms, with or without modification,
@@ -59,7 +59,7 @@ public:
 	//! \brief A typedef for a const iterator
 	typedef container_type::const_iterator const_iterator;
 
-	explicit ProtocolManager(Communicator const &);
+	explicit ProtocolManager(Communicator const&);
 	virtual ~ProtocolManager() throw();
 
 	int likelyMinimumMessageSize() const;
@@ -68,19 +68,20 @@ public:
 	const_iterator end() const;
 	MessageLocation findMessage(XsProtocolType& type, const XsByteArray& raw) override;
 	XsMessage convertToMessage(XsProtocolType& type, MessageLocation& location, const XsByteArray& raw) override;
-	bool validateMessage(XsMessage const & message) const override;
+	bool validateMessage(XsMessage const& message) const override;
 
 	/*! \brief Adds the protocol handler
 		\param[in] handler The protocol handler to add
 		\returns The value type
 	*/
-	virtual value_type add(IProtocolHandler *handler);
+	virtual value_type add(IProtocolHandler* handler);
+	virtual value_type find(XsProtocolType type);
 	virtual bool remove(XsProtocolType type);
 	virtual bool hasProtocol(XsProtocolType type) const;
 	virtual void clear();
 
 private:
-	Communicator const & m_communicator;
+	Communicator const& m_communicator;
 
 	// mutable because the order of elements is optimized during findMessage to speedup future searches
 	// but the findMessage method is conceptually const

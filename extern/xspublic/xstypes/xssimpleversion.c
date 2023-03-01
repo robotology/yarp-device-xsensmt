@@ -1,5 +1,5 @@
 
-//  Copyright (c) 2003-2020 Xsens Technologies B.V. or subsidiaries worldwide.
+//  Copyright (c) 2003-2022 Xsens Technologies B.V. or subsidiaries worldwide.
 //  All rights reserved.
 //  
 //  Redistribution and use in source and binary forms, with or without modification,
@@ -33,14 +33,14 @@
 #include "xssimpleversion.h"
 
 #ifdef _WIN32
-#include <Windows.h>
+	#include <Windows.h>
 #else
-#ifdef __GNUC__
-#include <sys/utsname.h>
-#endif
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
+	#ifdef __GNUC__
+		#include <sys/utsname.h>
+	#endif
+	#include <stdlib.h>
+	#include <stdio.h>
+	#include <string.h>
 #endif
 
 /*! \class XsSimpleVersion
@@ -91,7 +91,7 @@ void XsSimpleVersion_osVersion(XsSimpleVersion* thisPtr)
 	if (!fetched)
 	{
 #ifdef _WIN32
-		NTSTATUS(WINAPI *RtlGetVersion)(LPOSVERSIONINFOEXW);
+		NTSTATUS(WINAPI * RtlGetVersion)(LPOSVERSIONINFOEXW);
 		OSVERSIONINFOEXW osInfo;
 		*(FARPROC*)&RtlGetVersion = GetProcAddress(GetModuleHandleA("ntdll"), "RtlGetVersion");
 		if (RtlGetVersion)

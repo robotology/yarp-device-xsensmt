@@ -1,9 +1,9 @@
-# Copyright (C) 2017-2020 Fondazione Istituto Italiano di Tecnologia
+# Copyright (C) 2017-2023 Fondazione Istituto Italiano di Tecnologia
 # Authors: Silvio Traversaro <silvio.traversaro@iit.it>
 # CopyPolicy: Released under the terms of the LGPLv2.1 or later, see LICENSE
 
 # The code contained in this directory is imported directly from the src_cpp example 
-# in the MT Software Suite, version 2020.0.2, available from https://www.xsens.com/mt-software-suite/
+# in the MT Software Suite, version 2022.0.0, available from https://www.xsens.com/mt-software-suite/
 # If you want to update the code to a new version of the MT Software Suite, run make in the mtsdk
 # example directory and copy the xspublic files from the public directory in this directory.
 # Furthermore, you should update the CMake scripts options by inspecting the xspublic's Makefiles

@@ -1,5 +1,5 @@
 
-//  Copyright (c) 2003-2020 Xsens Technologies B.V. or subsidiaries worldwide.
+//  Copyright (c) 2003-2022 Xsens Technologies B.V. or subsidiaries worldwide.
 //  All rights reserved.
 //  
 //  Redistribution and use in source and binary forms, with or without modification,
@@ -42,7 +42,8 @@
 
 /*! \brief Exception class for Xsens public libraries. Inherits from std::exception
 */
-class XsException : public std::exception {
+class XsException : public std::exception
+{
 public:
 	//! \brief Copy constructor
 	XsException(XsException const& e)
@@ -58,26 +59,12 @@ public:
 		\param err The error code that the exception should report
 		\param description A description of the error. The constructor prefixes this with a textual
 							description of the error code unless prefix is false.
-		\param prefix Whether to prefix the description with a textual description of the error code or not (default is yes)
 	*/
-	XsException(XsResultValue err, XsString const& description, bool prefix = true)
+	XsException(XsResultValue err, XsString const& description)
 		: std::exception()
 		, m_code(err)
 		, m_description(description)
 	{
-		if (prefix && (m_code != XRV_OK))
-		{
-			char codeString[16];
-			sprintf(codeString, "%d: ", (int) m_code);
-			XsString rv(codeString);
-			rv << XsResultValue_toString(m_code);
-			if (!m_description.empty())
-			{
-				rv << ". ";
-				rv.append(m_description);
-			}
-			m_description.swap(rv);
-		}
 	}
 
 	/*! \brief Initializing constructor
@@ -129,7 +116,19 @@ private:
 	XsString m_description;	//!< The supplied description, possibly prefixed with a description of the error code
 };
 
+#include <ostream>
+inline static std::ostream& operator<< (std::ostream& os, const XsException& ex)
+{
+	if (ex.code() == XRV_OK)
+		os << "XRV_OK";
+	else
+		os << "XRV " << ex.code();
+	if (ex.code() != XRV_OK && !ex.text().empty())
+		os << ": " << ex.text();
+	return os;
+}
+
 #endif
 
 #endif
-#endif // __cplusplus guard
+#endif

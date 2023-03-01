@@ -1,5 +1,5 @@
 
-//  Copyright (c) 2003-2020 Xsens Technologies B.V. or subsidiaries worldwide.
+//  Copyright (c) 2003-2022 Xsens Technologies B.V. or subsidiaries worldwide.
 //  All rights reserved.
 //  
 //  Redistribution and use in source and binary forms, with or without modification,
@@ -38,7 +38,8 @@
 */
 /*! \brief Legacy orientation output mode selection
 */
-enum XsOrientationMode {
+enum XsOrientationMode
+{
 	OM_None,
 	OM_Euler,
 	OM_Quaternion,

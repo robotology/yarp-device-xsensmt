@@ -1,5 +1,5 @@
 
-//  Copyright (c) 2003-2020 Xsens Technologies B.V. or subsidiaries worldwide.
+//  Copyright (c) 2003-2022 Xsens Technologies B.V. or subsidiaries worldwide.
 //  All rights reserved.
 //  
 //  Redistribution and use in source and binary forms, with or without modification,
@@ -36,13 +36,14 @@
 
 
 /*!	\class DataParser
-	\brief A class for the data parsing on a separete thread
+	\brief A class for the data parsing on a separate thread
 */
 
 /*! \brief Default constructor
 */
 DataParser::DataParser()
 {
+	JLDEBUGG("Starting DataParser " << this);
 	startThread();
 }
 
@@ -50,9 +51,10 @@ DataParser::~DataParser()
 {
 	try
 	{
+		JLDEBUGG("Stopping DataParser " << this);
 		terminate();
 	}
-	catch(...)
+	catch (...)
 	{
 	}
 }
@@ -60,7 +62,7 @@ DataParser::~DataParser()
 /*! \brief Adds the raw data to an array
 	\param arr The reference to a byte array to which the data will be added
 */
-void DataParser::addRawData(const XsByteArray &arr)
+void DataParser::addRawData(const XsByteArray& arr)
 {
 	xsens::Lock locky(&m_incomingMutex);
 	m_incoming.push(arr);
@@ -74,7 +76,7 @@ int32_t DataParser::innerFunction()
 {
 	// wait for new data
 	if (!m_newDataEvent.wait())
-		return 0;
+		return 1;	// no new data available (so we are keeping up easily), give other threads a little more breathing room
 
 	// get new data
 	XsByteArray raw;
@@ -109,8 +111,7 @@ int32_t DataParser::innerFunction()
 		lockIncoming.lock();
 	}
 	m_newDataEvent.reset();
-
-	return 1;
+	return 0;	// we handled all our data, but more can be waiting
 }
 
 /*! \brief Initializes the thread

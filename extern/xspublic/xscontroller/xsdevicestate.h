@@ -1,5 +1,5 @@
 
-//  Copyright (c) 2003-2020 Xsens Technologies B.V. or subsidiaries worldwide.
+//  Copyright (c) 2003-2022 Xsens Technologies B.V. or subsidiaries worldwide.
 //  All rights reserved.
 //  
 //  Redistribution and use in source and binary forms, with or without modification,
@@ -42,7 +42,8 @@
 
 //AUTO namespace xscontroller {
 /*! \brief XsDevice state identifiers */
-enum XsDeviceState {
+enum XsDeviceState
+{
 	XDS_Initial,					/*!< Initial unknown state */
 	XDS_Config,						/*!< Configuration mode. */
 	XDS_Measurement,				/*!< Measurement mode, devices are transmitting data. */
@@ -60,7 +61,7 @@ extern "C" {
 #endif
 
 /*! \brief Convert the device state to a human readable string */
-const char *XsDeviceState_toString(XsDeviceState s);
+XDA_DLL_API const char* XsDeviceState_toString(XsDeviceState s);
 
 #ifdef __cplusplus
 } // extern "C"
@@ -75,4 +76,4 @@ std::basic_ostream<_CharT, _Traits>& operator<<(std::basic_ostream<_CharT, _Trai
 
 #endif //__cplusplus
 
-#endif	// file guard
+#endif

@@ -1,5 +1,5 @@
 
-//  Copyright (c) 2003-2020 Xsens Technologies B.V. or subsidiaries worldwide.
+//  Copyright (c) 2003-2022 Xsens Technologies B.V. or subsidiaries worldwide.
 //  All rights reserved.
 //  
 //  Redistribution and use in source and binary forms, with or without modification,
@@ -43,6 +43,11 @@ struct XsQuaternion;
 #ifdef __cplusplus
 #include <vector>
 #include <algorithm>
+#if __cplusplus >= 201103L && !defined(XSENS_HAVE_TYPE_TRAITS)
+#include <type_traits>
+#define XSENS_HAVE_TYPE_TRAITS
+#endif
+
 extern "C" {
 #endif
 #ifndef __cplusplus
@@ -71,17 +76,26 @@ XSTYPES_DLL_API int XsVector_compare(const XsVector* thisPtr, const XsVector* th
 } // extern "C"
 #endif
 #ifndef XSENS_NO_PACK
-#pragma pack(push,1)
+	#pragma pack(push,1)
 #endif
-struct XsVector {
-XSCPPPROTECTED
+struct XsVector
+{
+	XSCPPPROTECTED
 	XsReal* const m_data;		//!< \protected Points to contained data buffer
 	const XsSize m_size;		//!< \protected Size of contained data buffer in elements
 	const XsSize m_flags;			//!< \protected Flags for data management
 
 #ifdef __cplusplus
-								//! \brief Return the data management flags of the vector.
-	inline XsSize flags() const { return m_flags; }
+
+#ifdef __ICCARM__
+#pragma diag_suppress=Pa039
+#endif
+
+	//! \brief Return the data management flags of the vector.
+	inline XsSize flags() const
+	{
+		return m_flags;
+	}
 public:
 	//! \brief Initialize a vector, empty or using the data in the supplied \a sz and \a src
 	inline explicit XsVector(XsSize sz = 0, const XsReal* src = 0)
@@ -128,7 +142,7 @@ public:
 		XsVector_angularVelocityFromQuaternion(this, deltaT, &quat);
 	}
 
-#if !defined(SWIG) && !defined(__ADSP21000__)
+#if !defined(SWIG) && !defined(__ADSP21000__) && !defined(__AVR32__)
 	//! \brief Move-construct a vector using the supplied \a other vector
 	inline XsVector(XsVector&& other)
 		: m_data(0)
@@ -226,6 +240,29 @@ public:
 		m_data[index] = val;
 	}
 
+#ifndef SWIG
+	//! \brief Returns the \a index'th item in the vector
+	template<typename J>
+	inline XsReal operator[](J index) const
+	{
+#ifdef XSENS_HAVE_TYPE_TRAITS
+		static_assert(std::is_integral<J>::value || std::is_enum<J>::value, "Integral index required.");
+#endif
+		assert(static_cast<XsSize>(index) < m_size);
+		return m_data[index];
+	}
+
+	//! \brief Returns a reference the \a index'th item in the vector
+	template<typename J>
+	inline XsReal& operator[](J index)
+	{
+#ifdef XSENS_HAVE_TYPE_TRAITS
+		static_assert(std::is_integral<J>::value || std::is_enum<J>::value, "Integral index required.");
+#endif
+		assert(static_cast<XsSize>(index) < m_size);
+		return m_data[index];
+	}
+#else
 	//! \brief Returns the \a index'th item in the vector
 	inline XsReal operator[](XsSize index) const
 	{
@@ -239,9 +276,10 @@ public:
 		assert(index < m_size);
 		return m_data[index];
 	}
+#endif
 
 	//! \brief \copybrief XsVector_dotProduct
-	inline XsReal dotProduct(const XsVector &v) const
+	inline XsReal dotProduct(const XsVector& v) const
 	{
 		return XsVector_dotProduct(this, &v);
 	}
@@ -325,8 +363,8 @@ public:
 		\param other the vector to compare with
 		\param epsilon the maximum difference between individual values
 		\returns true if the vectors are equal within \a epsilon
-	 */
-	bool isEqual(const XsVector &other, XsReal epsilon) const
+	*/
+	bool isEqual(const XsVector& other, XsReal epsilon) const
 	{
 		return 0 != XsVector_compare(this, &other, epsilon);
 	}
@@ -365,9 +403,9 @@ public:
 	{
 		XsVector_swap(this, &b);
 	}
-	
+
 	/*! \brief swap the contents of \a first and \a second */
-	friend void swap(XsVector& first, XsVector& second) 
+	friend void swap(XsVector& first, XsVector& second)
 	{
 		first.swap(second);
 	}
@@ -382,7 +420,7 @@ public:
 		for (XsSize i = 0; i < size(); ++i)
 			tmp[i] = (*this)[i];
 		for (XsSize i = 0; i < other.size(); ++i)
-			tmp[i+size()] = other[i];
+			tmp[i + size()] = other[i];
 		swap(tmp);
 	}
 
@@ -402,20 +440,25 @@ public:
 		XsSize half = sz >> 1;
 		--sz;
 		for (XsSize i = 0; i < half; ++i)
-			swap(operator[](i), operator[](sz-i));
+			swap(operator[](i), operator[](sz - i));
 	}
 #endif
+
+#ifdef __ICCARM__
+#pragma diag_default=Pa039
+#endif
+
 #endif
 };
 #ifndef XSENS_NO_PACK
-#pragma pack(pop)
+	#pragma pack(pop)
 #endif
 
 #ifdef __cplusplus
 //! \brief Multiplies all values in the vector \a v by \a scalar
-inline XsVector operator *(XsReal scalar, const XsVector &v)
+inline XsVector operator *(XsReal scalar, const XsVector& v)
 {
-	return v*scalar;
+	return v * scalar;
 }
 #endif
 

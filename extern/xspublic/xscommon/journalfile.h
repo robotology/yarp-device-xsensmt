@@ -1,5 +1,5 @@
 
-//  Copyright (c) 2003-2020 Xsens Technologies B.V. or subsidiaries worldwide.
+//  Copyright (c) 2003-2022 Xsens Technologies B.V. or subsidiaries worldwide.
 //  All rights reserved.
 //  
 //  Redistribution and use in source and binary forms, with or without modification,
@@ -38,7 +38,8 @@
 #include <xstypes/xsfile.h>
 #include <atomic>
 
-class JournalFile {
+class JournalFile
+{
 public:
 	JournalFile(const XsString& name, bool purge);
 	~JournalFile();
@@ -52,7 +53,10 @@ public:
 	XsString filename() const;
 	JournalFile& operator<<(std::string const& msg);
 	/*! \brief Return the internal XsFile object, only to be used directly when absolutely necessary */
-	XsFile& xsFile() { return m_file; }
+	XsFile& xsFile()
+	{
+		return m_file;
+	}
 
 private:
 	volatile std::atomic_int m_refCount;

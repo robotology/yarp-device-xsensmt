@@ -1,5 +1,5 @@
 
-//  Copyright (c) 2003-2020 Xsens Technologies B.V. or subsidiaries worldwide.
+//  Copyright (c) 2003-2022 Xsens Technologies B.V. or subsidiaries worldwide.
 //  All rights reserved.
 //  
 //  Redistribution and use in source and binary forms, with or without modification,
@@ -35,7 +35,8 @@
 
 /*! \brief Stores the location of a message in a buffer using a start position and a size
 */
-class MessageLocation {
+class MessageLocation
+{
 public:
 	int m_startPos;	//!< The offset of the first byte of the message or -1 if no message
 	int m_size;		//!< The size of the message, when less than 0 it indicates the expected message size

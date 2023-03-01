@@ -1,5 +1,5 @@
 
-//  Copyright (c) 2003-2020 Xsens Technologies B.V. or subsidiaries worldwide.
+//  Copyright (c) 2003-2022 Xsens Technologies B.V. or subsidiaries worldwide.
 //  All rights reserved.
 //  
 //  Redistribution and use in source and binary forms, with or without modification,
@@ -39,7 +39,8 @@
 /*! \class AbstractAdditionalLogger
 	Interface for all additional loggers that can be attached to the Journaller
 */
-class AbstractAdditionalLogger {
+class AbstractAdditionalLogger
+{
 public:
 	/*! \brief Destructor */
 	virtual ~AbstractAdditionalLogger() {}
@@ -74,7 +75,7 @@ public:
 		\param[in] function The name of the function from which the logging originates
 		\param[in] msg The actual log message
 	*/
-	virtual void log(JournalLogLevel level, char const * file, int line, char const * function, std::string const & msg) = 0;
+	virtual void log(JournalLogLevel level, char const* file, int line, char const* function, std::string const& msg) = 0;
 
 	/*! \brief Write line to the log without decoration (timestamp, thread)
 		\param[in] level The log level
@@ -83,7 +84,7 @@ public:
 		\param[in] function The name of the function from which the logging originates
 		\param[in] msg The actual log message
 	*/
-	virtual void logNoDecoration(JournalLogLevel level, char const * file, int line, char const * function, std::string const & msg) = 0;
+	virtual void logNoDecoration(JournalLogLevel level, char const* file, int line, char const* function, std::string const& msg) = 0;
 };
 
 #endif

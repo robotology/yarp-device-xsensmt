@@ -1,5 +1,5 @@
 
-//  Copyright (c) 2003-2020 Xsens Technologies B.V. or subsidiaries worldwide.
+//  Copyright (c) 2003-2022 Xsens Technologies B.V. or subsidiaries worldwide.
 //  All rights reserved.
 //  
 //  Redistribution and use in source and binary forms, with or without modification,
@@ -35,11 +35,12 @@
 #include "serialportcommunicator.h"
 #include "usbcommunicator.h"
 
-namespace CommunicatorType {
-	static const CommunicatorFactory::CommunicatorTypeId UNKNOWN    = 0;
-	static const CommunicatorFactory::CommunicatorTypeId MTBFILE    = 1;
-	static const CommunicatorFactory::CommunicatorTypeId USB        = 2;
-	static const CommunicatorFactory::CommunicatorTypeId SERIALPORT = 3;
+namespace CommunicatorType
+{
+static const CommunicatorFactory::CommunicatorTypeId UNKNOWN    = 0;
+static const CommunicatorFactory::CommunicatorTypeId MTBFILE    = 1;
+static const CommunicatorFactory::CommunicatorTypeId USB        = 2;
+static const CommunicatorFactory::CommunicatorTypeId SERIALPORT = 3;
 }
 
 /*! \class XdaCommunicatorFactory
@@ -52,18 +53,18 @@ XdaCommunicatorFactory::XdaCommunicatorFactory()
 }
 
 /*! \copydoc CommunicatorFactory::filenameToCommunicatorId */
-XdaCommunicatorFactory::CommunicatorTypeId XdaCommunicatorFactory::filenameToCommunicatorId(const XsString &) const
+XdaCommunicatorFactory::CommunicatorTypeId XdaCommunicatorFactory::filenameToCommunicatorId(const XsString&) const
 {
-	/* Everything is expected to be an mtb file for now.
-	   It is very wel possible that we're going to have to check for
-	   other weird stuff as well, such as COM1 or /dev/ttyUSB0,
-	   which would state a case for just a string-based approach.
+	/*  Everything is expected to be an mtb file for now.
+	    It is very wel possible that we're going to have to check for
+	    other weird stuff as well, such as COM1 or /dev/ttyUSB0,
+	    which would state a case for just a string-based approach.
 	*/
 	return CommunicatorType::MTBFILE;
 }
 
 /*! \copydoc CommunicatorFactory::portInfoToCommunicatorId */
-XdaCommunicatorFactory::CommunicatorTypeId XdaCommunicatorFactory::portInfoToCommunicatorId(const XsPortInfo &portInfo) const
+XdaCommunicatorFactory::CommunicatorTypeId XdaCommunicatorFactory::portInfoToCommunicatorId(const XsPortInfo& portInfo) const
 {
 	for (auto it = constructors().begin(); it != constructors().end(); ++it)
 		if (it->second.second && it->second.second(portInfo))
@@ -72,22 +73,23 @@ XdaCommunicatorFactory::CommunicatorTypeId XdaCommunicatorFactory::portInfoToCom
 	return CommunicatorType::UNKNOWN;
 }
 
-namespace {
-	/*! \returns True if a \a portInfo is USB port
-		\param portInfo The port info to check
-	*/
-	bool isUsb(const XsPortInfo &portInfo)
-	{
-		return portInfo.isUsb();
-	}
+namespace
+{
+/*! \returns True if a \a portInfo is USB port
+	\param portInfo The port info to check
+*/
+bool isUsb(const XsPortInfo& portInfo)
+{
+	return portInfo.isUsb();
+}
 
-	/*! \returns True if a \a portInfo is a serial port
-		\param portInfo The port info to check
-	*/
-	bool isSerialPort(const XsPortInfo &portInfo)
-	{
-		return !portInfo.isUsb() && !portInfo.isNetwork();
-	}
+/*! \returns True if a \a portInfo is a serial port
+	\param portInfo The port info to check
+*/
+bool isSerialPort(const XsPortInfo& portInfo)
+{
+	return !portInfo.isUsb() && !portInfo.isNetwork() && !portInfo.isBluetooth();
+}
 }
 
 /*! \brief Register the communicator types */

@@ -1,5 +1,5 @@
 
-//  Copyright (c) 2003-2020 Xsens Technologies B.V. or subsidiaries worldwide.
+//  Copyright (c) 2003-2022 Xsens Technologies B.V. or subsidiaries worldwide.
 //  All rights reserved.
 //  
 //  Redistribution and use in source and binary forms, with or without modification,
@@ -68,6 +68,9 @@ public:
 
 	bool setGnssLeverArm(const XsVector& arm) override;
 	XsVector gnssLeverArm() const override;
+
+	XsUbloxGnssPlatform ubloxGnssPlatform() const override;
+	bool setUbloxGnssPlatform(XsUbloxGnssPlatform ubloxGnssPlatform) override;
 
 protected:
 	uint8_t syncLine(const XsSyncSetting& setting) const override;

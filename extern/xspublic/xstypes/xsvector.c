@@ -1,5 +1,5 @@
 
-//  Copyright (c) 2003-2020 Xsens Technologies B.V. or subsidiaries worldwide.
+//  Copyright (c) 2003-2022 Xsens Technologies B.V. or subsidiaries worldwide.
 //  All rights reserved.
 //  
 //  Redistribution and use in source and binary forms, with or without modification,
@@ -43,6 +43,10 @@
 
 #define realSwap(a,b) { XsReal t = *a; *a = *b; *b = t; }
 
+#ifdef __ICCARM__
+	#pragma diag_suppress=Pa039
+#endif
+
 /*! \class XsVector
 	\brief A class that represents a vector of real numbers
 */
@@ -54,7 +58,7 @@
 //! \relates XsVector \brief Initialize the %XsVector to refer to the supplied buffer
 void XsVector_ref(XsVector* thisPtr, XsSize sz, XsReal* buffer, XsDataFlags flags)
 {
-	assert(sz==0 || buffer != 0);
+	assert(sz == 0 || buffer != 0);
 	*((XsReal**) &thisPtr->m_data) = buffer;
 	*((XsSize*) &thisPtr->m_size) = sz;
 	*((XsSize*) &thisPtr->m_flags) = flags;
@@ -66,7 +70,7 @@ void XsVector_construct(XsVector* thisPtr, XsSize sz, const XsReal* src)
 	if (sz)
 	{
 		// init to size
-		XsReal* data = (XsReal*) xsMathMalloc(sz*sizeof(XsReal));
+		XsReal* data = (XsReal*) xsMathMalloc(sz * sizeof(XsReal));
 		assert(data);
 		*((XsReal**) &thisPtr->m_data) = data;
 		XsVector_incAllocCount();
@@ -76,7 +80,7 @@ void XsVector_construct(XsVector* thisPtr, XsSize sz, const XsReal* src)
 	*((XsSize*) &thisPtr->m_flags) = XSDF_Managed;
 	*((XsSize*) &thisPtr->m_size) = sz;
 	if (src && sz)
-		memcpy(thisPtr->m_data, src, sz*sizeof(XsReal));
+		memcpy(thisPtr->m_data, src, sz * sizeof(XsReal));
 }
 
 /*! \relates XsVector
@@ -86,7 +90,7 @@ void XsVector_construct(XsVector* thisPtr, XsSize sz, const XsReal* src)
 */
 void XsVector_assign(XsVector* thisPtr, XsSize sz, const XsReal* src)
 {
-	if (thisPtr->m_flags == XSDF_FixedSize)
+	if (thisPtr->m_flags & XSDF_FixedSize)
 	{
 		if (sz == 0)
 		{
@@ -103,7 +107,7 @@ void XsVector_assign(XsVector* thisPtr, XsSize sz, const XsReal* src)
 		if (sz)
 		{
 			// init to size
-			XsReal* data = (XsReal*) xsMathMalloc(sz*sizeof(XsReal));
+			XsReal* data = (XsReal*) xsMathMalloc(sz * sizeof(XsReal));
 			assert(data);
 			*((XsReal**) &thisPtr->m_data) = data;
 			*((XsSize*) &thisPtr->m_flags) = XSDF_Managed;
@@ -112,7 +116,7 @@ void XsVector_assign(XsVector* thisPtr, XsSize sz, const XsReal* src)
 	}
 	*((XsSize*) &thisPtr->m_size) = sz;
 	if (src && sz)
-		memcpy(thisPtr->m_data, src, sz*sizeof(XsReal));
+		memcpy(thisPtr->m_data, src, sz * sizeof(XsReal));
 }
 
 //! \relates XsVector \brief Release and clear the contents of the vector
@@ -156,8 +160,8 @@ XsReal XsVector_dotProduct(const XsVector* a, const XsVector* b)
 	XsReal r = XsMath_zero;
 	assert(a->m_size == b->m_size);
 
-	for (i = a->m_size; i--; )
-		r += a->m_data[i]*b->m_data[i];
+	for (i = a->m_size; i--;)
+		r += a->m_data[i] * b->m_data[i];
 	return r;
 }
 
@@ -238,7 +242,7 @@ void XsVector_angularVelocityFromQuaternion(XsVector* thisPtr, XsReal deltaT, co
 
 	XsVector_assign(thisPtr, 3, &quat->m_data[1]);
 	a = XsVector_cartesianLength(thisPtr);
-	XsVector_multiplyScalar(thisPtr, (a > XsMath_tinyValue) ? (XsMath_two*asin(a)/(a*deltaT)) : (XsMath_two/deltaT), thisPtr);
+	XsVector_multiplyScalar(thisPtr, (a > XsMath_tinyValue) ? (XsMath_two * asin(a) / (a * deltaT)) : (XsMath_two / deltaT), thisPtr);
 }
 
 /*! \relates XsVector \brief Swap the contents of \a a and \a b
@@ -250,7 +254,7 @@ void XsVector_angularVelocityFromQuaternion(XsVector* thisPtr, XsReal deltaT, co
 void XsVector_swap(XsVector* a, XsVector* b)
 {
 #ifdef __ICCARM__
-	#pragma diag_suppress=Pe370
+#pragma diag_suppress=Pe370
 #endif
 	XSLISTSWAP3(XsReal, XsVector, realSwap)
 }
@@ -269,9 +273,11 @@ int XsVector_equal(const struct XsVector* a, const struct XsVector* b)
 		return 0;
 	if (XsVector_empty(a) && XsVector_empty(b))
 		return 1;
+	if (XsVector_empty(a) || XsVector_empty(b))
+		return 0;
 	if (a->m_size != b->m_size)
 		return 0;
-	return memcmp(a->m_data, b->m_data, a->m_size*sizeof(XsReal)) == 0;	//lint !e2499 memcmp is a perfect comparison here
+	return memcmp(a->m_data, b->m_data, a->m_size * sizeof(XsReal)) == 0;	//lint !e2499 memcmp is a perfect comparison here
 }
 
 /*! \relates XsVector
@@ -291,6 +297,8 @@ int XsVector_compare(const struct XsVector* thisPtr, const struct XsVector* that
 		return 0;
 	if (XsVector_empty(thisPtr) && XsVector_empty(thatPtr))
 		return 1;
+	if (XsVector_empty(thisPtr) || XsVector_empty(thatPtr))
+		return 0;
 	if (thisPtr->m_size != thatPtr->m_size)
 		return 0;
 

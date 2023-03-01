@@ -1,5 +1,5 @@
 
-//  Copyright (c) 2003-2020 Xsens Technologies B.V. or subsidiaries worldwide.
+//  Copyright (c) 2003-2022 Xsens Technologies B.V. or subsidiaries worldwide.
 //  All rights reserved.
 //  
 //  Redistribution and use in source and binary forms, with or without modification,
@@ -68,7 +68,8 @@ static int compareUint8(uint8_t const* a, uint8_t const* b)
 }
 
 //! \brief Descriptor for XsByteArray
-XsArrayDescriptor const g_xsByteArrayDescriptor = {
+XsArrayDescriptor const g_xsByteArrayDescriptor =
+{
 	sizeof(uint8_t),
 	XSEXPCASTITEMSWAP swapUint8,	// swap
 	0,								// construct

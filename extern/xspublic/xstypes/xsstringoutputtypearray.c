@@ -1,5 +1,5 @@
 
-//  Copyright (c) 2003-2020 Xsens Technologies B.V. or subsidiaries worldwide.
+//  Copyright (c) 2003-2022 Xsens Technologies B.V. or subsidiaries worldwide.
 //  All rights reserved.
 //  
 //  Redistribution and use in source and binary forms, with or without modification,
@@ -70,7 +70,8 @@ int compareStringOutputType(XsStringOutputType const* a, XsStringOutputType cons
 }
 
 //! \brief Descriptor for XsStringOutputTypeArray
-XsArrayDescriptor const g_xsStringOutputTypeArrayDescriptor = {
+XsArrayDescriptor const g_xsStringOutputTypeArrayDescriptor =
+{
 	sizeof(XsStringOutputType),
 	XSEXPCASTITEMSWAP swapStringOutputType,			// swap
 	0,												// construct

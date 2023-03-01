@@ -1,5 +1,5 @@
 
-//  Copyright (c) 2003-2020 Xsens Technologies B.V. or subsidiaries worldwide.
+//  Copyright (c) 2003-2022 Xsens Technologies B.V. or subsidiaries worldwide.
 //  All rights reserved.
 //  
 //  Redistribution and use in source and binary forms, with or without modification,
@@ -35,8 +35,9 @@
 
 #include "xsdevice_def.h"
 
-namespace xsens {
-	class XSNOEXPORT SettingsFile;
+namespace xsens
+{
+class XSNOEXPORT SettingsFile;
 }
 
 /*!	\class XsDeviceEx
@@ -52,7 +53,7 @@ protected:
 	explicit XsDeviceEx(XsDeviceId const& id) : XsDevice(id) {}
 
 	//! Construct a device using a device id \a childDeviceId for master \a masterDevice
-	explicit XsDeviceEx(XsDevice *master, const XsDeviceId &childDeviceId) : XsDevice(master, childDeviceId) {}
+	explicit XsDeviceEx(XsDevice* master, const XsDeviceId& childDeviceId) : XsDevice(master, childDeviceId) {}
 
 	//! Destroy the device
 	virtual ~XsDeviceEx() {}

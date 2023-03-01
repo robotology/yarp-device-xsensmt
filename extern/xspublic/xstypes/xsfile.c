@@ -1,5 +1,5 @@
 
-//  Copyright (c) 2003-2020 Xsens Technologies B.V. or subsidiaries worldwide.
+//  Copyright (c) 2003-2022 Xsens Technologies B.V. or subsidiaries worldwide.
 //  All rights reserved.
 //  
 //  Redistribution and use in source and binary forms, with or without modification,
@@ -34,18 +34,18 @@
 #include "xsstring.h"
 #include <errno.h>
 #ifndef _WIN32
-#	include <unistd.h>		// close
-#	include <sys/ioctl.h>	// ioctl
-#	include <fcntl.h>		// open, O_RDWR
-#	include <string.h>		// strcpy
-#	include <sys/param.h>
-#	include <sys/stat.h>
-#	include <stdarg.h>
-#	include <stdlib.h>
+	#include <unistd.h>		// close
+	#include <sys/ioctl.h>	// ioctl
+	#include <fcntl.h>		// open, O_RDWR
+	#include <string.h>		// strcpy
+	#include <sys/param.h>
+	#include <sys/stat.h>
+	#include <stdarg.h>
+	#include <stdlib.h>
 #else
-#	include <winbase.h>
-#	include <sys/stat.h>
-#	include <io.h>
+	#include <winbase.h>
+	#include <sys/stat.h>
+	#include <io.h>
 #endif
 
 // helper
@@ -65,9 +65,7 @@ static FILE* openFile(const struct XsString* filename, const struct XsString* mo
 void XsFile_destruct(struct XsFile* thisPtr)
 {
 	if (thisPtr->m_handle != NULL)
-	{
 		(void)XsFile_close(thisPtr);
-	}
 }
 
 /*!	\relates XsFile
@@ -76,7 +74,7 @@ void XsFile_destruct(struct XsFile* thisPtr)
 	\param writeOnly passing 0 will create the file using "w+b", any other value will create it using "wb"
 	\returns XRV_OK if the file was opened, an error otherwise
 */
-XsResultValue XsFile_create(struct XsFile *thisPtr, const struct XsString* filename, int writeOnly)
+XsResultValue XsFile_create(struct XsFile* thisPtr, const struct XsString* filename, int writeOnly)
 {
 	XsString mode;
 	XsString_construct(&mode);
@@ -118,7 +116,7 @@ XsResultValue XsFile_create(struct XsFile *thisPtr, const struct XsString* filen
 	\param writeOnly passing 0 will create the file using "w+t", any other value will create it using "wt"
 	\returns XRV_OK if the file was opened, an error otherwise
 */
-XsResultValue XsFile_createText(struct XsFile *thisPtr, const struct XsString* filename, int writeOnly)
+XsResultValue XsFile_createText(struct XsFile* thisPtr, const struct XsString* filename, int writeOnly)
 {
 	XsString mode;
 	XsString_construct(&mode);
@@ -151,7 +149,7 @@ XsResultValue XsFile_createText(struct XsFile *thisPtr, const struct XsString* f
 	\param readOnly passing 0 will open the file "r+b" (read/update), any other value will create it using "rb" (read)
 	\returns XRV_OK if the file was opened, an error otherwise
 */
-XsResultValue XsFile_open(struct XsFile *thisPtr, const struct XsString* filename, int readOnly)
+XsResultValue XsFile_open(struct XsFile* thisPtr, const struct XsString* filename, int readOnly)
 {
 	XsString mode;
 	XsString_construct(&mode);
@@ -168,7 +166,12 @@ XsResultValue XsFile_open(struct XsFile *thisPtr, const struct XsString* filenam
 
 	XsString_destruct(&mode);
 	if (thisPtr->m_handle == NULL)
-		return XRV_OUTPUTCANNOTBEOPENED;
+	{
+		if (readOnly)
+			return XRV_INPUTCANNOTBEOPENED;
+		else
+			return XRV_OUTPUTCANNOTBEOPENED;
+	}
 	else
 		return XRV_OK;
 }
@@ -179,7 +182,7 @@ XsResultValue XsFile_open(struct XsFile *thisPtr, const struct XsString* filenam
 	\param readOnly passing 0 will open the file "r+t" (read/update), any other value will create it using "rt" (read)
 	\returns XRV_OK if the file was opened, an error otherwise
 */
-XsResultValue XsFile_openText(struct XsFile *thisPtr, const struct XsString* filename, int readOnly)
+XsResultValue XsFile_openText(struct XsFile* thisPtr, const struct XsString* filename, int readOnly)
 {
 	XsString mode;
 	XsString_construct(&mode);
@@ -219,7 +222,7 @@ static FILE* openFile(const struct XsString* filename, const struct XsString* mo
 	{
 		return _wfopen(filenameW, modeW);
 	}
-	__except(EXCEPTION_EXECUTE_HANDLER)
+	__except (EXCEPTION_EXECUTE_HANDLER)
 	{
 		return NULL;
 	}
@@ -234,7 +237,7 @@ static FILE* openFile(const struct XsString* filename, const struct XsString* mo
 	\param mode Mode to reopen the file with
 	\returns 0 if a file is open, another value otherwise
 */
-XsResultValue XsFile_reopen(struct XsFile *thisPtr, const struct XsString* filename, const struct XsString* mode)
+XsResultValue XsFile_reopen(struct XsFile* thisPtr, const struct XsString* filename, const struct XsString* mode)
 {
 #ifdef _WIN32
 	wchar_t filenameW[XS_MAX_FILENAME_LENGTH];
@@ -258,7 +261,7 @@ XsResultValue XsFile_reopen(struct XsFile *thisPtr, const struct XsString* filen
 	\brief Checks if a file is open
 	\returns 0 if a file is open, another value otherwise
 */
-int XsFile_isOpen(const struct XsFile *thisPtr)
+int XsFile_isOpen(const struct XsFile* thisPtr)
 {
 	return (thisPtr->m_handle != NULL) ? 0 : 1;
 }
@@ -285,7 +288,7 @@ int XsFile_exists(const struct XsString* filename)
 	\brief Closes the file
 	\returns XRV_OK if the file was closed properly, XRV_ENDOFFILE otherwise
 */
-XsResultValue XsFile_close(struct XsFile *thisPtr)
+XsResultValue XsFile_close(struct XsFile* thisPtr)
 {
 	int rv;
 
@@ -310,7 +313,7 @@ XsResultValue XsFile_close(struct XsFile *thisPtr)
 	\returns XRV_OK if the flushing was successful, an XRV_ERROR otherwise
 
 */
-XsResultValue XsFile_flush(struct XsFile *thisPtr)
+XsResultValue XsFile_flush(struct XsFile* thisPtr)
 {
 	return fflush(thisPtr->m_handle) ? XRV_ERROR : XRV_OK;
 }
@@ -320,7 +323,7 @@ XsResultValue XsFile_flush(struct XsFile *thisPtr)
 	\param fileSize The new size for the file
 	\returns XRV_OK if the file was truncated, an error otherwise
 */
-XsResultValue XsFile_truncate(struct XsFile *thisPtr, XsFilePos fileSize)
+XsResultValue XsFile_truncate(struct XsFile* thisPtr, XsFilePos fileSize)
 {
 	return XsFile_resize(thisPtr, fileSize);
 }
@@ -330,7 +333,7 @@ XsResultValue XsFile_truncate(struct XsFile *thisPtr, XsFilePos fileSize)
 	\param fileSize The new size for the file
 	\returns XRV_OK if the file was resized, an error otherwise
 */
-XsResultValue XsFile_resize(struct XsFile *thisPtr, XsFilePos fileSize)
+XsResultValue XsFile_resize(struct XsFile* thisPtr, XsFilePos fileSize)
 {
 #ifdef _WIN32
 	int rv = _chsize_s(_fileno(thisPtr->m_handle), fileSize);
@@ -339,18 +342,18 @@ XsResultValue XsFile_resize(struct XsFile *thisPtr, XsFilePos fileSize)
 #endif
 	if (rv != 0)
 	{
-		switch(errno)
+		switch (errno)
 		{
-		case EACCES:
-			return XRV_BUSY;
-		case EBADF:
-			return XRV_ACCESSDENIED;
-		case ENOSPC:
-			return XRV_OUTOFMEMORY;
-		case EINVAL:
-			return XRV_INVALIDPARAM;
-		default:
-			return XRV_ERROR;
+			case EACCES:
+				return XRV_BUSY;
+			case EBADF:
+				return XRV_ACCESSDENIED;
+			case ENOSPC:
+				return XRV_OUTOFMEMORY;
+			case EINVAL:
+				return XRV_INVALIDPARAM;
+			default:
+				return XRV_ERROR;
 		}
 	}
 	else
@@ -374,12 +377,12 @@ XsResultValue XsFile_erase(const struct XsString* filename)
 	{
 		switch (errno)
 		{
-		case EACCES:
-			return XRV_READONLY;
-		case ENOENT:
-			return XRV_NOTFOUND;
-		default:
-			return XRV_ERROR;
+			case EACCES:
+				return XRV_READONLY;
+			case ENOENT:
+				return XRV_NOTFOUND;
+			default:
+				return XRV_ERROR;
 		}
 	}
 	else
@@ -393,7 +396,7 @@ XsResultValue XsFile_erase(const struct XsString* filename)
 	\param count Number of elements to read
 	\returns Total number of elements successfully read
 */
-XsFilePos XsFile_read(struct XsFile *thisPtr, void *destination, XsFilePos size, XsFilePos count)
+XsFilePos XsFile_read(struct XsFile* thisPtr, void* destination, XsFilePos size, XsFilePos count)
 {
 	return (XsFilePos) fread(destination, (size_t) size, (size_t) count, thisPtr->m_handle);
 }
@@ -405,7 +408,7 @@ XsFilePos XsFile_read(struct XsFile *thisPtr, void *destination, XsFilePos size,
 	\param count Number of elements to write
 	\returns Total number of elements successfully written
 */
-XsFilePos XsFile_write(struct XsFile *thisPtr, const void *source, XsFilePos size, XsFilePos count)
+XsFilePos XsFile_write(struct XsFile* thisPtr, const void* source, XsFilePos size, XsFilePos count)
 {
 	return (XsFilePos) fwrite(source, (size_t) size, (size_t) count, thisPtr->m_handle);
 }
@@ -414,7 +417,7 @@ XsFilePos XsFile_write(struct XsFile *thisPtr, const void *source, XsFilePos siz
 	\brief Gets and returns the next byte from a file
 	\returns The byte read from the stream or -1 in case of failure
 */
-int XsFile_getc(struct XsFile *thisPtr)
+int XsFile_getc(struct XsFile* thisPtr)
 {
 	return fgetc(thisPtr->m_handle);
 }
@@ -424,7 +427,7 @@ int XsFile_getc(struct XsFile *thisPtr)
 	\param character The caharacter to write
 	\returns XRV_OK on success, XRV_ERROR otehrwise
 */
-XsResultValue XsFile_putc(struct XsFile *thisPtr, int character)
+XsResultValue XsFile_putc(struct XsFile* thisPtr, int character)
 {
 	return fputc(character, thisPtr->m_handle) == EOF ? XRV_ERROR : XRV_OK;
 }
@@ -435,7 +438,7 @@ XsResultValue XsFile_putc(struct XsFile *thisPtr, int character)
 	\param num The size of the destination buffer
 	\returns A pointer to the read string on success, NULL on failure
 */
-char* XsFile_gets(struct XsFile *thisPtr, char *str, int num)
+char* XsFile_gets(struct XsFile* thisPtr, char* str, int num)
 {
 	return fgets(str, num, thisPtr->m_handle);
 }
@@ -445,7 +448,7 @@ char* XsFile_gets(struct XsFile *thisPtr, char *str, int num)
 	\param str The null terminated c-string to write
 	\returns XRV_OK on success, XRV_ERROR otehrwise
 */
-XsResultValue XsFile_puts(struct XsFile *thisPtr, const char *str)
+XsResultValue XsFile_puts(struct XsFile* thisPtr, const char* str)
 {
 	return fputs(str, thisPtr->m_handle) != EOF ? XRV_OK : XRV_ERROR;
 }
@@ -455,7 +458,7 @@ XsResultValue XsFile_puts(struct XsFile *thisPtr, const char *str)
 	\param offset Position in the file to move to, relative to the start of the file
 	\returns XRV_OK if the seek was successful
 */
-XsResultValue XsFile_seek(struct XsFile *thisPtr, XsFilePos offset)
+XsResultValue XsFile_seek(struct XsFile* thisPtr, XsFilePos offset)
 {
 #ifdef _WIN32
 	return _fseeki64(thisPtr->m_handle, offset, SEEK_SET) ? XRV_ERROR : XRV_OK;
@@ -469,7 +472,7 @@ XsResultValue XsFile_seek(struct XsFile *thisPtr, XsFilePos offset)
 	\param offset Position in the file to move to, relative to the end of the file
 	\returns XRV_OK if the seek was successful
 */
-XsResultValue XsFile_seek_r(struct XsFile *thisPtr, XsFilePos offset)
+XsResultValue XsFile_seek_r(struct XsFile* thisPtr, XsFilePos offset)
 {
 #ifdef _WIN32
 	return _fseeki64(thisPtr->m_handle, offset, SEEK_END) ? XRV_ERROR : XRV_OK;
@@ -517,9 +520,7 @@ XsResultValue XsFile_fullPath(const struct XsString* filename, struct XsString* 
 {
 	XsResultValue result = XRV_OK;
 	if (fullPath == NULL)
-	{
 		result = XRV_NULLPTR;
-	}
 	else
 	{
 #ifdef _WIN32
@@ -535,7 +536,7 @@ XsResultValue XsFile_fullPath(const struct XsString* filename, struct XsString* 
 		// based on the assumption that this doesn't concern the serial port, handle
 		// it the same way using realpath(). Apparently realpath() doesn't require a
 		// maximum length. One would possibly want to write a wrapper for it.
-		char fullpath[XS_MAX_FILENAME_LENGTH*2];
+		char fullpath[XS_MAX_FILENAME_LENGTH * 2];
 		if (realpath(filename->m_data, fullpath) == NULL)
 			result = XRV_ERROR;
 		else
@@ -550,7 +551,7 @@ XsResultValue XsFile_fullPath(const struct XsString* filename, struct XsString* 
 	\param line The result of the read
 	\returns XRV_OK if a line could be read
 */
-XsResultValue XsFile_getline(struct XsFile *thisPtr, struct XsString *line)
+XsResultValue XsFile_getline(struct XsFile* thisPtr, struct XsString* line)
 {
 	int b;
 	XsResultValue ok = XRV_ENDOFFILE;
@@ -575,7 +576,7 @@ XsResultValue XsFile_getline(struct XsFile *thisPtr, struct XsString *line)
 /*! \relates XsFile
 	\returns The file handle
 */
-FILE* XsFile_handle(struct XsFile *thisPtr)
+FILE* XsFile_handle(struct XsFile* thisPtr)
 {
 	return thisPtr->m_handle;
 }

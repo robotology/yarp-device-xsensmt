@@ -1,5 +1,5 @@
 
-//  Copyright (c) 2003-2020 Xsens Technologies B.V. or subsidiaries worldwide.
+//  Copyright (c) 2003-2022 Xsens Technologies B.V. or subsidiaries worldwide.
 //  All rights reserved.
 //  
 //  Redistribution and use in source and binary forms, with or without modification,
@@ -36,5 +36,5 @@
 //*! \brief Scale the battery level to a percentage */
 int xsScaleBatteryLevel(int batteryLevel)
 {
-	return (int) std::min<double>(batteryLevel/2.0, 100.0);
+	return (int) std::min<double>(batteryLevel / 2.0, 100.0);
 }

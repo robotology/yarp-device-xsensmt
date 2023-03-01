@@ -1,5 +1,5 @@
 
-//  Copyright (c) 2003-2020 Xsens Technologies B.V. or subsidiaries worldwide.
+//  Copyright (c) 2003-2022 Xsens Technologies B.V. or subsidiaries worldwide.
 //  All rights reserved.
 //  
 //  Redistribution and use in source and binary forms, with or without modification,
@@ -90,8 +90,8 @@ void XsQuaternion_inverse(const XsQuaternion* thisPtr, XsQuaternion* dest)
 */
 XsReal XsQuaternion_normalized(const XsQuaternion* thisPtr, XsQuaternion* dest)
 {
-	XsReal divisor, length = sqrt(thisPtr->m_w*thisPtr->m_w + thisPtr->m_x*thisPtr->m_x + thisPtr->m_y*thisPtr->m_y + thisPtr->m_z*thisPtr->m_z);
-	divisor = XsMath_one/length;
+	XsReal divisor, length = sqrt(thisPtr->m_w * thisPtr->m_w + thisPtr->m_x * thisPtr->m_x + thisPtr->m_y * thisPtr->m_y + thisPtr->m_z * thisPtr->m_z);
+	divisor = XsMath_one / length;
 	if (thisPtr->m_w < 0)
 		divisor = -divisor;
 
@@ -146,13 +146,13 @@ void XsQuaternion_fromRotationMatrix(XsQuaternion* thisPtr, const XsMatrix* ori)
 	XsReal trace;	// Trace of matrix
 	XsReal s;
 
-	if (!XsMatrix_dimensionsMatch(ori, 3,3))
+	if (!XsMatrix_dimensionsMatch(ori, 3, 3))
 	{
 		XsQuaternion_destruct(thisPtr);
 		return;
 	}
 
-//	XsQuaternion result;
+	//	XsQuaternion result;
 
 	// Calculate trace of matrix
 	// T = 4 - 4x^2 - 4y^2 - 4z^2
@@ -167,12 +167,12 @@ void XsQuaternion_fromRotationMatrix(XsQuaternion* thisPtr, const XsMatrix* ori)
 	// Test if (T > 0.0000001) to avoid large distortions!
 	// If the trace of the matrix is equal to zero, then identify
 	// which major diagonal element has the greatest value
-	if (trace*trace >= XsMath_tinyValue)
+	if (trace * trace >= XsMath_tinyValue)
 	{
 		s = XsMath_two * sqrt(trace);
 		thisPtr->m_w = XsMath_pt25 * s;
 
-		s = XsMath_one/s;
+		s = XsMath_one / s;
 		thisPtr->m_x = (XsMatrix_value(ori, 1, 2) - XsMatrix_value(ori, 2, 1)) * s;
 		thisPtr->m_y = (XsMatrix_value(ori, 2, 0) - XsMatrix_value(ori, 0, 2)) * s;
 		thisPtr->m_z = (XsMatrix_value(ori, 0, 1) - XsMatrix_value(ori, 1, 0)) * s;
@@ -183,7 +183,7 @@ void XsQuaternion_fromRotationMatrix(XsQuaternion* thisPtr, const XsMatrix* ori)
 		s = XsMath_two * sqrt(trace);
 		thisPtr->m_x = XsMath_pt25 * s;
 
-		s = XsMath_one/s;
+		s = XsMath_one / s;
 		thisPtr->m_w = (XsMatrix_value(ori, 1, 2) - XsMatrix_value(ori, 2, 1)) * s;
 		thisPtr->m_y = (XsMatrix_value(ori, 0, 1) + XsMatrix_value(ori, 1, 0)) * s;
 		thisPtr->m_z = (XsMatrix_value(ori, 2, 0) + XsMatrix_value(ori, 0, 2)) * s;
@@ -194,7 +194,7 @@ void XsQuaternion_fromRotationMatrix(XsQuaternion* thisPtr, const XsMatrix* ori)
 		s = XsMath_two * sqrt(trace);
 		thisPtr->m_y = XsMath_pt25 * s;
 
-		s = XsMath_one/s;
+		s = XsMath_one / s;
 		thisPtr->m_w = (XsMatrix_value(ori, 2, 0) - XsMatrix_value(ori, 0, 2)) * s;
 		thisPtr->m_x = (XsMatrix_value(ori, 0, 1) + XsMatrix_value(ori, 1, 0)) * s;
 		thisPtr->m_z = (XsMatrix_value(ori, 1, 2) + XsMatrix_value(ori, 2, 1)) * s;
@@ -205,7 +205,7 @@ void XsQuaternion_fromRotationMatrix(XsQuaternion* thisPtr, const XsMatrix* ori)
 		s = XsMath_two * sqrt(trace);
 		thisPtr->m_z = XsMath_pt25 * s;
 
-		s = XsMath_one/s;
+		s = XsMath_one / s;
 		thisPtr->m_w = (XsMatrix_value(ori, 0, 1) - XsMatrix_value(ori, 1, 0)) * s;
 		thisPtr->m_x = (XsMatrix_value(ori, 2, 0) + XsMatrix_value(ori, 0, 2)) * s;
 		thisPtr->m_y = (XsMatrix_value(ori, 1, 2) + XsMatrix_value(ori, 2, 1)) * s;
@@ -271,7 +271,7 @@ int XsQuaternion_equal(XsQuaternion const* a, XsQuaternion const* b)
 	return (a->m_w == b->m_w &&
 			a->m_x == b->m_x &&
 			a->m_y == b->m_y &&
-			a->m_z == b->m_z);
+			a->m_z == b->m_z) ? 1 : 0;
 }
 
 /*! \brief Checks whether \a a and \a b are equal with tolerance \a tolerance
@@ -286,23 +286,23 @@ static int fuzzyIsEqual(double a, double b, double tolerance)
 }
 
 /*! \relates XsQuaternion
-	\brief Returns non-zero if the values at \a thisPtr and \a other are within \a tolerance of each other
+	\brief Returns zero if the values at \a thisPtr and \a other are within \a tolerance of each other
 */
 int XsQuaternion_compare(XsQuaternion const* thisPtr, XsQuaternion const* other, XsReal tolerance)
 {
 	if (thisPtr == other)
-		return 1;
+		return 0;
 
 	if (fuzzyIsEqual(thisPtr->m_data[0], other->m_data[0], tolerance) &&
 		fuzzyIsEqual(thisPtr->m_data[1], other->m_data[1], tolerance) &&
 		fuzzyIsEqual(thisPtr->m_data[2], other->m_data[2], tolerance) &&
 		fuzzyIsEqual(thisPtr->m_data[3], other->m_data[3], tolerance))
-		return 1;
+		return 0;
 	// add extra check for q == -q (negative-definite vs positive-definite comparison)
 	return (fuzzyIsEqual(thisPtr->m_data[0], -other->m_data[0], tolerance) &&
 			fuzzyIsEqual(thisPtr->m_data[1], -other->m_data[1], tolerance) &&
 			fuzzyIsEqual(thisPtr->m_data[2], -other->m_data[2], tolerance) &&
-			fuzzyIsEqual(thisPtr->m_data[3], -other->m_data[3], tolerance));
+			fuzzyIsEqual(thisPtr->m_data[3], -other->m_data[3], tolerance)) ? 0 : 1;
 }
 
 /*! \relates XsQuaternion

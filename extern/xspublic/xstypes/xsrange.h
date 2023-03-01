@@ -1,5 +1,5 @@
 
-//  Copyright (c) 2003-2020 Xsens Technologies B.V. or subsidiaries worldwide.
+//  Copyright (c) 2003-2022 Xsens Technologies B.V. or subsidiaries worldwide.
 //  All rights reserved.
 //  
 //  Redistribution and use in source and binary forms, with or without modification,
@@ -54,7 +54,8 @@ XSTYPES_DLL_API int XsRange_empty(const struct XsRange* thisPtr);
 } // extern "C"
 #endif
 
-struct XsRange {
+struct XsRange
+{
 #ifdef __cplusplus
 	//! \brief Constructs a range starting at \a f and ending at \a l. Default values are 0 and -1 respectively.
 	inline explicit XsRange(int f = 0, int l = -1)
@@ -143,6 +144,7 @@ typedef struct XsRange XsRange;
 #if defined(__cplusplus) && !defined(XSENS_NO_STL)
 #include <ostream>
 
+/*! \brief Stream output operator for XsRange */
 template<typename _CharT, typename _Traits>
 std::basic_ostream<_CharT, _Traits>& operator<<(std::basic_ostream<_CharT, _Traits>& o, XsRange const& xs)
 {

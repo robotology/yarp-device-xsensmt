@@ -1,5 +1,5 @@
 
-//  Copyright (c) 2003-2020 Xsens Technologies B.V. or subsidiaries worldwide.
+//  Copyright (c) 2003-2022 Xsens Technologies B.V. or subsidiaries worldwide.
 //  All rights reserved.
 //  
 //  Redistribution and use in source and binary forms, with or without modification,
@@ -34,12 +34,12 @@
 #include <xstypes/xsdid.h>
 
 /*! \class SerialPortCommunicator
-\brief A class that uses serial port to communicate
+    \brief A class that uses serial port to communicate
 */
 
 /*! \brief Constructs new SerialPortCommunicator
 */
-Communicator *SerialPortCommunicator::construct()
+Communicator* SerialPortCommunicator::construct()
 {
 	return new SerialPortCommunicator;
 }
@@ -58,14 +58,14 @@ SerialPortCommunicator::~SerialPortCommunicator()
 	\param pi The port to use
 	\returns The shared pointer to a stream interface
 */
-std::shared_ptr<StreamInterface> SerialPortCommunicator::createStreamInterface(const XsPortInfo &pi)
+std::shared_ptr<StreamInterface> SerialPortCommunicator::createStreamInterface(const XsPortInfo& pi)
 {
 	assert(!pi.isUsb() && !pi.isNetwork());
 	std::shared_ptr<StreamInterface> stream(new SerialInterface());
 
 	SerialInterface::PortOptions options = SerialInterface::PO_XsensDefaults;
 	if (pi.deviceId() == XS_DID_ABMCLOCKMASTER)
-		options = SerialInterface::PO_RtsCtsFlowControl|SerialInterface::PO_OneStopBit;
+		options = SerialInterface::PO_RtsCtsFlowControl | SerialInterface::PO_OneStopBit;
 	setLastResult(stream->open(pi, 65536, 65536, options));
 
 	return stream;

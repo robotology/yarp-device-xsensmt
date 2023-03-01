@@ -1,5 +1,5 @@
 
-//  Copyright (c) 2003-2020 Xsens Technologies B.V. or subsidiaries worldwide.
+//  Copyright (c) 2003-2022 Xsens Technologies B.V. or subsidiaries worldwide.
 //  All rights reserved.
 //  
 //  Redistribution and use in source and binary forms, with or without modification,
@@ -36,13 +36,13 @@
 #ifdef __GNUC__
 #if __cplusplus < 201402L
 /*
- * RMO: keep this code until we update our GCC to a version which supports C++14
- */
+    RMO: keep this code until we update our GCC to a version which supports C++14
+*/
 #include <memory>
 namespace std
 {
 template<typename T, typename... Args>
-std::unique_ptr<T> make_unique(Args&&... args)
+std::unique_ptr<T> make_unique(Args&& ... args)
 {
 	return std::unique_ptr<T>(new T(std::forward<Args>(args)...));
 }

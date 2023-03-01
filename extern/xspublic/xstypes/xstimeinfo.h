@@ -1,5 +1,5 @@
 
-//  Copyright (c) 2003-2020 Xsens Technologies B.V. or subsidiaries worldwide.
+//  Copyright (c) 2003-2022 Xsens Technologies B.V. or subsidiaries worldwide.
 //  All rights reserved.
 //  
 //  Redistribution and use in source and binary forms, with or without modification,
@@ -37,6 +37,7 @@
 #include "pstdint.h"
 
 #ifdef __cplusplus
+#include <memory>
 extern "C" {
 #endif
 #define XSTIMEINFO_INITIALIZER	{ 0, 0 ,0, 0, 0, 0, 0, 0, 0}
@@ -94,14 +95,14 @@ struct XsTimeInfo
 	inline bool operator == (const XsTimeInfo& other) const
 	{
 		return	m_nano		== other.m_nano &&
-				m_year		== other.m_year &&
-				m_month		== other.m_month &&
-				m_day		== other.m_day &&
-				m_hour		== other.m_hour &&
-				m_minute	== other.m_minute &&
-				m_second	== other.m_second &&
-				m_valid		== other.m_valid &&
-				m_utcOffset	== other.m_utcOffset;
+			m_year		== other.m_year &&
+			m_month		== other.m_month &&
+			m_day		== other.m_day &&
+			m_hour		== other.m_hour &&
+			m_minute	== other.m_minute &&
+			m_second	== other.m_second &&
+			m_valid		== other.m_valid &&
+			m_utcOffset	== other.m_utcOffset;
 	}
 
 	/*! \brief Removes the local time information, making the object pure UTC */

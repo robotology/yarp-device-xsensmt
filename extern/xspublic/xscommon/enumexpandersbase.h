@@ -1,5 +1,5 @@
 
-//  Copyright (c) 2003-2020 Xsens Technologies B.V. or subsidiaries worldwide.
+//  Copyright (c) 2003-2022 Xsens Technologies B.V. or subsidiaries worldwide.
 //  All rights reserved.
 //  
 //  Redistribution and use in source and binary forms, with or without modification,
@@ -36,8 +36,10 @@
 #include "journaller.h"
 #include <xstypes/xsresultvalue.h>
 #include <xstypes/xsxbusmessageid.h>
+#include <xstypes/xsoption.h>
 
 JLENUMEXPPROTO(XsResultValue);
 JLENUMEXPPROTO(XsXbusMessageId);
+JLENUMEXPPROTO(XsOption);
 
 #endif

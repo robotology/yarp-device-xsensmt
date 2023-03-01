@@ -1,5 +1,5 @@
 
-//  Copyright (c) 2003-2020 Xsens Technologies B.V. or subsidiaries worldwide.
+//  Copyright (c) 2003-2022 Xsens Technologies B.V. or subsidiaries worldwide.
 //  All rights reserved.
 //  
 //  Redistribution and use in source and binary forms, with or without modification,
@@ -71,7 +71,7 @@ static inline uint16_t vidFromString(std::string const& string)
 			return 0;
 		return static_cast<uint16_t>(std::stoi(t1, nullptr, 16));
 	}
-	catch (std::invalid_argument &)
+	catch (std::invalid_argument&)
 	{
 		return 0;
 	}
@@ -89,7 +89,7 @@ static inline uint16_t pidFromString(std::string const& string)
 			return 0;
 		return static_cast<uint16_t>(std::stoi(t1, nullptr, 16));
 	}
-	catch (std::invalid_argument &)
+	catch (std::invalid_argument&)
 	{
 		return 0;
 	}

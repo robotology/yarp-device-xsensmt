@@ -1,5 +1,5 @@
 
-//  Copyright (c) 2003-2020 Xsens Technologies B.V. or subsidiaries worldwide.
+//  Copyright (c) 2003-2022 Xsens Technologies B.V. or subsidiaries worldwide.
 //  All rights reserved.
 //  
 //  Redistribution and use in source and binary forms, with or without modification,
@@ -66,4 +66,5 @@ static void forceEnumExpanderInclusion()
 	JLWRITEG("blah" << XDS_Initial << blah);
 	JLWRITEG("blah" << XOP_Unknown << blah);
 	JLWRITEG("blah" << XCS_File << blah);
+	(void)blah;
 }

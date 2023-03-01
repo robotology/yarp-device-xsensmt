@@ -1,5 +1,5 @@
 
-//  Copyright (c) 2003-2020 Xsens Technologies B.V. or subsidiaries worldwide.
+//  Copyright (c) 2003-2022 Xsens Technologies B.V. or subsidiaries worldwide.
 //  All rights reserved.
 //  
 //  Redistribution and use in source and binary forms, with or without modification,
@@ -39,7 +39,8 @@
 //AUTO namespace xscontroller {
 /*! \brief Alignment frame.
 */
-enum XsAlignmentFrame {
+enum XsAlignmentFrame
+{
 	XAF_Sensor,	//!< Sensor alignment frame
 	XAF_Local //!< Local alignment frame
 };
@@ -48,4 +49,4 @@ typedef enum XsAlignmentFrame XsAlignmentFrame;
 
 //AUTO }
 
-#endif // file guard
+#endif

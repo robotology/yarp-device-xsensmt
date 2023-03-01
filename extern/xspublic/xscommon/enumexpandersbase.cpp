@@ -1,5 +1,5 @@
 
-//  Copyright (c) 2003-2020 Xsens Technologies B.V. or subsidiaries worldwide.
+//  Copyright (c) 2003-2022 Xsens Technologies B.V. or subsidiaries worldwide.
 //  All rights reserved.
 //  
 //  Redistribution and use in source and binary forms, with or without modification,
@@ -32,7 +32,7 @@
 
 #include "enumexpandersbase.h"
 
-extern Journaller* gJournal;
+extern Journaller* gJournal;	//lint !e752
 
 JLENUMEXPANDER(XsResultValue,
 	JLENUMCASE(XRV_OK) //!< 0: Operation was performed successfully
@@ -57,15 +57,15 @@ JLENUMEXPANDER(XsResultValue,
 	JLENUMCASE(XRV_BAUDRATEINVALID) //!< 32: Baud rate does not comply with valid range
 	JLENUMCASE(XRV_INVALIDPARAM) //!< 33: An invalid parameter is supplied
 	JLENUMCASE(XRV_MEASUREMENTFAIL7) //!< 35: TX PC Buffer is full
-	JLENUMCASE(XRV_MEASUREMENTFAIL8) //!< 36: TX PC Buffer overflowJLENUMCASE( cannot fit full message
+	JLENUMCASE(XRV_MEASUREMENTFAIL8) //!< 36: TX PC Buffer overflow, cannot fit full message
 	JLENUMCASE(XRV_WIRELESSFAIL) //!< 37: Wireless subsystem failed
-	JLENUMCASE(XRV_DEVICEERROR) //!< 40: The device generated an errorJLENUMCASE( try updating the firmware
+	JLENUMCASE(XRV_DEVICEERROR) //!< 40: The device generated an error, try updating the firmware
 	JLENUMCASE(XRV_DATAOVERFLOW) //!< 41: The device generates more data than the bus communication can handle (baud rate may be too low)
 	JLENUMCASE(XRV_BUFFEROVERFLOW) //!< 42: The sample buffer of the device was full during a communication outage
 	JLENUMCASE(XRV_EXTTRIGGERERROR) //!< 43: The external trigger is not behaving as configured
 	JLENUMCASE(XRV_SAMPLESTREAMERROR) //!< 44: The sample stream detected an error in the ordering of sample data
 	JLENUMCASE(XRV_POWER_DIP) //!< 45: A dip in the power supply was detected and recovered from
-	JLENUMCASE(XRV_POWER_OVERCURRENT) //!< 46: A current limiter has been activatedJLENUMCASE( shutting down the device
+	JLENUMCASE(XRV_POWER_OVERCURRENT) //!< 46: A current limiter has been activated, shutting down the device
 	JLENUMCASE(XRV_OVERHEATING) //!< 47: Device temperature is not within operational limits
 	JLENUMCASE(XRV_BATTERYLOW) //!< 48: Battery level reached lower limit
 	JLENUMCASE(XRV_INVALIDFILTERPROFILE) //!< 49: Specified filter profile ID is not available on the device or the user is trying to duplicate an existing filter profile type
@@ -95,8 +95,8 @@ JLENUMEXPANDER(XsResultValue,
 	JLENUMCASE(XRV_READONLY) //!< 273: Tried to change a read-only value
 	JLENUMCASE(XRV_NULLPTR) //!< 274: Tried to supply a NULL value where it is not allowed
 	JLENUMCASE(XRV_INSUFFICIENTDATA) //!< 275: Insufficient data was supplied to a function
-	JLENUMCASE(XRV_BUSY) //!< 276: Busy processingJLENUMCASE( try again later
-	JLENUMCASE(XRV_INVALIDINSTANCE) //!< 277: Invalid instance calledJLENUMCASE( because of an invalid or missing license
+	JLENUMCASE(XRV_BUSY) //!< 276: Busy processing, try again later
+	JLENUMCASE(XRV_INVALIDINSTANCE) //!< 277: Invalid instance called, because of an invalid or missing license
 	JLENUMCASE(XRV_DATACORRUPT) //!< 278: A trusted data stream proves to contain corrupted data
 
 	JLENUMCASE(XRV_READINITFAILED) //!< 279: Failure during read of settings
@@ -124,9 +124,9 @@ JLENUMEXPANDER(XsResultValue,
 	JLENUMCASE(XRV_SYNC_DATA_MISSING) //!< 299: A device is not sending enough data
 
 	JLENUMCASE(XRV_VERSION_TOO_LOW) //!< 300: The version of the object is too low for the requested operation
-	JLENUMCASE(XRV_VERSION_PROBLEM) //!< 301: The object has an unrecognised versionJLENUMCASE( so it's not safe to perform the operation
+	JLENUMCASE(XRV_VERSION_PROBLEM) //!< 301: The object has an unrecognised version, so it's not safe to perform the operation
 
-	JLENUMCASE(XRV_ABORTED) //!< 302: The process was aborted by an external eventJLENUMCASE( usually a user action or process termination
+	JLENUMCASE(XRV_ABORTED) //!< 302: The process was aborted by an external event, usually a user action or process termination
 	JLENUMCASE(XRV_UNSUPPORTED) //!< 303: The requested functionality is not supported by the device
 
 	JLENUMCASE(XRV_PACKETCOUNTERMISSED) //!< 304: A packet counter value was missed
@@ -140,7 +140,7 @@ JLENUMEXPANDER(XsResultValue,
 	JLENUMCASE(XRV_TOO_MANY_CONNECTED_TRACKERS) //!< 313: Too many motion trackers connected
 	JLENUMCASE(XRV_GOTOCONFIGFAILED) //!< 314: A device could not be put in config mode
 	JLENUMCASE(XRV_OUTOFRANGE) //!< 315: Device has gone out of range
-	JLENUMCASE(XRV_BACKINRANGE) //!< 316: Device is back in rangeJLENUMCASE( resuming normal operation
+	JLENUMCASE(XRV_BACKINRANGE) //!< 316: Device is back in range, resuming normal operation
 	JLENUMCASE(XRV_EXPECTED_DISCONNECT) //!< 317: The device was disconnected
 	JLENUMCASE(XRV_RESTORE_COMMUNICATION_FAILED) //!< 318: Restore communication failed
 	JLENUMCASE(XRV_RESTORE_COMMUNICATION_STOPPED) //!< 319: Restore communication was stopped
@@ -155,7 +155,12 @@ JLENUMEXPANDER(XsResultValue,
 	JLENUMCASE(XRV_GNSSCONFIGURATIONERROR)	//!< 401: A configuration item was refused by the GNSS module
 	JLENUMCASE(XRV_GNSSCOMMTIMEOUT) //!< 402: The communication with the GNSS module timed out
 	JLENUMCASE(XRV_GNSSERROR) //!< 403: Communication between the device and the GNSS module failed
-	JLENUMCASE(XRV_DEVICE_NOT_CALIBRATED)	//!< 404: The EMTS of the device does not contain calibration data
+	JLENUMCASE(XRV_GNSSCONNECTIONLOST) //!< 405: Connection lost with the GNSS module
+	JLENUMCASE(XRV_GNSSLOWINPUTRATE) //!< 406: GNSS input rate is too low
+	JLENUMCASE(XRV_GNSSINCOMPLETEDATASET) //!< 407: Incomplete dataset for the GNSS module
+
+	JLENUMCASE(XRV_DEVICE_NOT_CALIBRATED) //!< 404: The EMTS of the device does not contain calibration data
+	JLENUMCASE(XRV_FILE_SYSTEM_CORRUPT) //!< 54: The internal file system of the device has become corrupt
 )
 
 JLENUMEXPANDERHEX(XsXbusMessageId,
@@ -390,8 +395,8 @@ JLENUMEXPANDERHEX(XsXbusMessageId,
 	JLENUMCASE(XMID_GnssStatus) // 0xA7,
 	JLENUMCASE(XMID_AdjustUtcTime) // 0xA8,
 	JLENUMCASE(XMID_AdjustUtcTimeAck) // 0xA9,
-	JLENUMCASE(XMID_ReqManufacturerId) // 0xAA,
-	JLENUMCASE(XMID_ManufacturerId) // 0xAB,
+	JLENUMCASE(XMID_ReqAssemblyId) // 0xAA,
+	JLENUMCASE(XMID_AssemblyId) // 0xAB,
 	JLENUMCASE(XMID_ReqAccessControlList) // 0xAE,
 	JLENUMCASE(XMID_AccessControlList) // 0xAF,
 	//JLENUMCASE(XMID_SetAccessControlList) // 0xAE,
@@ -502,11 +507,32 @@ JLENUMEXPANDERHEX(XsXbusMessageId,
 	JLENUMCASE(XMID_ForwardGnssDataAck)
 	JLENUMCASE(XMID_ReqProductVariant)
 	JLENUMCASE(XMID_ProductVariant)
-);
+	JLENUMCASE(XMID_XsbData)
+	JLENUMCASE(XMID_UnlockMaintenanceMode)
+	JLENUMCASE(XMID_UnlockMaintenanceModeAck)
+)
+
+JLENUMEXPANDERBITS(XsOption,
+	JLENUMCASEBITS(XSO_Calibrate)
+	JLENUMCASEBITS(XSO_Orientation)
+	JLENUMCASEBITS(XSO_KeepLastLiveData)
+	JLENUMCASEBITS(XSO_RetainLiveData)
+	JLENUMCASEBITS(XSO_RetainBufferedData)
+	JLENUMCASEBITS(XSO_OrientationInLiveStream)
+	JLENUMCASEBITS(XSO_OrientationInBufferedStream)
+	JLENUMCASEBITS(XSO_ApplyOrientationResetToCalData)
+	JLENUMCASEBITS(XSO_InterpolateMissingData)
+	JLENUMCASEBITS(XSO_SkipDataBundling)
+	JLENUMCASEBITS(XSO_ExpectNoRetransmissionsInFile)
+	JLENUMCASEBITS(XSO_Reserved)
+	JLENUMCASEBITSNONE(XSO_None)
+)
 
 static void forceEnumExpanderInclusion()
 {
 	volatile bool blah = false;
 	JLWRITEG("blah" << XRV_OK << blah);
 	JLWRITEG("blah" << XMID_AcceptMtw << blah);
+	JLWRITEG("blah" << XSO_None << blah);
+	(void) blah;
 }

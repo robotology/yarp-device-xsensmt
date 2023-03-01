@@ -1,5 +1,5 @@
 
-//  Copyright (c) 2003-2020 Xsens Technologies B.V. or subsidiaries worldwide.
+//  Copyright (c) 2003-2022 Xsens Technologies B.V. or subsidiaries worldwide.
 //  All rights reserved.
 //  
 //  Redistribution and use in source and binary forms, with or without modification,
@@ -38,12 +38,12 @@
 class SerialPortCommunicator : public SerialCommunicator
 {
 public:
-	static Communicator *construct();
+	static Communicator* construct();
 	SerialPortCommunicator();
 
 protected:
 	~SerialPortCommunicator();
-	std::shared_ptr<StreamInterface> createStreamInterface(const XsPortInfo &pi) override;
+	std::shared_ptr<StreamInterface> createStreamInterface(const XsPortInfo& pi) override;
 };
 
 #endif

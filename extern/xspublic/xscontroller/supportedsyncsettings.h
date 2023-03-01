@@ -1,5 +1,5 @@
 
-//  Copyright (c) 2003-2020 Xsens Technologies B.V. or subsidiaries worldwide.
+//  Copyright (c) 2003-2022 Xsens Technologies B.V. or subsidiaries worldwide.
 //  All rights reserved.
 //  
 //  Redistribution and use in source and binary forms, with or without modification,
@@ -41,32 +41,32 @@ struct XsSyncSettingArray;
 
 namespace Synchronization
 {
-	bool supportsSyncSettings(XsDeviceId const& deviceId);
-	XsSyncSettingArray supportedSyncSettings(XsDeviceId const& deviceId);
+bool supportsSyncSettings(XsDeviceId const& deviceId);
+XsSyncSettingArray supportedSyncSettings(XsDeviceId const& deviceId);
 
-	XsSyncSettingArray supportedSyncSettingsForMtx2Device();
-	XsSyncSettingArray supportedSyncSettingsForMtiDevice();
-	XsSyncSettingArray supportedSyncSettingsForMti7Device();
-	XsSyncSettingArray supportedSyncSettingsForMti670Device();
-	XsSyncSettingArray supportedSyncSettingsForMti680Device();
-	XsSyncSettingArray supportedSyncSettingsForMtigDevice();
-	XsSyncSettingArray supportedSyncSettingsForMark5MtigX10Device();
-	XsSyncSettingArray supportedSyncSettingsForMtDevice();
-	XsSyncSettingArray supportedSyncSettingsForMt6x0Device();
-	XsSyncSettingArray supportedSyncSettingsForGnssDevice();
-	XsSyncSettingArray supportedSyncSettingsForAwindaBaseStation();
-	XsSyncSettingArray supportedSyncSettingsForMtiXDevice();
+XsSyncSettingArray supportedSyncSettingsForMtx2Device();
+XsSyncSettingArray supportedSyncSettingsForMtiDevice();
+XsSyncSettingArray supportedSyncSettingsForMti7AndMTi8Devices();
+XsSyncSettingArray supportedSyncSettingsForMtigDevice();
+XsSyncSettingArray supportedSyncSettingsForMark5MtigX10Device();
+XsSyncSettingArray supportedSyncSettingsForMtDevice();
+XsSyncSettingArray supportedSyncSettingsForMt6x0Device();
+XsSyncSettingArray supportedSyncSettingsForMt6x0GnssDevice();
+XsSyncSettingArray supportedSyncSettingsForMt6x0IntGnssDevice();
+XsSyncSettingArray supportedSyncSettingsForGnssDevice();
+XsSyncSettingArray supportedSyncSettingsForAwindaBaseStation();
+XsSyncSettingArray supportedSyncSettingsForMtiXDevice();
 
-	bool isCompatibleSyncSetting(XsDeviceId const& deviceId, XsSyncSetting const & setting1, XsSyncSetting const & setting2);
-	unsigned int timeResolutionInMicroseconds(XsDeviceId const& deviceId);
+bool isCompatibleSyncSetting(XsDeviceId const& deviceId, XsSyncSetting const& setting1, XsSyncSetting const& setting2);
+unsigned int timeResolutionInMicroseconds(XsDeviceId const& deviceId);
 
-	bool isAwindaSettingCompatible(XsSyncSetting const & setting1, XsSyncSetting const & setting2);
-	bool isSyncStationSettingCompatible(XsSyncSetting const & setting1, XsSyncSetting const & setting2);
+bool isAwindaSettingCompatible(XsSyncSetting const& setting1, XsSyncSetting const& setting2);
+bool isSyncStationSettingCompatible(XsSyncSetting const& setting1, XsSyncSetting const& setting2);
 
-	unsigned int awindaTimeResolutionInMicroseconds();
-	unsigned int syncStationTimeResolutionInMicroseconds();
-	unsigned int mtiTimeResolutionInMicroseconds();
-	unsigned int mtx2TimeResolutionInMicroseconds();
+unsigned int awindaTimeResolutionInMicroseconds();
+unsigned int syncStationTimeResolutionInMicroseconds();
+unsigned int mtiTimeResolutionInMicroseconds();
+unsigned int mtx2TimeResolutionInMicroseconds();
 }
 
 #endif

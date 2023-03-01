@@ -1,5 +1,5 @@
 
-//  Copyright (c) 2003-2020 Xsens Technologies B.V. or subsidiaries worldwide.
+//  Copyright (c) 2003-2022 Xsens Technologies B.V. or subsidiaries worldwide.
 //  All rights reserved.
 //  
 //  Redistribution and use in source and binary forms, with or without modification,
@@ -36,7 +36,7 @@
 #include <ctype.h>
 
 #if defined(WIN32)
-#include <Windows.h>
+	#include <Windows.h>
 #endif
 
 /*! \struct XsString
@@ -68,7 +68,7 @@ void copyChar(char* to, char const* from)
 	\note Specialization for char*/
 int compareChar(void const* a, void const* b)
 {
-	if (*(char*)a < *(char*)b)
+	if (*(char*)a < * (char*)b)
 		return -1;
 	if (*(char*)a > *(char*)b)
 		return 1;
@@ -76,7 +76,8 @@ int compareChar(void const* a, void const* b)
 }
 
 //! \brief Descriptor for XsInt64Array
-XsArrayDescriptor const g_xsStringDescriptor = {
+XsArrayDescriptor const g_xsStringDescriptor =
+{
 	sizeof(char),	// const size_t itemSize;	//!< \protected Size of a single data element
 	XSEXPCASTITEMSWAP swapChar,		// void (*itemSwap)(void* a, void* b);
 	0,				// void (*itemConstruct)(void* e);
@@ -109,13 +110,13 @@ void XsString_destruct(XsString* thisPtr)
 void XsString_assign(XsString* thisPtr, XsSize count, const char* src)
 {
 	if (!count && src)
-		count = (XsSize)strlen(src)+1;
+		count = (XsSize)strlen(src) + 1;
 
 	if (src)
 	{
-		if (src[count-1])
+		if (src[count - 1])
 		{
-			XsArray_assign(thisPtr, count+1, 0);
+			XsArray_assign(thisPtr, count + 1, 0);
 			memcpy(thisPtr->m_data, src, count);
 			thisPtr->m_data[count] = 0;
 		}
@@ -126,7 +127,7 @@ void XsString_assign(XsString* thisPtr, XsSize count, const char* src)
 	{
 		if (count)
 		{
-			XsArray_assign(thisPtr, count+1, 0);
+			XsArray_assign(thisPtr, count + 1, 0);
 			memset(thisPtr->m_data, ' ', count);
 			thisPtr->m_data[count] = 0;
 		}
@@ -150,14 +151,14 @@ void XsString_assignWCharArray(XsString* thisPtr, const wchar_t* src)
 	if (src)
 	{
 #ifdef WIN32
-		int unicodeLength = lstrlenW( src ); // Convert all UNICODE characters
+		int unicodeLength = lstrlenW(src);   // Convert all UNICODE characters
 		int required = WideCharToMultiByte(CP_UTF8, 0, src, unicodeLength, NULL, 0, NULL, NULL);
 		if (required != -1 && required > 0)
 		{
-			XsSize reqv = (XsSize)(ptrdiff_t)required+1;
+			XsSize reqv = (XsSize)(ptrdiff_t)required + 1;
 			if (reqv > thisPtr->m_reserved)
 				XsArray_reserve(thisPtr, reqv);
-			WideCharToMultiByte(CP_UTF8, 0, src, unicodeLength, thisPtr->m_data, required+1, NULL, NULL);
+			WideCharToMultiByte(CP_UTF8, 0, src, unicodeLength, thisPtr->m_data, required + 1, NULL, NULL);
 			thisPtr->m_data[required] = '\0';
 			*((XsSize*) &thisPtr->m_size) = reqv;
 			return;
@@ -166,10 +167,10 @@ void XsString_assignWCharArray(XsString* thisPtr, const wchar_t* src)
 		size_t required = wcstombs(0, src, 0);
 		if (required != (size_t) -1 && required > 0)
 		{
-			if ((XsSize)required+1 > thisPtr->m_reserved)
-				XsArray_reserve(thisPtr, required+1);
-			wcstombs(thisPtr->m_data, src, required+1);
-			*((XsSize*) &thisPtr->m_size) = required+1;
+			if ((XsSize)required + 1 > thisPtr->m_reserved)
+				XsArray_reserve(thisPtr, required + 1);
+			wcstombs(thisPtr->m_data, src, required + 1);
+			*((XsSize*) &thisPtr->m_size) = required + 1;
 			return;
 		}
 #endif
@@ -184,7 +185,7 @@ XsSize XsString_copyToWCharArray(const XsString* thisPtr, wchar_t* dest, XsSize 
 #ifdef WIN32
 	return (XsSize)(ptrdiff_t) MultiByteToWideChar(CP_UTF8, 0, thisPtr->m_data, (int)(ptrdiff_t) thisPtr->m_size, dest, (int)(ptrdiff_t) size);
 #else
-	return mbstowcs(dest, thisPtr->m_data, size) + (dest?0:1);
+	return mbstowcs(dest, thisPtr->m_data, size) + (dest ? 0 : 1);
 #endif
 }
 
@@ -210,10 +211,10 @@ void XsString_push_backWChar(XsString* thisPtr, wchar_t c)
 void XsString_resize(XsString* thisPtr, XsSize count)
 {
 	XsSize sz = thisPtr->m_size;
-	XsArray_resize(thisPtr, count?count+1:0);
+	XsArray_resize(thisPtr, count ? count + 1 : 0);
 	if (count)
 	{
-		for (;sz < count; ++sz)
+		for (; sz < count; ++sz)
 			thisPtr->m_data[sz] = ' ';
 		thisPtr->m_data[count] = 0;
 	}
@@ -226,13 +227,13 @@ void XsString_append(XsString* thisPtr, XsString const* other)
 	if (other && other->m_size > 1)
 	{
 		// remove terminating null from this and append arrays
-		XsArray_erase(thisPtr, thisPtr->m_size-1, 1);
+		XsArray_erase(thisPtr, thisPtr->m_size - 1, 1);
 		XsArray_append(thisPtr, other);
 		if (thisPtr == other)
 		{
 			// add terminating null again
 			static const char nullChar = 0;
-			XsArray_insert(thisPtr, (XsSize) -1, 1, &nullChar);
+			XsArray_insert(thisPtr, (XsSize) - 1, 1, &nullChar);
 		}
 	}
 }
@@ -245,7 +246,7 @@ void XsString_erase(XsString* thisPtr, XsSize index, XsSize count)
 	if (index + count >= thisPtr->m_size)
 	{
 		if (index)
-			XsArray_erase(thisPtr, index, (thisPtr->m_size-1)-index);
+			XsArray_erase(thisPtr, index, (thisPtr->m_size - 1) - index);
 		else
 			XsArray_erase(thisPtr, 0, thisPtr->m_size);
 	}
@@ -262,27 +263,26 @@ void XsString_push_back(XsString* thisPtr, char c)
 	if (!sz)
 		sz = 1;
 	XsString_resize(thisPtr, sz);
-	thisPtr->m_data[sz-1] = c;
+	thisPtr->m_data[sz - 1] = c;
 }
 
-uint8_t const * advanceUtf8(const uint8_t* p)
+uint8_t const* advanceUtf8(const uint8_t* p)
 {
 	if ((*p & 0xC0) != 0xC0)
 		++p;
-	else
-		if (*p & 0x20)
-			if (*p & 0x10)
-				if (*p & 0x08)
-					if (*p & 0x04)
-						p += 6;
-					else
-						p += 5;
+	else if (*p & 0x20)
+		if (*p & 0x10)
+			if (*p & 0x08)
+				if (*p & 0x04)
+					p += 6;
 				else
-					p += 4;
+					p += 5;
 			else
-				p += 3;
+				p += 4;
 		else
-			p += 2;
+			p += 3;
+	else
+		p += 2;
 	return p;
 }
 
@@ -290,10 +290,10 @@ uint8_t const * advanceUtf8(const uint8_t* p)
 	\details http://en.wikipedia.org/wiki/Utf-8#Description
 	\returns the number of characters in a UTF-8 encoded string
 */
-XsSize XsString_utf8Len(XsString const * thisPtr)
+XsSize XsString_utf8Len(XsString const* thisPtr)
 {
 	XsSize count = 0;
-	uint8_t const * p = (uint8_t const*) thisPtr->m_data;
+	uint8_t const* p = (uint8_t const*) thisPtr->m_data;
 
 	if (!thisPtr || !thisPtr->m_data)
 		return 0;
@@ -323,7 +323,7 @@ int32_t shiftUtf8(int32_t t, uint8_t const* p, int bytes)
 wchar_t XsString_utf8At(XsString const* thisPtr, XsSize index)
 {
 	int32_t t = 0;
-	uint8_t const * p = (uint8_t const*) thisPtr->m_data;
+	uint8_t const* p = (uint8_t const*) thisPtr->m_data;
 
 	if (!thisPtr || !thisPtr->m_data)
 		return 0;
@@ -341,20 +341,19 @@ wchar_t XsString_utf8At(XsString const* thisPtr, XsSize index)
 
 	if ((*p & 0xC0) != 0xC0)
 		t = (*p & 0x7F);
-	else
-		if (*p & 0x20)
-			if (*p & 0x10)
-				if (*p & 0x08)
-					if (*p & 0x04)
-						t = shiftUtf8(p[0] & 0x01, p+1, 5);
-					else
-						t = shiftUtf8(p[0] & 0x03, p+1, 4);
+	else if (*p & 0x20)
+		if (*p & 0x10)
+			if (*p & 0x08)
+				if (*p & 0x04)
+					t = shiftUtf8(p[0] & 0x01, p + 1, 5);
 				else
-					t = shiftUtf8(p[0] & 0x07, p+1, 3);
+					t = shiftUtf8(p[0] & 0x03, p + 1, 4);
 			else
-				t = shiftUtf8(p[0] & 0x0F, p+1, 2);
+				t = shiftUtf8(p[0] & 0x07, p + 1, 3);
 		else
-			t = shiftUtf8(p[0] & 0x1F, p+1, 1);
+			t = shiftUtf8(p[0] & 0x0F, p + 1, 2);
+	else
+		t = shiftUtf8(p[0] & 0x1F, p + 1, 1);
 	return (wchar_t) t;
 }
 #endif
@@ -364,7 +363,7 @@ wchar_t XsString_utf8At(XsString const* thisPtr, XsSize index)
 	\param caseSensitive Whether to compare case sensitive or not
 	\return true when the string ends with the given string
 */
-int XsString_endsWith(XsString const * thisPtr, XsString const* other, int caseSensitive)
+int XsString_endsWith(XsString const* thisPtr, XsString const* other, int caseSensitive)
 {
 	const char* left;
 	const char* right;
@@ -396,7 +395,7 @@ int XsString_endsWith(XsString const * thisPtr, XsString const* other, int caseS
 	\param caseSensitive Whether to compare case sensitive or not
 	\return true when the string starts with the given string
 */
-int XsString_startsWith(XsString const * thisPtr, XsString const* other, int caseSensitive)
+int XsString_startsWith(XsString const* thisPtr, XsString const* other, int caseSensitive)
 {
 	const char* left = thisPtr->m_data;
 	const char* right = other->m_data;
@@ -426,7 +425,7 @@ int XsString_startsWith(XsString const * thisPtr, XsString const* other, int cas
 	\param offset when not null, this will be filled with the offset at which \a other was found
 	\return true when the string contains the given string
 */
-int XsString_contains(XsString const * thisPtr, XsString const* other, int caseSensitive, XsSize* offset)
+int XsString_contains(XsString const* thisPtr, XsString const* other, int caseSensitive, XsSize* offset)
 {
 	XsSize offsetI = 0;
 	if (!offset)
@@ -438,9 +437,9 @@ int XsString_contains(XsString const * thisPtr, XsString const* other, int caseS
 		return 1;
 
 	// we can never find a bigger string than our own string
-	while (thisPtr->m_size-*offset >= other->m_size)
+	while (thisPtr->m_size - *offset >= other->m_size)
 	{
-		const char* left = thisPtr->m_data+*offset;
+		const char* left = thisPtr->m_data + *offset;
 		const char* right = other->m_data;
 		if (caseSensitive)
 			for (; *left == *right && *right; ++left, ++right);
@@ -452,20 +451,20 @@ int XsString_contains(XsString const * thisPtr, XsString const* other, int caseS
 
 		++*offset;
 	}
-	*offset = (XsSize)-1;
+	*offset = (XsSize) - 1;
 	return 0;
 }
 
 /*! \brief Returns true when the supplied string is empty
 	\return true when the string is empty
 */
-int XsString_empty(XsString const * thisPtr)
+int XsString_empty(XsString const* thisPtr)
 {
 	if (!thisPtr)
 		return 1;
 	if (!thisPtr->m_size || (thisPtr->m_flags & XSDF_Empty))
 		return 1;
-	return !(thisPtr->m_size-1);
+	return !(thisPtr->m_size - 1);
 }
 
 /*! \brief Sorts the string
@@ -474,7 +473,7 @@ int XsString_empty(XsString const * thisPtr)
 void XsString_sort(XsString* thisPtr)
 {
 	if (thisPtr->m_size > 2)
-		qsort(thisPtr->m_data, thisPtr->m_size-1, sizeof(char), compareChar);
+		qsort(thisPtr->m_data, thisPtr->m_size - 1, sizeof(char), compareChar);
 }
 
 /*! \brief Reverses the contents of the string
@@ -487,9 +486,9 @@ void XsString_reverse(XsString* thisPtr)
 	char* data, tmp, *right;
 	if (thisPtr->m_size > 2)
 	{
-		half = (int) ((thisPtr->m_size-1) >> 1);
+		half = (int)((thisPtr->m_size - 1) >> 1);
 		data = (char*) thisPtr->m_data;
-		right = data + thisPtr->m_size-2;
+		right = data + thisPtr->m_size - 2;
 		for (i = 0; i < half; ++i)
 		{
 			tmp = data[i];
@@ -503,7 +502,7 @@ void XsString_reverse(XsString* thisPtr)
 	\param needle The string to find
 	\return The offset of \a needle or -1 if it was not found
 */
-int XsString_findSubStr(XsString const* thisPtr, XsString const* needle)
+ptrdiff_t XsString_findSubStr(XsString const* thisPtr, XsString const* needle)
 {
 	XsSize offset, i, end, endN;
 	if (!thisPtr)	// no string to search in
@@ -514,7 +513,7 @@ int XsString_findSubStr(XsString const* thisPtr, XsString const* needle)
 		return -1;
 
 	end = thisPtr->m_size - needle->m_size;
-	endN = needle->m_size-1;
+	endN = needle->m_size - 1;
 
 	for (offset = 0; offset <= end; ++offset)
 	{
@@ -522,7 +521,7 @@ int XsString_findSubStr(XsString const* thisPtr, XsString const* needle)
 			if (thisPtr->m_data[offset + i] != needle->m_data[i])
 				break;
 		if (i == endN)
-			return (int) offset;	// found!
+			return (ptrdiff_t) offset;	// found!
 	}
 	// not found
 	return -1;
@@ -563,7 +562,7 @@ void XsString_replaceAll(XsString* thisPtr, XsString const* src, XsString const*
 	XsString_construct(&sub);
 
 	end = thisPtr->m_size - src->m_size;
-	endN = src->m_size-1;
+	endN = src->m_size - 1;
 	start = 0;
 
 	for (offset = 0; offset <= end;)
@@ -594,4 +593,59 @@ void XsString_replaceAll(XsString* thisPtr, XsString const* src, XsString const*
 	XsString_swap(thisPtr, &rv);
 	XsString_destruct(&sub);
 	XsString_destruct(&rv);
+}
+
+/*! \brief Fills thisPtr with a copy of \a source with all its leading and trailing whitespace removed
+	\param source The original string to use as source.
+*/
+void XsString_trimmed(XsString* thisPtr, XsString const* source)
+{
+	if (XsString_empty(source))
+		XsString_destruct(thisPtr);
+	else
+	{
+		XsSize start = 0, end = source->m_size - 1;
+		while (start < end)
+		{
+			if (isspace(source->m_data[start]))
+				++start;
+			else
+				break;
+		}
+		while (start < end)
+		{
+			if (isspace(source->m_data[end - 1]))
+				--end;
+			else
+				break;
+		}
+		if (start < end)
+			XsString_assign(thisPtr, end - start, &source->m_data[start]);
+		else
+			XsString_destruct(thisPtr);
+	}
+}
+
+/*! \brief Make the string all lower-case
+*/
+void XsString_toLower(XsString* thisPtr)
+{
+	XsSize i;
+	if (XsString_empty(thisPtr))
+		return;
+
+	for (i = 0; i < thisPtr->m_size-1; ++i)
+		thisPtr->m_data[i] = (char) tolower(thisPtr->m_data[i]);
+}
+
+/*! \brief Make the string all upper-case
+*/
+void XsString_toUpper(XsString* thisPtr)
+{
+	XsSize i;
+	if (XsString_empty(thisPtr))
+		return;
+
+	for (i = 0; i < thisPtr->m_size - 1; ++i)
+		thisPtr->m_data[i] = (char)toupper(thisPtr->m_data[i]);
 }

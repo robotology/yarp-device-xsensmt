@@ -1,5 +1,5 @@
 
-//  Copyright (c) 2003-2020 Xsens Technologies B.V. or subsidiaries worldwide.
+//  Copyright (c) 2003-2022 Xsens Technologies B.V. or subsidiaries worldwide.
 //  All rights reserved.
 //  
 //  Redistribution and use in source and binary forms, with or without modification,
@@ -74,7 +74,8 @@ void zeroDataPacketPtr(XsDataPacketPtr* a)
 }
 
 //! \brief Descriptor for XsDataPacketPtrArray
-XsArrayDescriptor const g_xsDataPacketPtrArrayDescriptor = {
+XsArrayDescriptor const g_xsDataPacketPtrArrayDescriptor =
+{
 	sizeof(XsDataPacketPtr),
 	XSEXPCASTITEMSWAP swapDataPacketPtr,			// swap
 	XSEXPCASTITEMMAKE zeroDataPacketPtr,			// construct

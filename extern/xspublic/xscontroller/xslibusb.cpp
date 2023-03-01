@@ -1,5 +1,5 @@
 
-//  Copyright (c) 2003-2020 Xsens Technologies B.V. or subsidiaries worldwide.
+//  Copyright (c) 2003-2022 Xsens Technologies B.V. or subsidiaries worldwide.
 //  All rights reserved.
 //  
 //  Redistribution and use in source and binary forms, with or without modification,
@@ -102,7 +102,7 @@ void XsLibUsb::initLibrary()
 				   Only valid on return code 0.
 	\returns 0 on success, or a LIBUSB_ERROR code on failure
 */
-int XsLibUsb::init(libusb_context **ctx)
+int XsLibUsb::init(libusb_context** ctx)
 {
 	if (m_libUsb.init)
 		return m_libUsb.init(ctx);
@@ -113,7 +113,7 @@ int XsLibUsb::init(libusb_context **ctx)
 /*! \brief Deinitialize libusb. Should be called after closing all open devices and before your application terminates.
 	\param ctx the context to deinitialize, or NULL for the default context
 */
-void XsLibUsb::exit(libusb_context *ctx)
+void XsLibUsb::exit(libusb_context* ctx)
 {
 	if (m_libUsb.exit)
 		m_libUsb.exit(ctx);
@@ -135,7 +135,7 @@ void XsLibUsb::exit(libusb_context *ctx)
 	\returns LIBUSB_ERROR_NO_DEVICE if the device has been disconnected
 	\returns another LIBUSB_ERROR code on other failure
 */
-int XsLibUsb::open(libusb_device *dev, libusb_device_handle **handle)
+int XsLibUsb::open(libusb_device* dev, libusb_device_handle** handle)
 {
 	if (m_libUsb.open)
 		return m_libUsb.open(dev, handle);
@@ -149,7 +149,7 @@ int XsLibUsb::open(libusb_device *dev, libusb_device_handle **handle)
 	This is a non-blocking function; no requests are sent over the bus.
 	\param dev_handle the handle to close
 */
-void XsLibUsb::close(libusb_device_handle *dev_handle)
+void XsLibUsb::close(libusb_device_handle* dev_handle)
 {
 	if (m_libUsb.close)
 		m_libUsb.close(dev_handle);
@@ -170,7 +170,7 @@ void XsLibUsb::close(libusb_device_handle *dev_handle)
 	\returns another LIBUSB_ERROR code on other failure
 	\see libusb_detach_kernel_driver()
 */
-int XsLibUsb::kernel_driver_active(libusb_device_handle *dev,int interface_number)
+int XsLibUsb::kernel_driver_active(libusb_device_handle* dev, int interface_number)
 {
 	if (m_libUsb.kernel_driver_active)
 		return m_libUsb.kernel_driver_active(dev, interface_number);
@@ -195,7 +195,7 @@ int XsLibUsb::kernel_driver_active(libusb_device_handle *dev,int interface_numbe
 	\returns another LIBUSB_ERROR code on other failure
 	\see libusb_kernel_driver_active()
 */
-int XsLibUsb::attach_kernel_driver(libusb_device_handle *dev,int interface_number)
+int XsLibUsb::attach_kernel_driver(libusb_device_handle* dev, int interface_number)
 {
 	if (m_libUsb.attach_kernel_driver)
 		return m_libUsb.attach_kernel_driver(dev, interface_number);
@@ -218,7 +218,7 @@ int XsLibUsb::attach_kernel_driver(libusb_device_handle *dev,int interface_numbe
 	\returns another LIBUSB_ERROR code on other failure
 	\see libusb_kernel_driver_active()
 */
-int XsLibUsb::detach_kernel_driver(libusb_device_handle *dev,int interface_number)
+int XsLibUsb::detach_kernel_driver(libusb_device_handle* dev, int interface_number)
 {
 	if (m_libUsb.detach_kernel_driver)
 		return m_libUsb.detach_kernel_driver(dev, interface_number);
@@ -230,7 +230,7 @@ int XsLibUsb::detach_kernel_driver(libusb_device_handle *dev,int interface_numbe
 	\param dev the device to reference
 	\returns the same device
 */
-libusb_device * XsLibUsb::ref_device(libusb_device *dev)
+libusb_device* XsLibUsb::ref_device(libusb_device* dev)
 {
 	if (m_libUsb.ref_device)
 		return m_libUsb.ref_device(dev);
@@ -242,7 +242,7 @@ libusb_device * XsLibUsb::ref_device(libusb_device *dev)
 	If the decrement operation causes the reference count to reach zero, the device shall be destroyed.
 	\param dev the device to unreference
 */
-void XsLibUsb::unref_device(libusb_device *dev)
+void XsLibUsb::unref_device(libusb_device* dev)
 {
 	if (m_libUsb.unref_device)
 		m_libUsb.unref_device(dev);
@@ -269,7 +269,7 @@ void XsLibUsb::unref_device(libusb_device *dev)
 	\returns LIBUSB_ERROR_NO_DEVICE if the device has been disconnected
 	\returns a LIBUSB_ERROR code on other failure
 */
-int XsLibUsb::claim_interface(libusb_device_handle *dev,int interface_number)
+int XsLibUsb::claim_interface(libusb_device_handle* dev, int interface_number)
 {
 	if (m_libUsb.claim_interface)
 		return m_libUsb.claim_interface(dev, interface_number);
@@ -290,7 +290,7 @@ int XsLibUsb::claim_interface(libusb_device_handle *dev,int interface_number)
 	\returns LIBUSB_ERROR_NO_DEVICE if the device has been disconnected
 	\returns another LIBUSB_ERROR code on other failure
 */
-int XsLibUsb::release_interface(libusb_device_handle *dev,	int interface_number)
+int XsLibUsb::release_interface(libusb_device_handle* dev,	int interface_number)
 {
 	if (m_libUsb.release_interface)
 		return m_libUsb.release_interface(dev, interface_number);
@@ -311,7 +311,7 @@ int XsLibUsb::release_interface(libusb_device_handle *dev,	int interface_number)
 	\returns another LIBUSB_ERROR code on error
 	\see libusb_get_config_descriptor
 */
-int XsLibUsb::get_active_config_descriptor(libusb_device *dev,	struct libusb_config_descriptor **config)
+int XsLibUsb::get_active_config_descriptor(libusb_device* dev,	struct libusb_config_descriptor** config)
 {
 	if (m_libUsb.get_active_config_descriptor)
 		return m_libUsb.get_active_config_descriptor(dev, config);
@@ -325,7 +325,7 @@ int XsLibUsb::get_active_config_descriptor(libusb_device *dev,	struct libusb_con
 
 	\param config the configuration descriptor to free
 */
-void XsLibUsb::free_config_descriptor(struct libusb_config_descriptor *config)
+void XsLibUsb::free_config_descriptor(struct libusb_config_descriptor* config)
 {
 	if (m_libUsb.free_config_descriptor)
 		m_libUsb.free_config_descriptor(config);
@@ -335,7 +335,7 @@ void XsLibUsb::free_config_descriptor(struct libusb_config_descriptor *config)
 	\param dev a device
 	\returns the bus number
 */
-uint8_t XsLibUsb::get_bus_number(libusb_device *dev)
+uint8_t XsLibUsb::get_bus_number(libusb_device* dev)
 {
 	if (m_libUsb.get_bus_number)
 		return m_libUsb.get_bus_number(dev);
@@ -350,7 +350,7 @@ uint8_t XsLibUsb::get_bus_number(libusb_device *dev)
 	\param dev_handle a device handle
 	\returns the underlying device
 */
-libusb_device * XsLibUsb::get_device(libusb_device_handle *dev_handle)
+libusb_device* XsLibUsb::get_device(libusb_device_handle* dev_handle)
 {
 	if (m_libUsb.get_device)
 		return m_libUsb.get_device(dev_handle);
@@ -362,7 +362,7 @@ libusb_device * XsLibUsb::get_device(libusb_device_handle *dev_handle)
 	\param dev a device
 	\returns the device address
 */
-uint8_t XsLibUsb::get_device_address(libusb_device *dev)
+uint8_t XsLibUsb::get_device_address(libusb_device* dev)
 {
 	if (m_libUsb.get_device_address)
 		return m_libUsb.get_device_address(dev);
@@ -378,7 +378,7 @@ uint8_t XsLibUsb::get_device_address(libusb_device *dev)
 	\param desc output location for the descriptor data
 	\returns 0 on success or a LIBUSB_ERROR code on failure
 */
-int XsLibUsb::get_device_descriptor(libusb_device *dev, struct libusb_device_descriptor *desc)
+int XsLibUsb::get_device_descriptor(libusb_device* dev, struct libusb_device_descriptor* desc)
 {
 	if (m_libUsb.get_device_descriptor)
 		return m_libUsb.get_device_descriptor(dev, desc);
@@ -403,7 +403,7 @@ int XsLibUsb::get_device_descriptor(libusb_device *dev, struct libusb_device_des
 	\param list output location for a list of devices. Must be later freed with libusb_free_device_list().
 	\returns The number of devices in the outputted list, or any LIBUSB_ERROR code to errors encountered by the backend.
 */
-ssize_t XsLibUsb::get_device_list(libusb_context *ctx,	libusb_device ***list)
+ssize_t XsLibUsb::get_device_list(libusb_context* ctx,	libusb_device*** list)
 {
 	if (m_libUsb.get_device_list)
 		return m_libUsb.get_device_list(ctx, list);
@@ -416,7 +416,7 @@ ssize_t XsLibUsb::get_device_list(libusb_context *ctx,	libusb_device ***list)
 	\param list the list to free
 	\param unref_devices whether to unref the devices in the list
 */
-void XsLibUsb::free_device_list(libusb_device **list,	int unref_devices)
+void XsLibUsb::free_device_list(libusb_device** list,	int unref_devices)
 {
 	if (m_libUsb.free_device_list)
 		m_libUsb.free_device_list(list, unref_devices);
@@ -432,7 +432,7 @@ void XsLibUsb::free_device_list(libusb_device **list,	int unref_devices)
 	\param length size of data buffer
 	\returns number of bytes returned in data, or LIBUSB_ERROR code on failure
 */
-int XsLibUsb::get_string_descriptor_ascii(libusb_device_handle *dev, uint8_t desc_index, unsigned char *data, int length)
+int XsLibUsb::get_string_descriptor_ascii(libusb_device_handle* dev, uint8_t desc_index, unsigned char* data, int length)
 {
 	if (m_libUsb.get_string_descriptor_ascii)
 		return m_libUsb.get_string_descriptor_ascii(dev, desc_index, data, length);
@@ -471,7 +471,7 @@ int XsLibUsb::get_string_descriptor_ascii(libusb_device_handle *dev, uint8_t des
 	\returns LIBUSB_ERROR_NO_DEVICE if the device has been disconnected
 	\returns another LIBUSB_ERROR code on other failures
 */
-int XsLibUsb::bulk_transfer(libusb_device_handle *dev_handle,	unsigned char endpoint, unsigned char *data, int length, int *actual_length, unsigned int timeout)
+int XsLibUsb::bulk_transfer(libusb_device_handle* dev_handle,	unsigned char endpoint, unsigned char* data, int length, int* actual_length, unsigned int timeout)
 {
 	if (m_libUsb.bulk_transfer)
 		return m_libUsb.bulk_transfer(dev_handle, endpoint, data, length, actual_length, timeout);
@@ -506,7 +506,7 @@ int XsLibUsb::bulk_transfer(libusb_device_handle *dev_handle,	unsigned char endp
 	\param ctx the context to operate on, or NULL for the default context
 	\param level debug level to set
 */
-void XsLibUsb::set_debug(libusb_context *ctx, int level)
+void XsLibUsb::set_debug(libusb_context* ctx, int level)
 {
 	if (m_libUsb.set_debug)
 		m_libUsb.set_debug(ctx, level);

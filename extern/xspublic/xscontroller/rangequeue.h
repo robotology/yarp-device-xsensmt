@@ -1,5 +1,5 @@
 
-//  Copyright (c) 2003-2020 Xsens Technologies B.V. or subsidiaries worldwide.
+//  Copyright (c) 2003-2022 Xsens Technologies B.V. or subsidiaries worldwide.
 //  All rights reserved.
 //  
 //  Redistribution and use in source and binary forms, with or without modification,
@@ -95,22 +95,16 @@ public:
 
 		for (auto r = m_queue.rbegin(); r != m_queue.rend(); ++r)
 		{
-			if ( (index > r->m_end) || (index < r->m_start) )
+			if ((index > r->m_end) || (index < r->m_start))
 				continue;
 
 			--m_count;
 			if (r->m_start == r->m_end)
-			{
 				m_queue.erase(--(r.base()));
-			}
 			else if (r->m_start == index)
-			{
 				r->m_start++;
-			}
 			else if (r->m_end == index)
-			{
 				r->m_end--;
-			}
 			else
 			{
 				Range split(r->m_start, index - 1);
@@ -197,16 +191,16 @@ public:
 	}
 
 	/*!	\returns a range limit.
-	 *	\param index: start or end limit to return.
-	 *
-	 *	Concatenating the start and end points for each range will generate a list of limits,
-	 *	this function gives access to such a list.
-	 *	For example:
-	 *	- index 0: start of the first range
-	 *	- index 1: end of the first range
-	 *	- index 2: start of the second range
-	 *	- ...
-	 */
+		\param index: start or end limit to return.
+
+		Concatenating the start and end points for each range will generate a list of limits,
+		this function gives access to such a list.
+		For example:
+		- index 0: start of the first range
+		- index 1: end of the first range
+		- index 2: start of the second range
+		- ...
+	*/
 	const T operator[](std::size_t index) const
 	{
 		xsens::Lock locky(&m_mutex);
@@ -235,7 +229,7 @@ public:
 		xsens::Lock locky(&m_mutex);
 		for (auto i = m_queue.begin(); i != m_queue.end(); ++i)
 		{
-			if ( (index >= i->m_start) && (index <= i->m_end) )
+			if ((index >= i->m_start) && (index <= i->m_end))
 				return true;
 		}
 		return false;
@@ -255,9 +249,7 @@ public:
 		xsens::Lock locky(&m_mutex);
 		m_count = 0;
 		for (auto i = m_queue.begin(); i != m_queue.end(); ++i)
-		{
 			m_count += (i->m_end - i->m_start) + 1;
-		}
 		return m_count;
 	}
 
@@ -272,14 +264,14 @@ public:
 	*/
 	static const T illegalIndex()
 	{
-		return (T)-1;
+		return (T) - 1;
 	}
 
 	/*!
-	 *	\brief Copy all ranges within the given limits [start, end].
-	 *	If the limit falls in a certain range, that range is split and included
-	 *	from the start until the limit.
-	 */
+		\brief Copy all ranges within the given limits [start, end].
+		If the limit falls in a certain range, that range is split and included
+		from the start until the limit.
+	*/
 	void copy(RangeQueue<T>& destination, T start, T end)
 	{
 		xsens::Lock locky(&m_mutex);
@@ -287,13 +279,9 @@ public:
 		for (auto i = m_queue.begin(); i != m_queue.end(); ++i)
 		{
 			if ((i->m_start >= start && start <= i->m_end) && (i->m_start <= end))
-			{
 				destination.pushBack(i->m_start, std::min<T>(i->m_end, end));
-			}
 			else if (i->m_start < start && i->m_start < end)
-			{
 				destination.pushBack(start, std::min<T>(i->m_end, end));
-			}
 		}
 	}
 

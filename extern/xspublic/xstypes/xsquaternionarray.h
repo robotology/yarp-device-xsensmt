@@ -1,5 +1,5 @@
 
-//  Copyright (c) 2003-2020 Xsens Technologies B.V. or subsidiaries worldwide.
+//  Copyright (c) 2003-2022 Xsens Technologies B.V. or subsidiaries worldwide.
 //  All rights reserved.
 //  
 //  Redistribution and use in source and binary forms, with or without modification,
@@ -58,16 +58,17 @@ XSTYPES_DLL_API void XsQuaternionArray_construct(XsQuaternionArray* thisPtr, XsS
 #endif
 
 #ifdef __cplusplus
-struct XsQuaternionArray : public XsArrayImpl<XsQuaternion, g_xsQuaternionArrayDescriptor, XsQuaternionArray> {
+struct XsQuaternionArray : public XsArrayImpl<XsQuaternion, g_xsQuaternionArrayDescriptor, XsQuaternionArray>
+{
 	//! \brief Constructs an XsQuaternionArray
 	inline explicit XsQuaternionArray(XsSize sz = 0, XsQuaternion const* src = 0)
-		 : ArrayImpl(sz, src)
+		: ArrayImpl(sz, src)
 	{
 	}
 
 	//! \brief Constructs an XsQuaternionArray as a copy of \a other
 	inline XsQuaternionArray(XsQuaternionArray const& other)
-		 : ArrayImpl(other)
+		: ArrayImpl(other)
 	{
 	}
 

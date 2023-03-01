@@ -1,5 +1,5 @@
 
-//  Copyright (c) 2003-2020 Xsens Technologies B.V. or subsidiaries worldwide.
+//  Copyright (c) 2003-2022 Xsens Technologies B.V. or subsidiaries worldwide.
 //  All rights reserved.
 //  
 //  Redistribution and use in source and binary forms, with or without modification,
@@ -34,26 +34,26 @@
 
 #include <errno.h>
 #ifndef _WIN32
-#	include <unistd.h>		// close
-#	include <sys/ioctl.h>	// ioctl
-#	include <fcntl.h>		// open, O_RDWR
-#	include <string.h>		// strcpy
-#	include <sys/param.h>
-#	include <sys/stat.h>
-#	include <stdarg.h>
+	#include <unistd.h>		// close
+	#include <sys/ioctl.h>	// ioctl
+	#include <fcntl.h>		// open, O_RDWR
+	#include <string.h>		// strcpy
+	#include <sys/param.h>
+	#include <sys/stat.h>
+	#include <stdarg.h>
 #else
-#	include <winbase.h>
-#	include <sys/stat.h>
-#   include <io.h>
+	#include <winbase.h>
+	#include <sys/stat.h>
+	#include <io.h>
 #endif
 
 #include <xstypes/xsdeviceid.h>
 
 #ifndef _CRT_SECURE_NO_DEPRECATE
-#	define _CRT_SECURE_NO_DEPRECATE
-#	ifdef _WIN32
-#		pragma warning(disable:4996)
-#	endif
+	#define _CRT_SECURE_NO_DEPRECATE
+	#ifdef _WIN32
+		#pragma warning(disable:4996)
+	#endif
 #endif
 
 /*! Default constructor, initializes all members to their default values.
@@ -77,7 +77,7 @@ IoInterfaceFile::~IoInterfaceFile()
 	{
 		closeFile();
 	}
-	catch(...)
+	catch (...)
 	{
 	}
 }
@@ -258,9 +258,7 @@ XsResultValue IoInterfaceFile::deleteData(XsFilePos start, XsFilePos length)
 		m_fileSize -= length;
 	}
 	else
-	{
 		m_fileSize = start;
-	}
 
 	XsResultValue truncateResult = m_handle->truncate(m_fileSize);
 
@@ -298,7 +296,7 @@ XsResultValue IoInterfaceFile::find(const XsByteArray& needleV, XsFilePos& pos)
 	XsFilePos bufferPos, needlePos = 0;
 	XsFilePos readBytes;
 	if (m_readPos & 0x1FF)										// read a block of data
-		readBytes = m_handle->read(buffer, 1, (m_fileBlockSize-(m_readPos & (m_fileBlockSize-1))));
+		readBytes = m_handle->read(buffer, 1, (m_fileBlockSize - (m_readPos & (m_fileBlockSize - 1))));
 	else
 		readBytes = m_handle->read(buffer, 1, m_fileBlockSize);		// read a block of data
 
@@ -360,14 +358,14 @@ XsTimeStamp IoInterfaceFile::getFileDate() const
 	if (stat(m_filename.c_str(), &stats) == 0)
 #endif
 	{
-		XsTimeStamp t = XsTimeStamp( (int64_t)stats.st_mtime * 1000);
+		XsTimeStamp t = XsTimeStamp((int64_t)stats.st_mtime * 1000);
 		return t;
 	}
 	return XsTimeStamp();
 }
 
 /*! \copydoc IoInterface::flushData */
-XsResultValue IoInterfaceFile::flushData ()
+XsResultValue IoInterfaceFile::flushData()
 {
 	m_handle->flush();
 
@@ -439,11 +437,11 @@ XsResultValue IoInterfaceFile::insertData(XsFilePos start, const XsByteArray& da
 	XsFilePos read1, read2;
 	XsFilePos remaining = m_fileSize - start;
 	XsFilePos bsize = (length > m_fileBlockSize) ? length : m_fileBlockSize;
-	char* bufferRoot = (char*) malloc((XsSize) (bsize*2));
+	char* bufferRoot = (char*) malloc((XsSize)(bsize * 2));
 	if (!bufferRoot)
 		return XRV_OUTOFMEMORY;
 	char* buffer1 = bufferRoot;
-	char* buffer2 = bufferRoot+bsize;
+	char* buffer2 = bufferRoot + bsize;
 	char* btemp;
 
 	// copy data
@@ -460,11 +458,13 @@ XsResultValue IoInterfaceFile::insertData(XsFilePos start, const XsByteArray& da
 	remaining -= read1;
 	rPos += read1;
 
-	while(remaining > 0)
+	while (remaining > 0)
 	{
 		// move data to correct buffer
 		read2 = read1;
-		btemp = buffer1; buffer1 = buffer2; buffer2 = btemp;
+		btemp = buffer1;
+		buffer1 = buffer2;
+		buffer2 = btemp;
 
 		// read next block
 		if (remaining >= bsize)
@@ -514,9 +514,7 @@ XsResultValue IoInterfaceFile::open(const XsString& filename, bool createNew, bo
 	if (localResult != XRV_OK)
 	{
 		if (createNew)
-		{
 			localResult = m_handle->create(filename, false);
-		}
 		else
 		{
 			// final attempt: open it forced readonly
@@ -534,11 +532,11 @@ XsResultValue IoInterfaceFile::open(const XsString& filename, bool createNew, bo
 	bool fail = false;
 #ifdef _WIN32
 	wchar_t fullpath[XS_MAX_FILENAME_LENGTH];
-	if (_wfullpath(fullpath,filename.toStdWString().c_str(),XS_MAX_FILENAME_LENGTH) == NULL)
+	if (_wfullpath(fullpath, filename.toStdWString().c_str(), XS_MAX_FILENAME_LENGTH) == NULL)
 		fail = true;
 #else
 	// use the same trick again.
-	char fullpath[XS_MAX_FILENAME_LENGTH*2];
+	char fullpath[XS_MAX_FILENAME_LENGTH * 2];
 	if (realpath(filename.c_str(), fullpath) == NULL)
 		fail = true;
 #endif
@@ -590,7 +588,7 @@ XsResultValue IoInterfaceFile::readData(XsFilePos maxLength, XsByteArray& data)
 
 	m_readPos += length;
 	if (length < maxLength)
-		data.pop_back((XsSize) (maxLength - length));
+		data.pop_back((XsSize)(maxLength - length));
 	return m_lastResult = XRV_OK;
 }
 
@@ -603,7 +601,7 @@ XsResultValue IoInterfaceFile::readData(XsFilePos maxLength, XsByteArray& data)
 */
 XsResultValue IoInterfaceFile::readDataBlocks(XsFilePos blockCount, XsByteArray& data)
 {
-	XsFilePos realign = (m_readPos & (m_fileBlockSize-1));
+	XsFilePos realign = (m_readPos & (m_fileBlockSize - 1));
 	if (realign)
 		blockCount = m_fileBlockSize * blockCount + m_fileBlockSize - realign;
 	else
@@ -635,7 +633,7 @@ XsResultValue IoInterfaceFile::readTerminatedData(XsFilePos maxLength, unsigned 
 	}
 
 	bdata.setSize((XsSize) maxLength);
-	char *data = (char *) bdata.data();
+	char* data = (char*) bdata.data();
 
 	XsFilePos length;
 	int readChar;
@@ -655,11 +653,11 @@ XsResultValue IoInterfaceFile::readTerminatedData(XsFilePos maxLength, unsigned 
 			return m_lastResult = XRV_OK;
 		if ((unsigned char) readChar == terminator)
 		{
-			bdata.pop_back((XsSize) (maxLength - length));
+			bdata.pop_back((XsSize)(maxLength - length));
 			return m_lastResult = XRV_OK;
 		}
 	}
-	bdata.pop_back((XsSize) (maxLength - length));
+	bdata.pop_back((XsSize)(maxLength - length));
 	return m_lastResult = XRV_ENDOFFILE;
 }
 
@@ -718,7 +716,7 @@ XsResultValue IoInterfaceFile::setWritePosition(XsFilePos pos)
 /*! \copydoc IoInterface::writeData
 	\note The function writes the given data to the file at the current write position.
 */
-XsResultValue IoInterfaceFile::writeData(const XsByteArray& data, XsFilePos *written)
+XsResultValue IoInterfaceFile::writeData(const XsByteArray& data, XsFilePos* written)
 {
 	if (!m_handle)
 		return m_lastResult = XRV_NOFILEOPEN;
@@ -736,10 +734,14 @@ XsResultValue IoInterfaceFile::writeData(const XsByteArray& data, XsFilePos *wri
 		int err = errno;
 		switch (err)
 		{
-		case 0:			break;
-		case ENOSPC:	return m_lastResult = XRV_INSUFFICIENTSPACE;
-		case ENOMEM:	return m_lastResult = XRV_OUTOFMEMORY;
-		default:		return m_lastResult = XRV_ERROR;
+			case 0:
+				break;
+			case ENOSPC:
+				return m_lastResult = XRV_INSUFFICIENTSPACE;
+			case ENOMEM:
+				return m_lastResult = XRV_OUTOFMEMORY;
+			default:
+				return m_lastResult = XRV_ERROR;
 		}
 	}
 	m_writePos += writeRes;

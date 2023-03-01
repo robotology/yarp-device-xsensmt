@@ -1,5 +1,5 @@
 
-//  Copyright (c) 2003-2020 Xsens Technologies B.V. or subsidiaries worldwide.
+//  Copyright (c) 2003-2022 Xsens Technologies B.V. or subsidiaries worldwide.
 //  All rights reserved.
 //  
 //  Redistribution and use in source and binary forms, with or without modification,
@@ -38,6 +38,7 @@
 DataPoller::DataPoller(DataParser& parser)
 	: m_parser(parser)
 {
+	JLDEBUGG("Starting DataPoller " << this << " for parser " << &parser);
 }
 
 /*! \brief Destroy the data poller */
@@ -46,15 +47,16 @@ DataPoller::~DataPoller()
 {
 	try
 	{
+		JLDEBUGG("Stopping DataPoller " << this << " for parser " << &m_parser);
 		cleanup();
 	}
-	catch(...)
+	catch (...)
 	{
 	}
 }
 
 /*! \brief Conjure up the time to wait based on properties of the received data (like the length) */
-int32_t DataPoller::conjureUpWaitTime(const XsByteArray &bytes) const
+int32_t DataPoller::conjureUpWaitTime(const XsByteArray& bytes) const
 {
 	if (bytes.size() == 0)
 		return 3;

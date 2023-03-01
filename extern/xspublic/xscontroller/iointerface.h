@@ -1,5 +1,5 @@
 
-//  Copyright (c) 2003-2020 Xsens Technologies B.V. or subsidiaries worldwide.
+//  Copyright (c) 2003-2022 Xsens Technologies B.V. or subsidiaries worldwide.
 //  All rights reserved.
 //  
 //  Redistribution and use in source and binary forms, with or without modification,
@@ -51,7 +51,8 @@
 
 struct XsPortInfo;
 
-struct IoInterface {
+struct IoInterface
+{
 public:
 	/*! \brief Destructor */
 	virtual ~IoInterface() {}
@@ -69,7 +70,7 @@ public:
 	/*!	\brief Returns true if the object has a connection to a device
 		\returns true if the object has a connection to a device
 	*/
-	virtual bool isOpen (void) const = 0;
+	virtual bool isOpen(void) const = 0;
 
 	/*! \brief Returns the last result value produced by this interface
 		\returns The last result value produced by this interface.
@@ -94,19 +95,20 @@ public:
 	virtual XsResultValue readData(XsFilePos maxLength, XsByteArray& data) = 0;
 
 	//! Options for flow control and stopbits which must be used when opening a port
-	enum PortOptions {
+	enum PortOptions
+	{
 		PO_NoFlowControl	= 0,
 		PO_RtsCtsFlowControl	= (1 << 0),
 		PO_DtrDsrFlowControl	= (1 << 1),
 		PO_XonXoffFlowControl	= (1 << 2),
 		PO_OneStopBit		= 0,
 		PO_TwoStopBits		= (1 << 3),
-		PO_XsensDefaults	= (PO_NoFlowControl|PO_TwoStopBits)
+		PO_XsensDefaults	= (PO_NoFlowControl | PO_TwoStopBits)
 	};
 	// SerialInterface overridable functions
 	virtual XsResultValue open(const XsPortInfo& portInfo, XsFilePos readBufSize = XS_DEFAULT_READ_BUFFER_SIZE, XsFilePos writeBufSize = XS_DEFAULT_WRITE_BUFFER_SIZE, PortOptions options = PO_XsensDefaults);
-	virtual XsResultValue setTimeout (uint32_t ms);
-	virtual XsResultValue waitForData (XsFilePos maxLength, XsByteArray& data);
+	virtual XsResultValue setTimeout(uint32_t ms);
+	virtual XsResultValue waitForData(XsFilePos maxLength, XsByteArray& data);
 	virtual void cancelIo(void) const;
 
 	// IOInterfaceFile overridable functions
@@ -130,6 +132,6 @@ protected:
 	IoInterface()
 	{}
 
-XSENS_DISABLE_COPY(IoInterface);
+	XSENS_DISABLE_COPY(IoInterface);
 };
 #endif

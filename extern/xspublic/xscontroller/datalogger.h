@@ -1,5 +1,5 @@
 
-//  Copyright (c) 2003-2020 Xsens Technologies B.V. or subsidiaries worldwide.
+//  Copyright (c) 2003-2022 Xsens Technologies B.V. or subsidiaries worldwide.
 //  All rights reserved.
 //  
 //  Redistribution and use in source and binary forms, with or without modification,
@@ -45,7 +45,7 @@ public:
 	virtual ~DataLogger();
 
 	//! \brief Write a message to the logging stream
-	virtual bool writeMessage(const XsMessage &message) = 0;
+	virtual bool writeMessage(const XsMessage& message) = 0;
 
 	//! \brief Closes a file
 	virtual void close() = 0;

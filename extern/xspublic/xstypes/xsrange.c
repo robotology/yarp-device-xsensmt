@@ -1,5 +1,5 @@
 
-//  Copyright (c) 2003-2020 Xsens Technologies B.V. or subsidiaries worldwide.
+//  Copyright (c) 2003-2022 Xsens Technologies B.V. or subsidiaries worldwide.
 //  All rights reserved.
 //  
 //  Redistribution and use in source and binary forms, with or without modification,
@@ -34,7 +34,7 @@
 
 /*! \class XsRange
 	\brief A class whose objects can be used to store a range. It provides method to
-		   check whether a value is inside the range.
+	check whether a value is inside the range.
 */
 
 /*! \addtogroup cinterface C Interface
@@ -42,7 +42,7 @@
 */
 
 /*! \relates XsRange \brief Get the number of values in the range.
-    \note The range is *inclusive* [first, last] instead of [first, last>. So count [1, 2] = 2
+	\note The range is *inclusive* [first, last] instead of [first, last>. So count [1, 2] = 2
 	\returns The number of values in the range (inclusive)
 */
 int XsRange_count(const XsRange* thisPtr)
@@ -53,7 +53,7 @@ int XsRange_count(const XsRange* thisPtr)
 }
 
 /*! \relates XsRange \brief Get the number of values in the range.
-    \note The range is *exclusive* [first, last> instead of [first, last]. So interval [1, 2] = 1
+	\note The range is *exclusive* [first, last> instead of [first, last]. So interval [1, 2] = 1
 	\returns The number of values in the range (exclusive)
 */
 int XsRange_interval(const XsRange* thisPtr)

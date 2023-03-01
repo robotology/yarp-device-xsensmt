@@ -1,5 +1,5 @@
 
-//  Copyright (c) 2003-2020 Xsens Technologies B.V. or subsidiaries worldwide.
+//  Copyright (c) 2003-2022 Xsens Technologies B.V. or subsidiaries worldwide.
 //  All rights reserved.
 //  
 //  Redistribution and use in source and binary forms, with or without modification,
@@ -52,7 +52,7 @@ public:
 
 	bool logLevel(JournalLogLevel level) const override;
 
-	void logNoDecoration(JournalLogLevel level, char const * file, int line, char const * function, std::string const & msg) override;
+	void logNoDecoration(JournalLogLevel level, char const* file, int line, char const* function, std::string const& msg) override;
 
 protected:
 	virtual void onLogLevelChanged(JournalLogLevel newLevel, JournalLogLevel oldLevel);

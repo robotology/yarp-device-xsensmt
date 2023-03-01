@@ -1,5 +1,5 @@
 
-//  Copyright (c) 2003-2020 Xsens Technologies B.V. or subsidiaries worldwide.
+//  Copyright (c) 2003-2022 Xsens Technologies B.V. or subsidiaries worldwide.
 //  All rights reserved.
 //  
 //  Redistribution and use in source and binary forms, with or without modification,
@@ -41,12 +41,14 @@
 #include <list>
 #include <memory>
 
-namespace xsens {
+namespace xsens
+{
 
 int processorCount();
 
 class PooledTask;
-class ThreadPoolTask {
+class ThreadPoolTask
+{
 public:
 	virtual bool exec() = 0;				//!< \returns True if the task completed or false to reschedule the task
 	virtual unsigned int needToWaitFor();
@@ -95,7 +97,7 @@ public:
 	void setPoolSize(unsigned int poolsize);
 	unsigned int poolSize() const;
 	bool doesTaskExist(TaskId id);
-	void cancelTask(TaskId id, bool wait = true);
+	void cancelTask(TaskId id, bool wait = true) noexcept;
 	void waitForCompletion(TaskId id);
 	void suspend(bool wait = false) noexcept;
 	void resume();
@@ -104,7 +106,7 @@ public:
 	unsigned int failedCount(unsigned int thread) const;
 	XsThreadId taskThreadId(TaskId id);
 
-	static ThreadPool* instance();
+	static ThreadPool* instance() noexcept;
 	static void destroy();
 	static void setPool(ThreadPool* pool);
 };

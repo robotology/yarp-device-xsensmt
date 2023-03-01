@@ -1,5 +1,5 @@
 
-//  Copyright (c) 2003-2020 Xsens Technologies B.V. or subsidiaries worldwide.
+//  Copyright (c) 2003-2022 Xsens Technologies B.V. or subsidiaries worldwide.
 //  All rights reserved.
 //  
 //  Redistribution and use in source and binary forms, with or without modification,
@@ -62,7 +62,9 @@ XSTYPES_DLL_API int XsRssi_unknown(void)
 */
 XSTYPES_DLL_API int XsRssi_unbiased(int raw)
 {
-	return raw + XS_RSSI_MAX;
+	if (raw < 0)
+		return raw + XS_RSSI_MAX;
+	return XS_RSSI_MAX;
 }
 
 /*! @} */

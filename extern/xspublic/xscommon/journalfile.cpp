@@ -1,5 +1,5 @@
 
-//  Copyright (c) 2003-2020 Xsens Technologies B.V. or subsidiaries worldwide.
+//  Copyright (c) 2003-2022 Xsens Technologies B.V. or subsidiaries worldwide.
 //  All rights reserved.
 //  
 //  Redistribution and use in source and binary forms, with or without modification,
@@ -32,7 +32,7 @@
 
 #include "journalfile.h"
 #ifdef _MSC_VER
-#include <Windows.h>
+	#include <Windows.h>
 #endif
 
 /*!	\class JournalFile
@@ -76,7 +76,7 @@ JournalFile::~JournalFile()
 		flush();
 		m_file.close();
 	}
-	catch(...)
+	catch (...)
 	{
 	}
 }

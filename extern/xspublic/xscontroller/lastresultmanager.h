@@ -1,5 +1,5 @@
 
-//  Copyright (c) 2003-2020 Xsens Technologies B.V. or subsidiaries worldwide.
+//  Copyright (c) 2003-2022 Xsens Technologies B.V. or subsidiaries worldwide.
 //  All rights reserved.
 //  
 //  Redistribution and use in source and binary forms, with or without modification,
@@ -40,7 +40,8 @@
 	\brief This class manages a result code with optional additional text
 	\details It can be treated like a simple XsResultValue, but gives extra options
 */
-class LastResultManager {
+class LastResultManager
+{
 	XsResultValue m_lastResult;
 	XsString m_lastResultText;
 public:
@@ -58,7 +59,10 @@ public:
 
 	/*! \returns The last result value
 	*/
-	XsResultValue lastResult() const { return m_lastResult; }
+	XsResultValue lastResult() const
+	{
+		return m_lastResult;
+	}
 
 	/*! \returns The last result text
 	*/
@@ -82,7 +86,10 @@ public:
 
 	/*! \returns The last result value
 	*/
-	operator XsResultValue() const { return m_lastResult; }
+	operator XsResultValue() const
+	{
+		return m_lastResult;
+	}
 };
 
 #endif

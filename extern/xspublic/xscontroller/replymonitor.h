@@ -1,5 +1,5 @@
 
-//  Copyright (c) 2003-2020 Xsens Technologies B.V. or subsidiaries worldwide.
+//  Copyright (c) 2003-2022 Xsens Technologies B.V. or subsidiaries worldwide.
 //  All rights reserved.
 //  
 //  Redistribution and use in source and binary forms, with or without modification,
@@ -42,7 +42,8 @@
 struct XsMessage;
 class ReplyObject;
 
-namespace xsens {
+namespace xsens
+{
 
 /*! \class ReplyObjectRemover
 	\brief A class that removes a reply object from the given monitor
@@ -51,7 +52,7 @@ class ReplyObjectRemover
 {
 public:
 	//! \copybrief ReplyMonitor::removeObject
-	virtual void removeObject(ReplyObject *obj) = 0;
+	virtual void removeObject(ReplyObject* obj) = 0;
 	virtual ~ReplyObjectRemover() {}
 };
 
@@ -61,13 +62,13 @@ public:
 	ReplyMonitor();
 	virtual ~ReplyMonitor();
 
-	std::shared_ptr<ReplyObject> addReplyObject(ReplyObject *replyObject); // Posts the semaphore
+	std::shared_ptr<ReplyObject> addReplyObject(ReplyObject* replyObject); // Posts the semaphore
 	bool addReply(const XsMessage& message);
 	void removeObject(std::shared_ptr<ReplyObject> const& obj);
 	void dumpObjectList(Journaller* journal, JournalLogLevel level) const;
 
 private:
-	void removeObject(ReplyObject *obj);
+	void removeObject(ReplyObject* obj);
 
 	std::vector<ReplyObject*> m_objectList;
 	mutable Mutex m_mutex;

@@ -1,5 +1,5 @@
 
-//  Copyright (c) 2003-2020 Xsens Technologies B.V. or subsidiaries worldwide.
+//  Copyright (c) 2003-2022 Xsens Technologies B.V. or subsidiaries worldwide.
 //  All rights reserved.
 //  
 //  Redistribution and use in source and binary forms, with or without modification,
@@ -45,6 +45,7 @@
 #include <xstypes/xscanoutputconfigurationarray.h>
 #include <xstypes/xsstringoutputtypearray.h>
 #include <xstypes/xsintarray.h>
+#include "xsgnssreceivertype.h"
 
 using namespace xsens;
 
@@ -71,8 +72,9 @@ MtiBaseDevice::BaseFrequencyResult Mti6X0Device::getBaseFrequencyInternal(XsData
 	result.m_divedable = true;
 
 	if ((dataType == XDI_FreeAcceleration && deviceId().isImu()) ||
-			((dataType & XDI_FullTypeMask) == XDI_LocationId) ||
-			((dataType & XDI_FullTypeMask) == XDI_DeviceId))
+		((dataType & XDI_FullTypeMask) == XDI_LocationId) ||
+		((dataType & XDI_FullTypeMask) == XDI_DeviceId) ||
+		((dataType & XDI_FullTypeMask) == XDI_RawGyroTemp))
 		return result;
 
 	if ((dataType & XDI_FullTypeMask) == XDI_AccelerationHR)
@@ -83,28 +85,46 @@ MtiBaseDevice::BaseFrequencyResult Mti6X0Device::getBaseFrequencyInternal(XsData
 
 	if ((dataType & XDI_FullTypeMask) == XDI_RateOfTurnHR)
 	{
-		result.m_frequency = 1600;
+		result.m_frequency = hardwareVersion().major() == 2 ? 2000 : 1600;
 		return result;
 	}
 
 	auto baseFreq = [this](XsDataIdentifier dataType)
 	{
+		XsDataIdentifier fullType = (dataType & XDI_FullTypeMask);
 		switch (dataType & XDI_TypeMask)
 		{
-		case XDI_None:					return 400;
-		case XDI_TimestampGroup:		return XDI_MAX_FREQUENCY_VAL;
-		case XDI_StatusGroup:			return 400;
-		case XDI_TemperatureGroup:		return 400;
-		case XDI_OrientationGroup:		return deviceId().isImu() ? 0 : 400;
-		case XDI_AccelerationGroup:		return 400;
-		case XDI_AngularVelocityGroup:	return 400;
-		case XDI_MagneticGroup:			return 100;
+			case XDI_None:
+				return 400;
+			case XDI_TimestampGroup:
+				return XDI_MAX_FREQUENCY_VAL;
+			case XDI_StatusGroup:
+				return 400;
+			case XDI_TemperatureGroup:
+				return 400;
+			case XDI_OrientationGroup:
+				return deviceId().isImu() ? 0 : 400;
+			case XDI_AccelerationGroup:
+				return 400;
+			case XDI_AngularVelocityGroup:
+				return 400;
+			case XDI_MagneticGroup:
+				return 100;
+			case XDI_RawSensorGroup:
+				return 200;
 
-		case XDI_GnssGroup:				return deviceId().isGnss() ? 4 : 0;
-		case XDI_PressureGroup:			return 100;
-		case XDI_PositionGroup:			return deviceId().isGnss() ? 400 : 0;
-		case XDI_VelocityGroup:			return deviceId().isGnss() ? 400 : 0;
-		default:						return 0;
+			case XDI_GnssGroup:
+				if (fullType == XDI_GnssPvtPulse)
+					return deviceId().isRtk() ? XDI_MAX_FREQUENCY_VAL : 0;
+				return deviceId().isGnss() ? XDI_MAX_FREQUENCY_VAL : 0;
+			case XDI_PressureGroup:
+				return 100;
+			case XDI_PositionGroup:
+				return deviceId().isGnss() ? 400 : 0;
+			case XDI_VelocityGroup:
+				return deviceId().isGnss() ? 400 : 0;
+			default:
+				return 0;
 		}
 	};
 	result.m_frequency = baseFreq(dataType);
@@ -176,31 +196,31 @@ bool Mti6X0Device::setStringOutputMode6x0(uint32_t type, uint16_t frequency)
 
 uint32_t Mti6X0Device::supportedStatusFlags() const
 {
-	return (uint32_t) (
-			   XSF_ExternalClockSynced
-			   | (deviceId().isImu() ? 0 : XSF_OrientationValid
-				  |XSF_NoRotationMask
-				  |XSF_RepresentativeMotion
-				 )
-			   | (deviceId().isGnss() ? XSF_GpsValid : 0)
-			   |XSF_ClipAccX
-			   |XSF_ClipAccY
-			   |XSF_ClipAccZ
-			   |XSF_ClipGyrX
-			   |XSF_ClipGyrY
-			   |XSF_ClipGyrZ
-			   |XSF_ClipMagX
-			   |XSF_ClipMagY
-			   |XSF_ClipMagZ
-			   //|XSF_Retransmitted
-			   |XSF_ClippingDetected
-			   //|XSF_Interpolated
-			   |XSF_SyncIn
-			   |XSF_SyncOut
-			   | (deviceId().isGnss() ? XSF_FilterMode : 0)
-			   | (deviceId().isGnss() ? XSF_HaveGnssTimePulse : 0)
-			   | (deviceId().isRtk() ? XSF_RtkStatus : 0)
-		   );
+	return (uint32_t)(
+			XSF_ExternalClockSynced
+			| (deviceId().isImu() ? 0 : XSF_OrientationValid
+				| XSF_NoRotationMask
+				| XSF_RepresentativeMotion
+			)
+			| (deviceId().isGnss() ? XSF_GpsValid : 0)
+			| XSF_ClipAccX
+			| XSF_ClipAccY
+			| XSF_ClipAccZ
+			| XSF_ClipGyrX
+			| XSF_ClipGyrY
+			| XSF_ClipGyrZ
+			| XSF_ClipMagX
+			| XSF_ClipMagY
+			| XSF_ClipMagZ
+			//|XSF_Retransmitted
+			| XSF_ClippingDetected
+			//|XSF_Interpolated
+			| XSF_SyncIn
+			| XSF_SyncOut
+			| (deviceId().isGnss() ? XSF_FilterMode : 0)
+			| (deviceId().isGnss() ? XSF_HaveGnssTimePulse : 0)
+			| (deviceId().isRtk() ? XSF_RtkStatus : 0)
+		);
 }
 
 /*! \copybrief XsDevice::shortProductCode
@@ -355,3 +375,43 @@ XsVector Mti6X0Device::gnssLeverArm() const
 	return arm;
 }
 
+/*! \copydoc XsDevice::ubloxGnssPlatform
+*/
+XsUbloxGnssPlatform Mti6X0Device::ubloxGnssPlatform() const
+{
+	XsUbloxGnssPlatform platform = XGP_Portable;
+	auto gnssReceivSett = gnssReceiverSettings();
+	if (gnssReceivSett.size() > 3)
+	{
+		int gnssReceiverModel = gnssReceivSett[0];
+		int gnssReceiverOptions = gnssReceivSett[3];
+
+		//only read the value for u-blox devices
+		XsGnssReceiverType actualType = (XsGnssReceiverType)gnssReceiverModel;
+		if (actualType == XGRT_Ublox_Max_M8Q || actualType == XGRT_Ublox_Neo_M8P || actualType == XGRT_Ublox_ZED_F9P)
+			platform = static_cast<XsUbloxGnssPlatform>(gnssReceiverOptions & 0xFFFF);
+	}
+	return platform;
+}
+
+/*! \copydoc XsDevice::setUbloxGnssPlatform
+*/
+bool Mti6X0Device::setUbloxGnssPlatform(XsUbloxGnssPlatform ubloxGnssPlatform)
+{
+	bool result = false;
+	auto gnssReceivSett = gnssReceiverSettings();
+	if (gnssReceivSett.size() > 3)
+	{
+		int gnssReceiverModel = gnssReceivSett[0];
+		int gnssReceiverOptions = gnssReceivSett[3];
+
+		//only set the value for u-blox devices
+		XsGnssReceiverType actualType = (XsGnssReceiverType)gnssReceiverModel;
+		if (actualType == XGRT_Ublox_Max_M8Q || actualType == XGRT_Ublox_Neo_M8P || actualType == XGRT_Ublox_ZED_F9P)
+		{
+			gnssReceivSett[3] = (int) ((((unsigned int)gnssReceiverOptions) & 0xFFFF0000U) | uint16_t(ubloxGnssPlatform));
+			result = setGnssReceiverSettings(gnssReceivSett);
+		}
+	}
+	return result;
+}

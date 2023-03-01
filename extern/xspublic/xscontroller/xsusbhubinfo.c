@@ -1,5 +1,5 @@
 
-//  Copyright (c) 2003-2020 Xsens Technologies B.V. or subsidiaries worldwide.
+//  Copyright (c) 2003-2022 Xsens Technologies B.V. or subsidiaries worldwide.
 //  All rights reserved.
 //  
 //  Redistribution and use in source and binary forms, with or without modification,
@@ -130,8 +130,8 @@ int XsUsbHubInfo_parentPathMatches(const XsUsbHubInfo* left, const XsUsbHubInfo*
 	otherLastDot = strrchr(right->m_hub, '.');
 	thisLastDot = strrchr(left->m_hub, '.');
 
-	dotPos = (int) (otherLastDot - right->m_hub);
-	tmp = (int) (thisLastDot - left->m_hub);
+	dotPos = (int)(otherLastDot - right->m_hub);
+	tmp = (int)(thisLastDot - left->m_hub);
 
 	if (dotPos != tmp)
 		return 0;

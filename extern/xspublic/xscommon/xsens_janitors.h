@@ -1,5 +1,5 @@
 
-//  Copyright (c) 2003-2020 Xsens Technologies B.V. or subsidiaries worldwide.
+//  Copyright (c) 2003-2022 Xsens Technologies B.V. or subsidiaries worldwide.
 //  All rights reserved.
 //  
 //  Redistribution and use in source and binary forms, with or without modification,
@@ -34,34 +34,35 @@
 #define XSENS_JANITORS_H
 
 #ifndef __AVR32__
-#include <functional>
+	#include <functional>
 #endif
 
 // required for gnu c++ compiler versions due to difference in attribute declarations
 #if defined(__AVR32__)
-#	define __cdecl
-#	define __stdcall
+	#define __cdecl
+	#define __stdcall
 #elif defined(_ADI_COMPILER)
-#   define __cdecl
-#   define __stdcall
+	#define __cdecl
+	#define __stdcall
 #elif defined(__GNUC__) && !defined(HAVE_CDECL)
-#	if !defined(__cdecl)
-#		if defined(__x86_64__)
-#			define __cdecl
-#		else
-#   define __cdecl __attribute__((cdecl))
-#		endif
-#	endif
-#	if !defined(__stdcall)
-#		if defined(__x86_64__)
-#			define __stdcall
-#		else
-#   define __stdcall __attribute__((stdcall))
-#endif
-#	endif
+	#if !defined(__cdecl)
+		#if defined(__x86_64__)
+			#define __cdecl
+		#else
+			#define __cdecl __attribute__((cdecl))
+		#endif
+	#endif
+	#if !defined(__stdcall)
+		#if defined(__x86_64__)
+			#define __stdcall
+		#else
+			#define __stdcall __attribute__((stdcall))
+		#endif
+	#endif
 #endif
 
-namespace xsens {
+namespace xsens
+{
 
 #ifndef NOT_FOR_PUBLIC_RELEASE
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -70,7 +71,8 @@ namespace xsens {
 	the janitor is created will be in it again when the janitor leaves scope.
 */
 template <class T>
-class JanitorRestore {
+class JanitorRestore
+{
 private:
 	T& m_control;
 	T  m_value;
@@ -93,12 +95,16 @@ public:
 	/*! \brief Disables the value restoring
 	*/
 	void disable(void)
-		{ m_enabled = false; }
+	{
+		m_enabled = false;
+	}
 
 	/*! \brief Enables the value restoring
 	*/
 	void enable(void)
-		{ m_enabled = true; }
+	{
+		m_enabled = true;
+	}
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -107,7 +113,8 @@ public:
 	janitor leaves scope.
 */
 template <class T>
-class JanitorFree {
+class JanitorFree
+{
 private:
 	T* m_control;
 	bool m_enabled;
@@ -129,12 +136,16 @@ public:
 	/*! \brief Disables the memory releasing
 	*/
 	void disable(void)
-		{ m_enabled = false; }
+	{
+		m_enabled = false;
+	}
 
 	/*! \brief Enables the memory releasing
 	*/
 	void enable(void)
-		{ m_enabled = true; }
+	{
+		m_enabled = true;
+	}
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -143,7 +154,8 @@ public:
 	janitor leaves scope.
 */
 template <class T>
-class JanitorDelete {
+class JanitorDelete
+{
 private:
 	T* m_control;
 	bool m_enabled;
@@ -179,25 +191,37 @@ public:
 		\param control The control object
 	*/
 	void setControl(T* control)
-		{ m_control = control; }
+	{
+		m_control = control;
+	}
 
 	/*! \brief Disables the memory releasing
 	*/
 	void disable(void)
-		{ m_enabled = false; }
+	{
+		m_enabled = false;
+	}
 
 	/*! \brief Enables the memory releasing
 	*/
 	void enable(void)
-		{ m_enabled = true; }
+	{
+		m_enabled = true;
+	}
 
 	/*! \returns A const pointer to the data. This does not detach/copy the data.
 	*/
-	const T *operator->() const { return m_control;	}
+	const T* operator->() const
+	{
+		return m_control;
+	}
 
 	/*! \returns A pointer to the data. This does not detach/copy the data.
 	*/
-	T *operator->() { return m_control; }
+	T* operator->()
+	{
+		return m_control;
+	}
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -206,7 +230,8 @@ public:
 	janitor leaves scope and the referenced pointer is set to NULL.
 */
 template <class T>
-class JanitorDeleteNull {
+class JanitorDeleteNull
+{
 private:
 	T*& m_control;
 	bool m_enabled;
@@ -235,20 +260,30 @@ public:
 	/*! \brief Disables the memory releasing and nulling
 	*/
 	void disable(void)
-		{ m_enabled = false; }
+	{
+		m_enabled = false;
+	}
 
 	/*! \brief Enables the memory releasing and nulling
 	*/
 	void enable(void)
-		{ m_enabled = true; }
+	{
+		m_enabled = true;
+	}
 
 	/*! \returns A const pointer to the data. This does not detach/copy the data.
 	*/
-	const T *operator->() const { return m_control;	}
+	const T* operator->() const
+	{
+		return m_control;
+	}
 
 	/*! \returns A pointer to the data. This does not detach/copy the data.
 	*/
-	T *operator->() { return m_control; }
+	T* operator->()
+	{
+		return m_control;
+	}
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -257,7 +292,8 @@ public:
 	janitor leaves scope.
 */
 template <class T>
-class JanitorDeleteArray {
+class JanitorDeleteArray
+{
 private:
 	T* m_control;
 	bool m_enabled;
@@ -279,12 +315,16 @@ public:
 	/*! \brief Disables the memory releasing
 	*/
 	void disable(void)
-		{ m_enabled = false; }
+	{
+		m_enabled = false;
+	}
 
 	/*! \brief Enables the memory releasing
 	*/
 	void enable(void)
-		{ m_enabled = true; }
+	{
+		m_enabled = true;
+	}
 };
 #endif
 
@@ -294,9 +334,10 @@ public:
 	janitor leaves scope.
 */
 template <class T, typename R = void>
-class JanitorClassFunc {
+class JanitorClassFunc
+{
 public:
-	typedef R (T::*t_func_JanitorClassFunc)(void); //!< A function prototype for a janitor class
+	typedef R(T::*t_func_JanitorClassFunc)(void);  //!< A function prototype for a janitor class
 private:
 	const JanitorClassFunc& operator = (const JanitorClassFunc&);
 
@@ -307,7 +348,7 @@ public:
 
 	/*! \brief Constructor
 	*/
-	JanitorClassFunc<T,R>(T& control, t_func_JanitorClassFunc func, bool enabl = true) :
+	JanitorClassFunc<T, R>(T& control, t_func_JanitorClassFunc func, bool enabl = true) :
 		m_control(control), m_funcJCF(func), m_enabled(enabl)
 	{
 	}
@@ -323,12 +364,16 @@ public:
 	/*! \brief Disables the function calling
 	*/
 	void disable(void)
-		{ m_enabled = false; }
+	{
+		m_enabled = false;
+	}
 
 	/*! \brief Enables the function calling
 	*/
 	void enable(void)
-		{ m_enabled = true; }
+	{
+		m_enabled = true;
+	}
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -337,9 +382,10 @@ public:
 	janitor leaves scope.
 */
 template <class T, typename P1, typename R = void>
-class JanitorClassFuncP1 {
+class JanitorClassFuncP1
+{
 public:
-	typedef R (T::*t_func_JanitorClassFunc)(P1); //!< A function prototype for a janitor class
+	typedef R(T::*t_func_JanitorClassFunc)(P1);  //!< A function prototype for a janitor class
 private:
 	const JanitorClassFuncP1& operator = (const JanitorClassFuncP1&);
 
@@ -351,7 +397,7 @@ public:
 
 	/*! \brief Constructor
 	*/
-	JanitorClassFuncP1<T,P1,R>(T& control, P1 p1, t_func_JanitorClassFunc func, bool enabl = true) :
+	JanitorClassFuncP1<T, P1, R>(T& control, P1 p1, t_func_JanitorClassFunc func, bool enabl = true) :
 		m_control(control), m_param1(p1), m_funcJCF(func), m_enabled(enabl)
 	{
 	}
@@ -367,12 +413,16 @@ public:
 	/*! \brief Disables the function calling
 	*/
 	void disable(void)
-		{ m_enabled = false; }
+	{
+		m_enabled = false;
+	}
 
 	/*! \brief Enable the function calling
 	*/
 	void enable(void)
-		{ m_enabled = true; }
+	{
+		m_enabled = true;
+	}
 };
 
 #ifndef NOT_FOR_PUBLIC_RELEASE
@@ -383,9 +433,10 @@ public:
 	is destroyed before the function unrolling begins.
 */
 template <typename ResultType = void>
-class JanitorFunc0 {
+class JanitorFunc0
+{
 public:
-	typedef ResultType (__cdecl * t_func_JanitorFunc)(void); //!< A function prototype for a janitor function
+	typedef ResultType(__cdecl* t_func_JanitorFunc)(void);   //!< A function prototype for a janitor function
 private:
 	const JanitorFunc0& operator = (const JanitorFunc0&);
 	t_func_JanitorFunc m_funcJF;
@@ -408,12 +459,16 @@ public:
 	/*! \brief Disables the function calling
 	*/
 	void disable(void)
-		{ m_enabled = false; }
+	{
+		m_enabled = false;
+	}
 
 	/*! \brief Enables the function calling
 	*/
 	void enable(void)
-		{ m_enabled = true; }
+	{
+		m_enabled = true;
+	}
 };
 
 #ifndef __AVR32__
@@ -424,9 +479,10 @@ public:
 	is destroyed before the function unrolling begins.
 */
 template <typename ResultType = void>
-class JanitorStdFunc0 {
+class JanitorStdFunc0
+{
 public:
-	typedef std::function<ResultType (void)> t_func_JanitorFunc; //!< A function prototype for a janitor function
+	typedef std::function<ResultType(void)> t_func_JanitorFunc;  //!< A function prototype for a janitor function
 private:
 	const JanitorStdFunc0& operator = (const JanitorStdFunc0&);
 	t_func_JanitorFunc m_funcJF;
@@ -449,12 +505,16 @@ public:
 	/*! \brief Disables the function calling
 	*/
 	void disable(void)
-		{ m_enabled = false; }
+	{
+		m_enabled = false;
+	}
 
 	/*! \brief Enables the function calling
 	*/
 	void enable(void)
-		{ m_enabled = true; }
+	{
+		m_enabled = true;
+	}
 };
 #endif
 
@@ -465,9 +525,10 @@ public:
 	is destroyed before the function unrolling begins.
 */
 template <class ParamType, typename ResultType = void>
-class JanitorFunc1 {
+class JanitorFunc1
+{
 public:
-	typedef ResultType (__cdecl * t_func_JanitorFunc)(ParamType); //!< A function prototype for a janitor function
+	typedef ResultType(__cdecl* t_func_JanitorFunc)(ParamType);   //!< A function prototype for a janitor function
 private:
 	const JanitorFunc1& operator = (const JanitorFunc1&);
 	ParamType m_control;
@@ -477,7 +538,7 @@ public:
 
 	/*! \brief Constructor
 	*/
-	JanitorFunc1<ParamType,ResultType>(t_func_JanitorFunc func, ParamType control, bool enabl = true) :
+	JanitorFunc1<ParamType, ResultType>(t_func_JanitorFunc func, ParamType control, bool enabl = true) :
 		m_control(control), m_funcJF(func), m_enabled(enabl) {}
 
 	/*! \brief Destructor
@@ -491,12 +552,16 @@ public:
 	/*! \brief Disables the function calling
 	*/
 	void disable(void)
-		{ m_enabled = false; }
+	{
+		m_enabled = false;
+	}
 
 	/*! \brief Enables the function calling
 	*/
 	void enable(void)
-		{ m_enabled = true; }
+	{
+		m_enabled = true;
+	}
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -506,9 +571,10 @@ public:
 	is destroyed before the function unrolling begins.
 */
 template <class ParamType, typename ResultType = void>
-class JanitorFunc1R {
+class JanitorFunc1R
+{
 public:
-	typedef ResultType (__cdecl * t_func_JanitorFunc)(ParamType); //!< A function prototype for a janitor function
+	typedef ResultType(__cdecl* t_func_JanitorFunc)(ParamType);   //!< A function prototype for a janitor function
 private:
 	const JanitorFunc1R& operator = (const JanitorFunc1R&);
 	ParamType& m_control;
@@ -518,7 +584,7 @@ public:
 
 	/*! \brief Constructor
 	*/
-	JanitorFunc1R<ParamType,ResultType>(t_func_JanitorFunc func, ParamType& control, bool enabl = true) :
+	JanitorFunc1R<ParamType, ResultType>(t_func_JanitorFunc func, ParamType& control, bool enabl = true) :
 		m_control(control), m_funcJF(func), m_enabled(enabl) {}
 
 	/*! \brief Destructor
@@ -532,12 +598,16 @@ public:
 	/*! \brief Disables the function calling
 	*/
 	void disable(void)
-		{ m_enabled = false; }
+	{
+		m_enabled = false;
+	}
 
 	/*! \brief Enables the function calling
 	*/
 	void enable(void)
-		{ m_enabled = true; }
+	{
+		m_enabled = true;
+	}
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -547,9 +617,10 @@ public:
 	is destroyed before the function unrolling begins.
 */
 template <class Param1Type, class Param2Type, typename ResultType = void>
-class JanitorFunc2 {
+class JanitorFunc2
+{
 public:
-	typedef ResultType (__cdecl * t_func_JanitorFunc)(Param1Type,Param2Type); //!< A function prototype for a janitor function
+	typedef ResultType(__cdecl* t_func_JanitorFunc)(Param1Type, Param2Type);  //!< A function prototype for a janitor function
 private:
 	const JanitorFunc2& operator = (const JanitorFunc2&);
 	Param1Type m_control1;
@@ -560,7 +631,7 @@ public:
 
 	/*! \brief Constructor
 	*/
-	JanitorFunc2<Param1Type,Param2Type,ResultType>(t_func_JanitorFunc func, Param1Type control1, Param2Type control2, bool enabl = true) :
+	JanitorFunc2<Param1Type, Param2Type, ResultType>(t_func_JanitorFunc func, Param1Type control1, Param2Type control2, bool enabl = true) :
 		m_funcJF(func), m_control1(control1), m_control2(control2), m_enabled(enabl) {}
 
 	/*! \brief Destructor
@@ -568,18 +639,22 @@ public:
 	~JanitorFunc2()
 	{
 		if (m_enabled)
-			(*m_funcJF)(m_control1,m_control2);
+			(*m_funcJF)(m_control1, m_control2);
 	}
 
 	/*! \brief Disables the function calling
 	*/
 	void disable(void)
-		{ m_enabled = false; }
+	{
+		m_enabled = false;
+	}
 
 	/*! \brief Enables the function calling
 	*/
 	void enable(void)
-		{ m_enabled = true; }
+	{
+		m_enabled = true;
+	}
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -589,9 +664,10 @@ public:
 	is destroyed before the function unrolling begins.
 */
 template <class Param1Type, class Param2Type, typename ResultType = void>
-class JanitorFunc2R {
+class JanitorFunc2R
+{
 public:
-	typedef ResultType (__cdecl * t_func_JanitorFunc)(Param1Type,Param2Type); //!< A function prototype for a janitor function
+	typedef ResultType(__cdecl* t_func_JanitorFunc)(Param1Type, Param2Type);  //!< A function prototype for a janitor function
 private:
 	const JanitorFunc2R& operator = (const JanitorFunc2R&);
 	Param1Type& m_control1;
@@ -602,7 +678,7 @@ public:
 
 	/*! \brief Constructor
 	*/
-	JanitorFunc2R<Param1Type,Param2Type,ResultType>(t_func_JanitorFunc func, Param1Type& control1, Param2Type& control2, bool enabl = true) :
+	JanitorFunc2R<Param1Type, Param2Type, ResultType>(t_func_JanitorFunc func, Param1Type& control1, Param2Type& control2, bool enabl = true) :
 		m_funcJF(func), m_control1(control1), m_control2(control2), m_enabled(enabl) {}
 
 	/*! \brief Destructor
@@ -610,18 +686,22 @@ public:
 	~JanitorFunc2R()
 	{
 		if (m_enabled)
-			(*m_funcJF)(m_control1,m_control2);
+			(*m_funcJF)(m_control1, m_control2);
 	}
 
 	/*! \brief Disables the function calling
 	*/
 	void disable(void)
-		{ m_enabled = false; }
+	{
+		m_enabled = false;
+	}
 
 	/*! \brief Enables the function calling
 	*/
 	void enable(void)
-		{ m_enabled = true; }
+	{
+		m_enabled = true;
+	}
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -631,9 +711,10 @@ public:
 	is destroyed before the function unrolling begins.
 */
 template <class T, class C, typename R = void>
-class JanitorLogFunc {
+class JanitorLogFunc
+{
 public:
-	typedef R (__cdecl * t_func_JanitorLogFunc)(const char*, const char*, ...); //!< A function prototype for a janitor log function
+	typedef R(__cdecl* t_func_JanitorLogFunc)(const char*, const char*, ...);   //!< A function prototype for a janitor log function
 private:
 	const JanitorLogFunc& operator = (const JanitorLogFunc&);
 	t_func_JanitorLogFunc m_funcJF;
@@ -646,13 +727,13 @@ public:
 
 	/*! \brief Constructor with additional 'function name' parameter
 	*/
-	JanitorLogFunc<T,C,R>(t_func_JanitorLogFunc func, const char *filter, const char *str, const char *functionName, T& control, bool enable = true) :
+	JanitorLogFunc<T, C, R>(t_func_JanitorLogFunc func, const char* filter, const char* str, const char* functionName, T& control, bool enable = true) :
 		m_funcJF(func), m_filter(filter), m_str(str), m_functionName(functionName), m_control(control), m_enabled(enable)
 	{}
 
 	/*! \brief Constructor
 	*/
-	JanitorLogFunc<T,C,R>(t_func_JanitorLogFunc func, const char *filter, const char* str, T& control, bool enable = true) :
+	JanitorLogFunc<T, C, R>(t_func_JanitorLogFunc func, const char* filter, const char* str, T& control, bool enable = true) :
 		m_funcJF(func), m_filter(filter), m_str(str), m_functionName(0), m_control(control), m_enabled(enable) {}
 
 	/*! \brief Destructor
@@ -671,12 +752,16 @@ public:
 	/*! \brief Disables the log function calling
 	*/
 	void disable(void)
-		{ m_enabled = false; }
+	{
+		m_enabled = false;
+	}
 
 	/*! \brief Enables the log function calling
 	*/
 	void enable(void)
-		{ m_enabled = true; }
+	{
+		m_enabled = true;
+	}
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -685,9 +770,10 @@ public:
 	supplied string when the janitor leaves scope.
 */
 template <typename R = void>
-class JanitorSimpleLogFunc {
+class JanitorSimpleLogFunc
+{
 public:
-	typedef R (__cdecl * t_func_JanitorSimpleLogFunc)(const char*, const char*, ...); //!< A function prototype for a janitor simple log function
+	typedef R(__cdecl* t_func_JanitorSimpleLogFunc)(const char*, const char*, ...);   //!< A function prototype for a janitor simple log function
 private:
 	const JanitorSimpleLogFunc& operator = (const JanitorSimpleLogFunc&);
 	t_func_JanitorSimpleLogFunc m_funcJF;
@@ -699,13 +785,13 @@ public:
 
 	/*! \brief Constructor with additional 'function name' parameter
 	*/
-	JanitorSimpleLogFunc<R>(t_func_JanitorSimpleLogFunc func, const char *filter, const char *str, const char *functionName, bool enable = true) :
+	JanitorSimpleLogFunc<R>(t_func_JanitorSimpleLogFunc func, const char* filter, const char* str, const char* functionName, bool enable = true) :
 		m_funcJF(func), m_filter(filter), m_str(str), m_functionName(functionName), m_enabled(enable)
 	{}
 
 	/*! \brief Constructor
 	*/
-	JanitorSimpleLogFunc<R>(t_func_JanitorSimpleLogFunc func, const char *filter, const char* str, bool enable = true) :
+	JanitorSimpleLogFunc<R>(t_func_JanitorSimpleLogFunc func, const char* filter, const char* str, bool enable = true) :
 		m_funcJF(func), m_filter(filter), m_str(str), m_functionName(0), m_enabled(enable) {}
 
 	/*! \brief Destructor
@@ -724,12 +810,16 @@ public:
 	/*! \brief Disables the log function calling
 	*/
 	void disable(void)
-		{ m_enabled = false; }
+	{
+		m_enabled = false;
+	}
 
 	/*! \brief Enables the log function calling
 	*/
 	void enable(void)
-		{ m_enabled = true; }
+	{
+		m_enabled = true;
+	}
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -739,9 +829,14 @@ public:
 	is destroyed before the function unrolling begins.
 */
 template <class ParamType, typename ResultType = void>
-class JanitorFuncStdCall {
+class JanitorFuncStdCall
+{
 public:
-	typedef ResultType (__stdcall * t_func_JanitorFuncStdCall)(ParamType); //!< A function prototype for a calling janitor function
+#ifndef __ANDROID_API__
+	typedef ResultType(__stdcall* t_func_JanitorFuncStdCall)(ParamType);   //!< A function prototype for a calling janitor function
+#else
+	typedef ResultType(*t_func_JanitorFuncStdCall)(ParamType);   //!< A function prototype for a calling janitor function
+#endif
 private:
 	const JanitorFuncStdCall& operator = (const JanitorFuncStdCall&);
 	ParamType& m_control;
@@ -751,7 +846,7 @@ public:
 
 	/*! \brief Constructor
 	*/
-	JanitorFuncStdCall<ParamType,ResultType>(t_func_JanitorFuncStdCall func, ParamType& control, bool enabl = true) :
+	JanitorFuncStdCall<ParamType, ResultType>(t_func_JanitorFuncStdCall func, ParamType& control, bool enabl = true) :
 		m_funcJFSC(func), m_control(control), m_enabled(enabl) {}
 
 	/*! \brief Destructor
@@ -765,12 +860,16 @@ public:
 	/*! \brief Disables the function calling
 	*/
 	void disable(void)
-		{ m_enabled = false; }
+	{
+		m_enabled = false;
+	}
 
 	/*! \brief Enables the function calling
 	*/
 	void enable(void)
-		{ m_enabled = true; }
+	{
+		m_enabled = true;
+	}
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -779,7 +878,8 @@ public:
 	the janitor is created will be in it again when the janitor leaves scope.
 */
 template <class T>
-class JanitorSet {
+class JanitorSet
+{
 private:
 	const JanitorSet& operator = (const JanitorSet&);
 	T& m_control;
@@ -803,12 +903,16 @@ public:
 	/*! \brief Disables the value restoring
 	*/
 	void disable(void)
-		{ m_enabled = false; }
+	{
+		m_enabled = false;
+	}
 
 	/*! \brief Enables the value restoring
 	*/
 	void enable(void)
-		{ m_enabled = true; }
+	{
+		m_enabled = true;
+	}
 };
 
 
@@ -824,7 +928,10 @@ public:
 	/*! \brief Deallocates (deletes) a pointer to an object
 		\param p The pointer to an object to delete
 	*/
-	static void Deallocate(T* p) {delete p;}
+	static void Deallocate(T* p)
+	{
+		delete p;
+	}
 protected:
 	/*! \brief Destructor
 		\note Always use non-virtual protected destructors in policies
@@ -843,7 +950,10 @@ public:
 	/*! \brief Deallocates (frees) a pointer to an object
 		\param p The pointer to an object to free
 	*/
-	static void Deallocate(T* p) {free(p);}
+	static void Deallocate(T* p)
+	{
+		free(p);
+	}
 protected:
 	/*! \brief Destructor
 		\note Always use non-virtual protected destructors in policies
@@ -856,7 +966,8 @@ protected:
 	last janitor for it leaves scope.
 */
 template <class T, template <class> class DeallocationPolicy>
-class JanitorRCDeallocation {
+class JanitorRCDeallocation
+{
 public:
 	typedef JanitorRCDeallocation<T, DeallocationPolicy> ThisType;	//!< A type definition for this type
 	typedef T ElementType;											//!< A type definition for an element type
@@ -864,7 +975,7 @@ public:
 
 	/*! \brief Constructor with an element type
 	*/
-	JanitorRCDeallocation(ElementType *target = 0, bool enabled=true)
+	JanitorRCDeallocation(ElementType* target = 0, bool enabled = true)
 		: m_target(target)
 		, m_refCounter(0)
 		, m_enabled(enabled)
@@ -874,7 +985,7 @@ public:
 
 	/*! \brief Constructor with this type
 	*/
-	JanitorRCDeallocation(const ThisType &j, bool enabled=true)
+	JanitorRCDeallocation(const ThisType& j, bool enabled = true)
 		: m_target(j.m_target)
 		, m_refCounter(j.m_refCounter)
 		, m_enabled(enabled)
@@ -884,15 +995,19 @@ public:
 
 	/*! \brief Destructor
 	*/
-	virtual ~JanitorRCDeallocation() { removeRef(); }
+	virtual ~JanitorRCDeallocation()
+	{
+		removeRef();
+	}
 
 	/*! \brief Copy the data from \a rhs
 		\param rhs The janitor deallication class
 		\returns this
 	*/
-	JanitorRCDeallocation& operator=(const JanitorRCDeallocation &rhs)
+	JanitorRCDeallocation& operator=(const JanitorRCDeallocation& rhs)
 	{
-		if (m_target != rhs.m_target) {
+		if (m_target != rhs.m_target)
+		{
 			removeRef();
 			m_target = rhs.m_target;
 			m_refCounter = rhs.m_refCounter;
@@ -962,9 +1077,8 @@ public:
 	*/
 	void reset(ElementType* p = 0) throw()
 	{
-		if (m_target != p) {
+		if (m_target != p)
 			ThisType(p).swap(*this);
-		}
 	}
 
 private:
@@ -974,7 +1088,8 @@ private:
 	*/
 	void addRef(void)
 	{
-		if (m_target) {
+		if (m_target)
+		{
 			if (!m_refCounter)
 				m_refCounter = new int(0);
 			(*m_refCounter)++;
@@ -986,18 +1101,20 @@ private:
 	*/
 	void removeRef(void)
 	{
-		if (m_refCounter) {
+		if (m_refCounter)
+		{
 			if (*m_refCounter > 1)
 				(*m_refCounter)--;
-			else {
+			else
+			{
 				delete m_refCounter;
 				DeallocationPolicy<ElementType>::Deallocate(m_target);
 			}
 		}
 	}
 
-	ElementType *m_target;
-	int *m_refCounter;
+	ElementType* m_target;
+	int* m_refCounter;
 	bool m_enabled;
 };
 
@@ -1010,7 +1127,7 @@ public:
 
 	/*! \brief Constructor
 	*/
-	JanitorRCFree(T *target = 0, bool enabled=true): JanitorRCDeallocation<T, DeallocationPolicy>(target, enabled) {}
+	JanitorRCFree(T* target = 0, bool enabled = true): JanitorRCDeallocation<T, DeallocationPolicy>(target, enabled) {}
 };
 
 /*! \brief A reference counter memory releasing janitor class
@@ -1022,7 +1139,7 @@ public:
 
 	/*! \brief Constructor
 	*/
-	JanitorRCDelete(T *target = 0, bool enabled=true): JanitorRCDeallocation<T, DeallocationPolicy>(target, enabled) {}
+	JanitorRCDelete(T* target = 0, bool enabled = true): JanitorRCDeallocation<T, DeallocationPolicy>(target, enabled) {}
 };
 
 #endif

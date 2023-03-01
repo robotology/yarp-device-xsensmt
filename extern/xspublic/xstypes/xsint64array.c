@@ -1,5 +1,5 @@
 
-//  Copyright (c) 2003-2020 Xsens Technologies B.V. or subsidiaries worldwide.
+//  Copyright (c) 2003-2022 Xsens Technologies B.V. or subsidiaries worldwide.
 //  All rights reserved.
 //  
 //  Redistribution and use in source and binary forms, with or without modification,
@@ -65,7 +65,8 @@ int compareInt64(int64_t const* a, int64_t const* b)
 }
 
 //! \brief Descriptor for XsInt64Array
-XsArrayDescriptor const g_xsInt64ArrayDescriptor = {
+XsArrayDescriptor const g_xsInt64ArrayDescriptor =
+{
 	sizeof(int64_t),
 	XSEXPCASTITEMSWAP swapInt64,	// swap
 	0,								// construct
