@@ -24,6 +24,8 @@
 #include <xstypes/xsvector.h>
 #include <xstypes/xsoutputconfiguration.h>
 #include <xstypes/xsoutputconfigurationarray.h>
+#include <xscontroller/xsscanner.h>
+#include <xscontroller/xscontrol_def.h>
 
 Journaller* gJournal;
 
@@ -128,15 +130,23 @@ bool XsensMT::open(yarp::os::Searchable &config)
 
     m_portInfo = XsPortInfo(comPortString, XsBaud::numericToRate(baudRate));
 
+	yDebug() << "Creating XsControl object...";
+	XsControl* control = XsControl::construct();
+	assert(control != 0);
+
+
     yInfo("xsensmt: Opening serial port %s with baud rate %d and output period %4.4f seconds.", comPortString.c_str(), baudRate, m_outputPeriod);
-    if (!m_xsensCommunicator.openPort(m_portInfo))
+	if (!control->openPort(comPortString, XsBaud::numericToRate(baudRate)))
     {
-        yError("xsensmt: Could not open serial port.");
+		yError("Could not open port. Aborting.");
         return false;
     }
 
-    yDebug() << "[HOSAM] before MtiBaseDevice....";
-    m_xsensDevice = new MtiBaseDevice(&m_xsensCommunicator);
+	// Get the device object
+	m_xsensDevice = control->device(m_portInfo.deviceId());
+	assert(m_xsensDevice != 0);
+
+	yDebug() << "Device: " << m_xsensDevice->productCode().toStdString() << ", with ID: " << m_xsensDevice->deviceId().toString().toStdString() << " opened.";
 
     yInfo("xsensmt: Putting device into configuration mode.");
     // Put the device into configuration mode before configuring the device
@@ -158,7 +168,7 @@ bool XsensMT::open(yarp::os::Searchable &config)
 
     yInfo() << "xsensmt: Found a device with id: " << m_portInfo.deviceId().toString().toStdString() << " @ port: " << m_portInfo.portName().toStdString() << ", baudrate: " << m_portInfo.baudrate() << " .";
     // TODO migrate to modern API
-    //yInfo() << "xsensmt: Device: " << m_xsensDevice.getProductCode().toStdString() << " opened.";
+    yInfo() << "xsensmt: Device: " << m_portInfo.deviceId().productCode().toStdString() << " opened.";
 
     // Configure the device. Note the differences between MTix and MTmk4
     yInfo("xsensmt: Configuring the device of type %s.", m_portInfo.deviceId().toString().c_str());
@@ -167,7 +177,7 @@ bool XsensMT::open(yarp::os::Searchable &config)
         yError("xsensmt: Device of type %s is not supported by the driver, aborting.", m_portInfo.deviceId().toString().c_str());
         return false;
     }
-    else if (m_portInfo.deviceId().isMtMk4() || m_portInfo.deviceId().isMtiX00())
+    else if (m_portInfo.deviceId().isMtMk4() || m_portInfo.deviceId().isMtiX00() || m_portInfo.deviceId().isGnss())
     {
         XsOutputConfiguration euler(XDI_EulerAngles, m_outputFrequency);
         XsOutputConfiguration acc(XDI_Acceleration, m_outputFrequency);

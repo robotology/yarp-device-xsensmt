@@ -314,7 +314,8 @@ private:
 
     // Interface exposed by the Xsens MT Software suite
     YARPSerialPortCommunicator m_xsensCommunicator;
-    MtiBaseDevice* m_xsensDevice;
+    // MtiBaseDevice* m_xsensDevice;
+    XsDevice* m_xsensDevice;
     XsPortInfo m_portInfo;
 
     yarp::os::Stamp  m_lastReadStamp;

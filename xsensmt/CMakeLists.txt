@@ -29,7 +29,7 @@ if(ENABLE_xsensmt)
 
   # Install the example file from Xsens
   add_executable(xsensExample exampleScanDevicesAndReceiveData.cpp)
-  target_link_libraries(xsensExample PUBLIC xstypes xscommon xscontroller)
+  target_link_libraries(xsensExample xsens_mt_software_suite)
   install(TARGETS xsensExample RUNTIME DESTINATION bin)
 
 endif()
