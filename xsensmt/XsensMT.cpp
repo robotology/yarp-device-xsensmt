@@ -170,62 +170,105 @@ bool XsensMT::open(yarp::os::Searchable &config)
     // TODO migrate to modern API
     yInfo() << "xsensmt: Device: " << m_portInfo.deviceId().productCode().toStdString() << " opened.";
 
-    // Configure the device. Note the differences between MTix and MTmk4
+    // Configure the device. First Check if the device is an MTi
     yInfo("xsensmt: Configuring the device of type %s.", m_portInfo.deviceId().toString().c_str());
     if (!m_portInfo.deviceId().isMti())
     {
         yError("xsensmt: Device of type %s is not supported by the driver, aborting.", m_portInfo.deviceId().toString().c_str());
         return false;
     }
-    else if (m_portInfo.deviceId().isMtMk4() || m_portInfo.deviceId().isMtiX00() || m_portInfo.deviceId().isGnss())
-    {
-        XsOutputConfiguration euler(XDI_EulerAngles, m_outputFrequency);
-        XsOutputConfiguration acc(XDI_Acceleration, m_outputFrequency);
-        XsOutputConfiguration gyro(XDI_RateOfTurn, m_outputFrequency);
-        XsOutputConfiguration mag(XDI_MagneticField, m_outputFrequency);
-
-        XsOutputConfigurationArray configArray;
-        configArray.push_back(euler);
-        configArray.push_back(acc);
-        configArray.push_back(gyro);
-        configArray.push_back(mag);
-        if (!m_xsensDevice->setOutputConfiguration(configArray))
-        {
-           yError("xsensmt: Could not configure device. Aborting.");
-           return false;
-        }
-
-        // Paramater configuration
-
-        /// Profile configuration
-        // Possible profiles
-        // Profile numbers extracted from Document MT0101P.2018.B - MT Low Level Communication Documentation
-        // Documentation of setFilterProfile message, page 48
-        // https://xsens.com/download/usermanual/ISM/MT_LowLevelCommunicationProtocol_Documentation.pdf
-        uint16_t VRU_general = 43;
-        if (!this->setFilterProfile(VRU_general))
-        {
-           yError("xsensmt: Failing in sending SetFilterProfile message. Aborting.");
-           return false;
-        }
-
-        /// Options configuration
-        // Flags numbers extracted from Document MT0101P.2018.B - MT Low Level Communication Documentation
-        // Documentation of SetOptionFlags message, page 17
-        // https://xsens.com/download/usermanual/ISM/MT_LowLevelCommunicationProtocol_Documentation.pdf
-        uint32_t EnableAhs = 0x00000010;
-        uint32_t SetFlags = EnableAhs;
-        uint32_t ClearFlags = 0x0;
-        if (!this->setOptionFlags(SetFlags, ClearFlags))
-        {
-           yError("xsensmt: Failing in sending SetOptionFlags message. Aborting.");
-           return false;
-        }
-    }
     else
     {
-        yError("xsensmt: Unknown device while configuring. Aborting.");
-        return false;
+        XsOutputConfigurationArray configArray;
+
+        if (m_xsensDevice->deviceId().isImu())
+        {
+            XsOutputConfiguration acc(XDI_Acceleration, m_outputFrequency);
+            XsOutputConfiguration gyro(XDI_RateOfTurn, m_outputFrequency);
+            XsOutputConfiguration mag(XDI_MagneticField, m_outputFrequency);
+
+            configArray.push_back(acc);
+            configArray.push_back(gyro);
+            configArray.push_back(mag);
+        }
+        else if (m_xsensDevice->deviceId().isVru() || m_xsensDevice->deviceId().isAhrs())
+        {
+            XsOutputConfiguration euler(XDI_EulerAngles, m_outputFrequency);
+            // IMU stuff
+            XsOutputConfiguration acc(XDI_Acceleration, m_outputFrequency);
+            XsOutputConfiguration gyro(XDI_RateOfTurn, m_outputFrequency);
+            XsOutputConfiguration mag(XDI_MagneticField, m_outputFrequency);
+
+            configArray.push_back(euler);
+            configArray.push_back(acc);
+            configArray.push_back(gyro);
+            configArray.push_back(mag);
+        }
+        else if (m_xsensDevice->deviceId().isGnss())
+        {
+            XsOutputConfiguration euler(XDI_EulerAngles, m_outputFrequency);
+            XsOutputConfiguration posHorizontal(XDI_LatLon, m_outputFrequency);
+            XsOutputConfiguration posVertical(XDI_AltitudeEllipsoid, m_outputFrequency);
+            XsOutputConfiguration linVel(XDI_VelocityXYZ, m_outputFrequency);
+            // IMU stuff
+            XsOutputConfiguration acc(XDI_Acceleration, m_outputFrequency);
+            XsOutputConfiguration gyro(XDI_RateOfTurn, m_outputFrequency);
+            XsOutputConfiguration mag(XDI_MagneticField, m_outputFrequency);
+
+            configArray.push_back(euler);
+            configArray.push_back(posHorizontal);
+            configArray.push_back(posVertical);
+            configArray.push_back(linVel);
+            configArray.push_back(acc);
+            configArray.push_back(gyro);
+            configArray.push_back(mag);
+        }
+        else if (m_portInfo.deviceId().isMti6X0() || m_portInfo.deviceId().isMtiX00())
+        {
+            XsOutputConfiguration euler(XDI_EulerAngles, m_outputFrequency);
+            XsOutputConfiguration acc(XDI_Acceleration, m_outputFrequency);
+            XsOutputConfiguration gyro(XDI_RateOfTurn, m_outputFrequency);
+            XsOutputConfiguration mag(XDI_MagneticField, m_outputFrequency);
+
+            if (!m_xsensDevice->setOutputConfiguration(configArray))
+            {
+               yError("xsensmt: Could not configure device. Aborting.");
+               return false;
+            }
+
+            // Paramater configuration
+
+            /// Profile configuration
+            // Possible profiles
+            // Profile numbers extracted from Document MT0101P.2018.B - MT Low Level Communication Documentation
+            // Documentation of setFilterProfile message, page 48
+            // https://xsens.com/download/usermanual/ISM/MT_LowLevelCommunicationProtocol_Documentation.pdf
+            uint16_t VRU_general = 43;
+            if (!this->setFilterProfile(VRU_general))
+            {
+               yError("xsensmt: Failing in sending SetFilterProfile message. Aborting.");
+               return false;
+            }
+
+            /// Options configuration
+            // Flags numbers extracted from Document MT0101P.2018.B - MT Low Level Communication Documentation
+            // Documentation of SetOptionFlags message, page 17
+            // https://xsens.com/download/usermanual/ISM/MT_LowLevelCommunicationProtocol_Documentation.pdf
+            uint32_t EnableAhs = 0x00000010;
+            uint32_t SetFlags = EnableAhs;
+            uint32_t ClearFlags = 0x0;
+            if (!this->setOptionFlags(SetFlags, ClearFlags))
+            {
+               yError("xsensmt: Failing in sending SetOptionFlags message. Aborting.");
+               return false;
+            }
+        }
+        // Continue with configuration
+        else
+        {
+            yError("xsensmt: Unknown device while configuring. Aborting.");
+            return false;
+        }
     }
 
     // Put the device in measurement mode
@@ -268,6 +311,10 @@ void XsensMT::sensorReadLoop()
     XsByteArray data;
     std::deque<XsMessage> msgs;
 
+	// Create and attach callback handler to device
+	CallbackHandler callback;
+	m_xsensDevice->addCallbackHandler(&callback);
+
     XsEuler euler;
     XsVector acc;
     XsVector gyro;
@@ -277,18 +324,20 @@ void XsensMT::sensorReadLoop()
     {
         m_xsensCommunicator.readDataToBuffer(data);
         m_xsensCommunicator.processBufferedData(data, msgs);
-        for (std::deque<XsMessage>::iterator it = msgs.begin(); it != msgs.end(); ++it)
-        {
-            // Retrieve a packet
-            XsDataPacket packet;
-            if ((*it).getMessageId() == XMID_MtData) {
-                yError("xsensmt: Legacy packet received, but the legacy packet is not currently supported by the driver. Ignoring message.");
-                continue;
-            }
-            else if ((*it).getMessageId() == XMID_MtData2) {
-                packet.setMessage((*it));
-                packet.setDeviceId(m_portInfo.deviceId());
-            }
+        // for (std::deque<XsMessage>::iterator it = msgs.begin(); it != msgs.end(); ++it)
+        // {
+		if (callback.packetAvailable())
+		{
+			// Retrieve a packet
+			XsDataPacket packet = callback.getNextPacket();
+            // if ((*it).getMessageId() == XMID_MtData) {
+            //     yError("xsensmt: Legacy packet received, but the legacy packet is not currently supported by the driver. Ignoring message.");
+            //     continue;
+            // }
+            // else if ((*it).getMessageId() == XMID_MtData2) {
+            //     packet.setMessage((*it));
+            //     packet.setDeviceId(m_portInfo.deviceId());
+            // }
 
             // Get the euler data (for compatibility with the old xsensmtx icub-main driver)
             euler = packet.orientationEuler();
