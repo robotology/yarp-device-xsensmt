@@ -19,6 +19,7 @@
 #include <functional>
 
 #include "XsensMT.h"
+#include "xsbaud.h"
 
 Journaller* gJournal;
 
@@ -138,7 +139,8 @@ bool XsensMT::open(yarp::os::Searchable &config)
     m_xsensDevice = m_xsensControl->device(m_portInfo.deviceId());
     assert(m_xsensDevice != 0);
 
-    yDebug() << "Device: " << m_xsensDevice->productCode().toStdString() << ", with ID: " << m_xsensDevice->deviceId().toString().toStdString() << " opened.";
+    yInfo("Device: %s, with ID: %s opened.", m_xsensDevice->productCode().toStdString().c_str(), m_xsensDevice->deviceId().toString().toStdString().c_str());
+    // << m_xsensDevice->productCode().toStdString() << ", with ID: " << m_xsensDevice->deviceId().toString().toStdString() << " opened.";
 
     yInfo("xsensmt: Putting device into configuration mode.");
     // Put the device into configuration mode before configuring the device
@@ -158,12 +160,8 @@ bool XsensMT::open(yarp::os::Searchable &config)
         return false;
     }
 
-    yInfo() << "xsensmt: Found a device with id: " << m_portInfo.deviceId().toString().toStdString() << " @ port: " << m_portInfo.portName().toStdString() << ", baudrate: " << m_portInfo.baudrate() << " .";
-    // TODO migrate to modern API
-    yInfo() << "xsensmt: Device: " << m_portInfo.deviceId().productCode().toStdString() << " opened.";
-
     // Configure the device. First Check if the device is an MTi
-    yInfo("xsensmt: Configuring the device of type %s.", m_portInfo.deviceId().toString().c_str());
+    yInfo("xsensmt: Configuring the device %s.", m_xsensDevice->productCode().toStdString().c_str());
     if (!m_portInfo.deviceId().isMti())
     {
         yError("xsensmt: Device of type %s is not supported by the driver, aborting.", m_portInfo.deviceId().toString().c_str());
