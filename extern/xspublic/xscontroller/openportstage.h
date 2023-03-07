@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -33,22 +33,22 @@
 #ifndef OPENPORTSTAGE_H
 #define OPENPORTSTAGE_H
 
-/*!	\addtogroup enums Global enumerations
-	@{
+/*!    \addtogroup enums Global enumerations
+    @{
 */
 /*! \brief Port opening stages
-	\details Opening a communication port is done in 3 stages. In some cases not all stages should be
-	performed or at least not all at the same time. For these cases, this enumeration supplies the
-	option of selecting which stages should be performed.
+    \details Opening a communication port is done in 3 stages. In some cases not all stages should be
+    performed or at least not all at the same time. For these cases, this enumeration supplies the
+    option of selecting which stages should be performed.
 */
 enum OpenPortStage
 {
-	OPS_OpenPort = 1,
-	//OPS_StartThread = 2,	// obsolete
-	OPS_InitDevice = 4,
+    OPS_OpenPort = 1,
+    //OPS_StartThread = 2,    // obsolete
+    OPS_InitDevice = 4,
 
-	OPS_InitStart = OPS_InitDevice,
-	OPS_Full = OPS_OpenPort | OPS_InitDevice,
+    OPS_InitStart = OPS_InitDevice,
+    OPS_Full = OPS_OpenPort | OPS_InitDevice,
 };
 /*! @} */
 typedef enum OpenPortStage OpenPortStage;

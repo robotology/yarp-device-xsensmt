@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -36,33 +36,33 @@
 /*! \brief Create a DataPoller with a \a parser */
 
 DataPoller::DataPoller(DataParser& parser)
-	: m_parser(parser)
+    : m_parser(parser)
 {
-	JLDEBUGG("Starting DataPoller " << this << " for parser " << &parser);
+    JLDEBUGG("Starting DataPoller " << this << " for parser " << &parser);
 }
 
 /*! \brief Destroy the data poller */
 
 DataPoller::~DataPoller()
 {
-	try
-	{
-		JLDEBUGG("Stopping DataPoller " << this << " for parser " << &m_parser);
-		cleanup();
-	}
-	catch (...)
-	{
-	}
+    try
+    {
+        JLDEBUGG("Stopping DataPoller " << this << " for parser " << &m_parser);
+        cleanup();
+    }
+    catch (...)
+    {
+    }
 }
 
 /*! \brief Conjure up the time to wait based on properties of the received data (like the length) */
 int32_t DataPoller::conjureUpWaitTime(const XsByteArray& bytes) const
 {
-	if (bytes.size() == 0)
-		return 3;
-	else if (bytes.size() < 256)
-		return 2;
-	return 0;
+    if (bytes.size() == 0)
+        return 3;
+    else if (bytes.size() < 256)
+        return 2;
+    return 0;
 }
 
 /*! \brief Init function for the thread, sets the priority higher
@@ -70,31 +70,31 @@ int32_t DataPoller::conjureUpWaitTime(const XsByteArray& bytes) const
 
 void DataPoller::initFunction()
 {
-	setPriority(XS_THREAD_PRIORITY_HIGHER);
-	char buffer[128];
-	sprintf(buffer, "XDA %s Poller %p", m_parser.parserType(), &m_parser);
-	xsNameThisThread(buffer);
+    setPriority(XS_THREAD_PRIORITY_HIGHER);
+    char buffer[128];
+    sprintf(buffer, "XDA %s Poller %p", m_parser.parserType(), &m_parser);
+    xsNameThisThread(buffer);
 }
 
 /*! \brief Clean up the DataPoller */
 
 void DataPoller::cleanup()
 {
-	assert(getThreadId() != xsGetCurrentThreadId());
-	stopThread();
+    assert(getThreadId() != xsGetCurrentThreadId());
+    stopThread();
 }
 
 /*! \brief The inner thread function
 */
 int32_t DataPoller::innerFunction(void)
 {
-	XsByteArray ba;
-	if (m_parser.readDataToBuffer(ba) != XRV_OK)
-		return 1;
+    XsByteArray ba;
+    if (m_parser.readDataToBuffer(ba) != XRV_OK)
+        return 1;
 
-	int32_t retval = conjureUpWaitTime(ba);
-	if (ba.size())
-		m_parser.addRawData(ba);
+    int32_t retval = conjureUpWaitTime(ba);
+    if (ba.size())
+        m_parser.addRawData(ba);
 
-	return retval;
+    return retval;
 }

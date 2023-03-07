@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -36,7 +36,7 @@
 #include "xstypesconfig.h"
 #include "xsarray.h"
 #ifndef XSENS_NO_WCHAR
-	#include <wchar.h>
+    #include <wchar.h>
 #endif // XSENS_NO_WCHAR
 #include <string.h>
 
@@ -50,11 +50,11 @@ extern "C" {
 extern XsArrayDescriptor const XSTYPES_DLL_API g_xsStringDescriptor;
 
 #ifndef __cplusplus
-#define XsString_INITIALIZER	XSARRAY_INITIALIZER(&g_xsStringDescriptor)
+#define XsString_INITIALIZER    XSARRAY_INITIALIZER(&g_xsStringDescriptor)
 XSARRAY_STRUCT(XsString, char);
 typedef struct XsString XsString;
 // obsolete:
-#define XSSTRING_INITIALIZER	XsString_INITIALIZER
+#define XSSTRING_INITIALIZER    XsString_INITIALIZER
 #else
 struct XsString;
 #endif
@@ -90,8 +90,8 @@ XSTYPES_DLL_API void XsString_push_backWChar(XsString* thisPtr, wchar_t c);
 
 #ifndef __cplusplus
 // obsolete:
-#define XsString_copy(thisPtr, copy)	XsArray_copy(copy, thisPtr)
-#define XsString_swap(a, b)				XsArray_swap(a, b)
+#define XsString_copy(thisPtr, copy)    XsArray_copy(copy, thisPtr)
+#define XsString_swap(a, b)                XsArray_swap(a, b)
 #endif
 #ifdef __cplusplus
 } // extern "C"
@@ -104,542 +104,542 @@ XSTYPES_DLL_API void XsString_push_backWChar(XsString* thisPtr, wchar_t c);
 typedef XsArrayImpl<char, g_xsStringDescriptor, XsString> XsStringType;
 
 /*! \brief Returns the number of items currently in the array, excluding the terminating 0
-	\details This function returns the number of bytes in the underlying char array. This doesn't mean it returns the number of characters as XsString assumes the char* is a utf-8 encoded string.
-	\returns The number of items currently in the array
-	\sa reserved \sa setSize \sa resize \sa utf8Len
+    \details This function returns the number of bytes in the underlying char array. This doesn't mean it returns the number of characters as XsString assumes the char* is a utf-8 encoded string.
+    \returns The number of items currently in the array
+    \sa reserved \sa setSize \sa resize \sa utf8Len
 */
 template<> inline XsSize XsStringType::size() const noexcept
 {
-	return m_size ? m_size - 1 : 0;
+    return m_size ? m_size - 1 : 0;
 }
 
 //! \copydoc XsArray_reserve
 template<> inline void XsStringType::reserve(XsSize count)
 {
-	if (count)
-		XsArray_reserve(this, count + 1);
-	else
-		XsArray_reserve(this, 0);
+    if (count)
+        XsArray_reserve(this, count + 1);
+    else
+        XsArray_reserve(this, 0);
 }
 
 //! \brief Returns the reserved space in number of items
 template<> inline XsSize XsStringType::reserved() const
 {
-	return m_reserved ? m_reserved - 1 : 0;
+    return m_reserved ? m_reserved - 1 : 0;
 }
 
 /*! \brief Removes \a count items from the array starting at \a index. \param index The index of the first item to remove. \param count The number of items to remove. */
 template<> inline void XsStringType::erase(XsSize index, XsSize count)
 {
-	XsString_erase((XsString*) this, index, count);
+    XsString_erase((XsString*) this, index, count);
 }
 
 /*! \brief Insert \a count \a items at \a index in the string
-	\param items The items to insert, may not be 0 unless count is 0
-	\param index The index to use for inserting. Anything beyond the end of the string (ie. -1) will
-	append to the actual end of the string.
-	\param count The number of items to insert
+    \param items The items to insert, may not be 0 unless count is 0
+    \param index The index to use for inserting. Anything beyond the end of the string (ie. -1) will
+    append to the actual end of the string.
+    \param count The number of items to insert
 */
 template<> inline void XsArrayImpl<char, g_xsStringDescriptor, XsString>::insert(char const* items, XsSize index, XsSize count)
 {
-	if (size())
-	{
-		if (index >= size())
-			index = size();
-		XsArray_insert(this, index, count, items);
-	}
-	else
-		XsString_assign((XsString*) this, count, items);
+    if (size())
+    {
+        if (index >= size())
+            index = size();
+        XsArray_insert(this, index, count, items);
+    }
+    else
+        XsString_assign((XsString*) this, count, items);
 }
 
 /*! \brief Assign the characters in \a src to the string
-	\details This function is resizes the string to fit \a count characters and copies those from \a src.
-	\param count The number of characters in src. If this value is 0 and \a scr is not 0, the value is
-				determined automatically by looking through src until a terminating 0 is found.
-	\param src The source string to copy from. If this is 0 and \a count is not 0, the string will be
-				filled with spaces instead.
-	\sa XsString_assign
+    \details This function is resizes the string to fit \a count characters and copies those from \a src.
+    \param count The number of characters in src. If this value is 0 and \a scr is not 0, the value is
+                determined automatically by looking through src until a terminating 0 is found.
+    \param src The source string to copy from. If this is 0 and \a count is not 0, the string will be
+                filled with spaces instead.
+    \sa XsString_assign
 */
 template<> inline void XsArrayImpl<char, g_xsStringDescriptor, XsString>::assign(XsSize count, char const* src)
 {
-	XsString_assign((XsString*) this, count, src);
+    XsString_assign((XsString*) this, count, src);
 }
 
 /*! \brief This function resizes the contained string to the desired size, while retaining its contents
-	\param count The desired size of the string. This excludes the terminating 0 character.
-	\sa XsString_resize
+    \param count The desired size of the string. This excludes the terminating 0 character.
+    \sa XsString_resize
 */
 template<> inline void XsArrayImpl<char, g_xsStringDescriptor, XsString>::resize(XsSize count)
 {
-	XsString_resize((XsString*) this, count);
+    XsString_resize((XsString*) this, count);
 }
 
 /*! \brief Set the size of the array to \a count.
-	\details The contents of the array after this operation are undefined.
-	\param count The desired new size fo the array.
-	\sa XsArray_assign \sa reserve \sa resize
+    \details The contents of the array after this operation are undefined.
+    \param count The desired new size fo the array.
+    \sa XsArray_assign \sa reserve \sa resize
 */
 template<> inline void XsArrayImpl<char, g_xsStringDescriptor, XsString>::setSize(XsSize count)
 {
-	if (count != size())
-		XsString_assign((XsString*) this, count, 0);
+    if (count != size())
+        XsString_assign((XsString*) this, count, 0);
 }
 
 /*! \copydoc XsArray_append \sa XsArray_append */
 template<> inline void XsArrayImpl<char, g_xsStringDescriptor, XsString>::append(const XsStringType& other)
 {
-	XsString_append((XsString*) this, (XsString const*) &other);
+    XsString_append((XsString*) this, (XsString const*) &other);
 }
 
 struct XsString : public XsStringType
 {
-	//! \brief Constructs an XsString
-	inline explicit XsString(XsSize sz = 0, char const* src = 0)
-		: XsStringType()
-	{
-		if (sz || src)
-			XsString_assign(this, sz, src);
-	}
+    //! \brief Constructs an XsString
+    inline explicit XsString(XsSize sz = 0, char const* src = 0)
+        : XsStringType()
+    {
+        if (sz || src)
+            XsString_assign(this, sz, src);
+    }
 
 #ifndef SWIG
-	//! \brief Constructs an XsString as a copy of \a other
-	inline XsString(const XsStringType& other)
-		: XsStringType(other)
-	{
-	}
+    //! \brief Constructs an XsString as a copy of \a other
+    inline XsString(const XsStringType& other)
+        : XsStringType(other)
+    {
+    }
 #else
-	inline XsString(const XsString& other)
-		: XsStringType(other)
-	{
-	}
+    inline XsString(const XsString& other)
+        : XsStringType(other)
+    {
+    }
 #endif
 
-	//! \brief Constructs an XsInt64Array that references the data supplied in \a ref
-	inline explicit XsString(char* ref, XsSize sz, XsDataFlags flags /* = XSDF_None */)
-		: XsStringType(ref, sz + 1, flags)
-	{
-	}
+    //! \brief Constructs an XsInt64Array that references the data supplied in \a ref
+    inline explicit XsString(char* ref, XsSize sz, XsDataFlags flags /* = XSDF_None */)
+        : XsStringType(ref, sz + 1, flags)
+    {
+    }
 #ifndef XSENS_NOITERATOR
-	//! \brief Constructs an XsString with the list bound by the supplied iterators \a beginIt and \a endIt
-	template <typename Iterator>
-	inline explicit XsString(Iterator const& beginIt, Iterator const& endIt)
-		: XsStringType(beginIt, endIt)
-	{
-	}
+    //! \brief Constructs an XsString with the list bound by the supplied iterators \a beginIt and \a endIt
+    template <typename Iterator>
+    inline explicit XsString(Iterator const& beginIt, Iterator const& endIt)
+        : XsStringType(beginIt, endIt)
+    {
+    }
 #endif
 
-	//! \brief Construct an XsString from a 0-terminated character array
-	inline XsString(char const* src)
-		: XsStringType()
-	{
-		if (src && src[0])
-			XsString_assignCharArray(this, src);
-	}
+    //! \brief Construct an XsString from a 0-terminated character array
+    inline XsString(char const* src)
+        : XsStringType()
+    {
+        if (src && src[0])
+            XsString_assignCharArray(this, src);
+    }
 
 #ifndef XSENS_NO_WCHAR
-	//! \brief Construct an XsString from a 0-terminated character array
-	inline XsString(wchar_t const* src)
-		: XsStringType()
-	{
-		if (src && src[0])
-			XsString_assignWCharArray(this, src);
-	}
+    //! \brief Construct an XsString from a 0-terminated character array
+    inline XsString(wchar_t const* src)
+        : XsStringType()
+    {
+        if (src && src[0])
+            XsString_assignWCharArray(this, src);
+    }
 #endif
 
 #ifndef XSENS_NO_STL
-	//! \brief Construct an XsString from a std::string
-	inline XsString(std::string const& src)
-		: XsStringType()
-	{
-		if (!src.empty())
-			XsString_assign(this, (XsSize)src.size() + 1, src.c_str());
-	}
+    //! \brief Construct an XsString from a std::string
+    inline XsString(std::string const& src)
+        : XsStringType()
+    {
+        if (!src.empty())
+            XsString_assign(this, (XsSize)src.size() + 1, src.c_str());
+    }
 
-	//! \brief Construct an XsString from a std::wstring
-	inline XsString(std::wstring const& src)
-		: XsStringType()
-	{
-		if (!src.empty())
-			XsString_assignWCharArray(this, src.c_str());
-	}
+    //! \brief Construct an XsString from a std::wstring
+    inline XsString(std::wstring const& src)
+        : XsStringType()
+    {
+        if (!src.empty())
+            XsString_assignWCharArray(this, src.c_str());
+    }
 #endif // XSENS_NO_STL
 
-	//! \brief Return the internal 0-terminated C-style string
-	inline char* c_str()
-	{
-		static const char nullChar = 0;
-		if (empty())
-			return const_cast<char*>(&nullChar);
+    //! \brief Return the internal 0-terminated C-style string
+    inline char* c_str()
+    {
+        static const char nullChar = 0;
+        if (empty())
+            return const_cast<char*>(&nullChar);
 #ifdef XSENS_NO_EXCEPTION
-		try
-		{
-			return begin().operator ->();
-		}
-		catch (...)
-		{
-			return const_cast<char*>(&nullChar);
-		}
+        try
+        {
+            return begin().operator ->();
+        }
+        catch (...)
+        {
+            return const_cast<char*>(&nullChar);
+        }
 #else
-		return begin().operator->();
+        return begin().operator->();
 #endif
-	}
+    }
 
-	//! \brief Return the internal 0-terminated C-style string
-	inline char const* c_str() const
-	{
-		static const char nullChar = 0;
-		if (empty())
-			return &nullChar;
+    //! \brief Return the internal 0-terminated C-style string
+    inline char const* c_str() const
+    {
+        static const char nullChar = 0;
+        if (empty())
+            return &nullChar;
 #ifdef XSENS_NO_EXCEPTION
-		try
-		{
-			return begin().operator ->();
-		}
-		catch (...)
-		{
-			return &nullChar;
-		}
+        try
+        {
+            return begin().operator ->();
+        }
+        catch (...)
+        {
+            return &nullChar;
+        }
 #else
-		return begin().operator->();
+        return begin().operator->();
 #endif
-	}
+    }
 
 #ifndef XSENS_NO_STL
-	//! \brief Return the string as a std::string
-	inline std::string toStdString() const
-	{
-		if (empty())
-			return std::string();
-		return std::string((char const*)begin().operator ->());
-	}
+    //! \brief Return the string as a std::string
+    inline std::string toStdString() const
+    {
+        if (empty())
+            return std::string();
+        return std::string((char const*)begin().operator ->());
+    }
 #endif // XSENS_NO_STL
 
-	//! \brief Return \a other appended to this, without modifying this
-	XsString operator + (XsString const& other) const
-	{
-		XsString tmp;
-		tmp.reserve(size() + other.size());
-		tmp.append(*this);
-		tmp.append(other);
-		return tmp;
-	}
+    //! \brief Return \a other appended to this, without modifying this
+    XsString operator + (XsString const& other) const
+    {
+        XsString tmp;
+        tmp.reserve(size() + other.size());
+        tmp.append(*this);
+        tmp.append(other);
+        return tmp;
+    }
 
 #ifndef XSENS_NO_STL
-	//! \brief Return the string as a std::wstring
-	std::wstring toStdWString() const
-	{
-		if (empty())
-			return std::wstring();
-		size_t s = XsString_copyToWCharArray(this, NULL, 0);
-		std::wstring w;
-		w.resize(s - 1);
-		(void) XsString_copyToWCharArray(this, &w[0], (XsSize)s);
-		return w;
-	}
+    //! \brief Return the string as a std::wstring
+    std::wstring toStdWString() const
+    {
+        if (empty())
+            return std::wstring();
+        size_t s = XsString_copyToWCharArray(this, NULL, 0);
+        std::wstring w;
+        w.resize(s - 1);
+        (void) XsString_copyToWCharArray(this, &w[0], (XsSize)s);
+        return w;
+    }
 #endif // XSENS_NO_STL
 
-	/*! \cond NODOXYGEN */
-	using XsStringType::operator ==;
-	using XsStringType::operator !=;
+    /*! \cond NODOXYGEN */
+    using XsStringType::operator ==;
+    using XsStringType::operator !=;
 #ifndef XSENS_NOITERATOR
-	using XsStringType::operator <<;
+    using XsStringType::operator <<;
 #endif
-	/*! \endcond */
+    /*! \endcond */
 
-	//! \brief Return true if the contents of \a str are identical to this string
-	inline bool operator == (char const* str) const
-	{
-		if (!str)
-			return empty();
-		return !strcmp(c_str(), str);
-	}
+    //! \brief Return true if the contents of \a str are identical to this string
+    inline bool operator == (char const* str) const
+    {
+        if (!str)
+            return empty();
+        return !strcmp(c_str(), str);
+    }
 
-	//! \brief Return true if the contents of \a str are identical to this string
-	inline bool operator == (XsString const& str) const
-	{
-		return XsStringType::operator ==(str);
-	}
+    //! \brief Return true if the contents of \a str are identical to this string
+    inline bool operator == (XsString const& str) const
+    {
+        return XsStringType::operator ==(str);
+    }
 
-	//! \brief Return true if the contents of \a str differ from this string
-	inline bool operator != (char const* str) const
-	{
-		return !(*this == str);
-	}
+    //! \brief Return true if the contents of \a str differ from this string
+    inline bool operator != (char const* str) const
+    {
+        return !(*this == str);
+    }
 
-	//! \brief Return true if the contents of \a str differ from this string
-	inline bool operator != (XsString const& str) const
-	{
-		return !(*this == str);
-	}
+    //! \brief Return true if the contents of \a str differ from this string
+    inline bool operator != (XsString const& str) const
+    {
+        return !(*this == str);
+    }
 
-	//! \brief Append a character array to the string in a stream-like way
-	inline XsString& operator << (char const* str)
-	{
-		if (str && str[0])
-		{
-			XsString const ref(const_cast<char*>(str), (XsSize)strlen(str), XSDF_None);
-			append(ref);
-		}
-		return *this;
-	}
+    //! \brief Append a character array to the string in a stream-like way
+    inline XsString& operator << (char const* str)
+    {
+        if (str && str[0])
+        {
+            XsString const ref(const_cast<char*>(str), (XsSize)strlen(str), XSDF_None);
+            append(ref);
+        }
+        return *this;
+    }
 
-	//! \brief Append an integer to the string in a stream-like way
-	inline XsString& operator << (int i)
-	{
-		char buffer[32];
-		XSENS_MSC_WARNING_SUPPRESS(4996)
-		append(XsString(buffer, (XsSize)(ptrdiff_t) std::sprintf(buffer, "%d", i), XSDF_None));
-		return *this;
-	}
+    //! \brief Append an integer to the string in a stream-like way
+    inline XsString& operator << (int i)
+    {
+        char buffer[32];
+        XSENS_MSC_WARNING_SUPPRESS(4996)
+        append(XsString(buffer, (XsSize)(ptrdiff_t) std::sprintf(buffer, "%d", i), XSDF_None));
+        return *this;
+    }
 
-	//! \brief Append another string to the string in a stream-like way
-	inline XsString& operator << (XsString const& s)
-	{
-		append(s);
-		return *this;
-	}
+    //! \brief Append another string to the string in a stream-like way
+    inline XsString& operator << (XsString const& s)
+    {
+        append(s);
+        return *this;
+    }
 
-	//! \brief Return true if the contents if \a str are greater then this string
-	inline bool operator < (const XsString& str) const
-	{
+    //! \brief Return true if the contents if \a str are greater then this string
+    inline bool operator < (const XsString& str) const
+    {
 #ifdef XSENS_NO_STL
-		return (strcmp(c_str(), str.c_str()) < 0);
+        return (strcmp(c_str(), str.c_str()) < 0);
 #else
-		return (this->toStdString() < str.toStdString());
+        return (this->toStdString() < str.toStdString());
 #endif
-	}
+    }
 
-	//! \brief Return true if the contents if \a str are less then this string
-	inline bool operator > (const XsString& str) const
-	{
+    //! \brief Return true if the contents if \a str are less then this string
+    inline bool operator > (const XsString& str) const
+    {
 #ifdef XSENS_NO_STL
-		return (strcmp(c_str(), str.c_str()) > 0);
+        return (strcmp(c_str(), str.c_str()) > 0);
 #else
-		return (this->toStdString() > str.toStdString());
+        return (this->toStdString() > str.toStdString());
 #endif
-	}
+    }
 
 #ifndef SWIG
-	/*! \brief Swap the contents the \a first and \a second array */
-	friend inline void swap(XsString& first, XsString& second)
-	{
-		first.swap(second);
-	}
+    /*! \brief Swap the contents the \a first and \a second array */
+    friend inline void swap(XsString& first, XsString& second)
+    {
+        first.swap(second);
+    }
 #endif
 
-	//! \brief Append a character to the string
-	inline XsString& push_back(char c)
-	{
-		XsString_push_back(this, c);
-		return *this;
-	}
+    //! \brief Append a character to the string
+    inline XsString& push_back(char c)
+    {
+        XsString_push_back(this, c);
+        return *this;
+    }
 
-	//! \brief Return true when the string is empty
-	inline bool empty() const
-	{
-		return !!XsString_empty(this);
-	}
+    //! \brief Return true when the string is empty
+    inline bool empty() const
+    {
+        return !!XsString_empty(this);
+    }
 
 #ifndef SWIG
-	using XsStringType::append;
+    using XsStringType::append;
 #else
-	void append(XsString const& other)
-	{
-		XsStringType::append(other);
-	}
+    void append(XsString const& other)
+    {
+        XsStringType::append(other);
+    }
 #endif
 
-	//! \brief Append a char array to the string
-	inline void append(char const* other)
-	{
-		if (other)
-		{
-			XsString tmp(other);
-			XsString_append(this, &tmp);
-		}
-	}
+    //! \brief Append a char array to the string
+    inline void append(char const* other)
+    {
+        if (other)
+        {
+            XsString tmp(other);
+            XsString_append(this, &tmp);
+        }
+    }
 
 #ifndef XSENS_NO_WCHAR
-	//! \brief Append a wchar array to the string
-	inline void append(wchar_t const* other)
-	{
-		if (other)
-		{
-			XsString tmp(other);
-			XsString_append(this, &tmp);
-		}
-	}
+    //! \brief Append a wchar array to the string
+    inline void append(wchar_t const* other)
+    {
+        if (other)
+        {
+            XsString tmp(other);
+            XsString_append(this, &tmp);
+        }
+    }
 #endif
 
-	//! \returns the number of characters in a utf-8 encoded string
-	inline XsSize utf8Len() const
-	{
-		return XsString_utf8Len(this);
-	}
+    //! \returns the number of characters in a utf-8 encoded string
+    inline XsSize utf8Len() const
+    {
+        return XsString_utf8Len(this);
+    }
 
-	/*! \brief Returns whether this string ends with \a other (case-insensitive!)
-		\param other The string to match with the end of this string
-		\param caseSensitive Whether to compare case sensitive or not (case insensitive is the default)
-		\return true when the string ends with the given string
-	*/
-	inline bool endsWith(XsString const& other, bool caseSensitive = false) const
-	{
-		return 0 != XsString_endsWith(this, &other, caseSensitive ? 1 : 0);
-	}
+    /*! \brief Returns whether this string ends with \a other (case-insensitive!)
+        \param other The string to match with the end of this string
+        \param caseSensitive Whether to compare case sensitive or not (case insensitive is the default)
+        \return true when the string ends with the given string
+    */
+    inline bool endsWith(XsString const& other, bool caseSensitive = false) const
+    {
+        return 0 != XsString_endsWith(this, &other, caseSensitive ? 1 : 0);
+    }
 
-	/*! \brief Returns whether this string starts with \a other (case-insensitive!)
-		\param other The string to match with the start of this string
-		\param caseSensitive Whether to compare case sensitive or not (case insensitive is the default)
-		\return true when the string starts with the given string
-	*/
-	inline bool startsWith(XsString const& other, bool caseSensitive = false) const
-	{
-		return 0 != XsString_startsWith(this, &other, caseSensitive ? 1 : 0);
-	}
+    /*! \brief Returns whether this string starts with \a other (case-insensitive!)
+        \param other The string to match with the start of this string
+        \param caseSensitive Whether to compare case sensitive or not (case insensitive is the default)
+        \return true when the string starts with the given string
+    */
+    inline bool startsWith(XsString const& other, bool caseSensitive = false) const
+    {
+        return 0 != XsString_startsWith(this, &other, caseSensitive ? 1 : 0);
+    }
 
-	/*! \brief Returns whether this string contains \a other (case-insensitive!)
-		\param other The string to match with this string
-		\param caseSensitive Whether to compare case sensitive or not (case insensitive is the default)
-		\param offset When not null, this will be filled with the first index where \a other was found
-		\return true when the string contains the given string
-	*/
-	inline bool contains(XsString const& other, bool caseSensitive = false, XsSize* offset = 0) const
-	{
-		return 0 != XsString_contains(this, &other, caseSensitive ? 1 : 0, offset);
-	}
+    /*! \brief Returns whether this string contains \a other (case-insensitive!)
+        \param other The string to match with this string
+        \param caseSensitive Whether to compare case sensitive or not (case insensitive is the default)
+        \param offset When not null, this will be filled with the first index where \a other was found
+        \return true when the string contains the given string
+    */
+    inline bool contains(XsString const& other, bool caseSensitive = false, XsSize* offset = 0) const
+    {
+        return 0 != XsString_contains(this, &other, caseSensitive ? 1 : 0, offset);
+    }
 
 #ifndef XSENS_NO_WCHAR
-	/*! \brief The decoded UTF-8 character at index \a index in the UTF-8 encoded string
-		\details http://en.wikipedia.org/wiki/Utf-8#Description
-		\param index The index of the character to return.
-		\returns the decoded UTF-8 character at index \a index in the UTF-8 encoded string
-	*/
-	inline wchar_t utf8At(XsSize index) const
-	{
-		return XsString_utf8At(this, index);
-	}
+    /*! \brief The decoded UTF-8 character at index \a index in the UTF-8 encoded string
+        \details http://en.wikipedia.org/wiki/Utf-8#Description
+        \param index The index of the character to return.
+        \returns the decoded UTF-8 character at index \a index in the UTF-8 encoded string
+    */
+    inline wchar_t utf8At(XsSize index) const
+    {
+        return XsString_utf8At(this, index);
+    }
 
-	//! \brief Append a unicode character to the string
-	inline XsString& push_back(wchar_t c)
-	{
-		XsString_push_backWChar(this, c);
-		return *this;
-	}
+    //! \brief Append a unicode character to the string
+    inline XsString& push_back(wchar_t c)
+    {
+        XsString_push_backWChar(this, c);
+        return *this;
+    }
 #endif
 
-	//! \brief Sort the characters in the string
-	inline void sort()
-	{
-		XsString_sort(this);
-	}
+    //! \brief Sort the characters in the string
+    inline void sort()
+    {
+        XsString_sort(this);
+    }
 
-	/*! \brief Reverse the characters in the string
-		\note This does not take into account utf-8 encoded characters
-	*/
-	inline void reverse()
-	{
-		XsString_reverse(this);
-	}
+    /*! \brief Reverse the characters in the string
+        \note This does not take into account utf-8 encoded characters
+    */
+    inline void reverse()
+    {
+        XsString_reverse(this);
+    }
 
-	/*! \brief Find the first occurrence of \a needle in the string
-		\param needle The string to find
-		\return The offset of \a needle or -1 if it was not found
-	*/
-	inline ptrdiff_t findSubStr(XsString const& needle) const
-	{
-		return XsString_findSubStr(this, &needle);
-	}
+    /*! \brief Find the first occurrence of \a needle in the string
+        \param needle The string to find
+        \return The offset of \a needle or -1 if it was not found
+    */
+    inline ptrdiff_t findSubStr(XsString const& needle) const
+    {
+        return XsString_findSubStr(this, &needle);
+    }
 
-	/*! \brief Return a substring of the string
-		\details The function returns a copy of up to \a count characters from the string, starting at offset \a start
-		\param start The offset of the first character to copy
-		\param count The maximum number of characters to copy
-		\return The requested substring
-	*/
-	inline XsString mid(XsSize start, XsSize count) const
-	{
-		XsString rv;
-		XsString_mid(&rv, this, start, count);
-		return rv;
-	}
+    /*! \brief Return a substring of the string
+        \details The function returns a copy of up to \a count characters from the string, starting at offset \a start
+        \param start The offset of the first character to copy
+        \param count The maximum number of characters to copy
+        \return The requested substring
+    */
+    inline XsString mid(XsSize start, XsSize count) const
+    {
+        XsString rv;
+        XsString_mid(&rv, this, start, count);
+        return rv;
+    }
 
-	/*! \brief Replace all occurrences of \a src with \a dst, modifying this
-		\param src Substring to search for
-		\param dst Substring to use as replacement
-	*/
-	inline void replaceAll(XsString const& src, XsString const& dst)
-	{
-		XsString_replaceAll(this, &src, &dst);
-	}
+    /*! \brief Replace all occurrences of \a src with \a dst, modifying this
+        \param src Substring to search for
+        \param dst Substring to use as replacement
+    */
+    inline void replaceAll(XsString const& src, XsString const& dst)
+    {
+        XsString_replaceAll(this, &src, &dst);
+    }
 
-	/*! \brief Replace all occurrences of \a src with \a dst, returning the modified result without modifying this
-		\param src Substring to search for
-		\param dst Substring to use as replacement
-	*/
-	inline XsString replacedAll(XsString const& src, XsString const& dst) const
-	{
-		XsString rv(*this);
-		XsString_replaceAll(&rv, &src, &dst);
-		return rv;
-	}
+    /*! \brief Replace all occurrences of \a src with \a dst, returning the modified result without modifying this
+        \param src Substring to search for
+        \param dst Substring to use as replacement
+    */
+    inline XsString replacedAll(XsString const& src, XsString const& dst) const
+    {
+        XsString rv(*this);
+        XsString_replaceAll(&rv, &src, &dst);
+        return rv;
+    }
 
-	/*! \brief Remove all whitespace from start and end of the string
-	*/
-	inline void trim()
-	{
-		XsString rv;
-		XsString_trimmed(&rv, this);
-		swap(rv);
-	}
+    /*! \brief Remove all whitespace from start and end of the string
+    */
+    inline void trim()
+    {
+        XsString rv;
+        XsString_trimmed(&rv, this);
+        swap(rv);
+    }
 
-	/*! \brief Returns an XsString based on this with all whitespace at start and end of the string removed
-	*/
-	inline XsString trimmed() const
-	{
-		XsString rv;
-		XsString_trimmed(&rv, this);
-		return rv;
-	}
+    /*! \brief Returns an XsString based on this with all whitespace at start and end of the string removed
+    */
+    inline XsString trimmed() const
+    {
+        XsString rv;
+        XsString_trimmed(&rv, this);
+        return rv;
+    }
 
-	/*! \brief Returns the last character in the XsString or \0 if the string is empty */
-	inline char last() const
-	{
-		if (size())
-			return at(size() - 1);
-		return 0;
-	}
+    /*! \brief Returns the last character in the XsString or \0 if the string is empty */
+    inline char last() const
+    {
+        if (size())
+            return at(size() - 1);
+        return 0;
+    }
 
-	/*! \brief Make the string all lower-case, modifying this
-	*/
-	inline void toLower()
-	{
-		XsString_toLower(this);
-	}
+    /*! \brief Make the string all lower-case, modifying this
+    */
+    inline void toLower()
+    {
+        XsString_toLower(this);
+    }
 
-	/*! \brief Make the string all upper-case, modifying this
-	*/
-	inline void toUpper()
-	{
-		XsString_toUpper(this);
-	}
+    /*! \brief Make the string all upper-case, modifying this
+    */
+    inline void toUpper()
+    {
+        XsString_toUpper(this);
+    }
 
-	/*! \brief Return an all lower-case version of this, does not modify this
-	*/
-	inline XsString lowered() const
-	{
-		XsString tmp = *this;
-		XsString_toLower(&tmp);
-		return tmp;
-	}
+    /*! \brief Return an all lower-case version of this, does not modify this
+    */
+    inline XsString lowered() const
+    {
+        XsString tmp = *this;
+        XsString_toLower(&tmp);
+        return tmp;
+    }
 
-	/*! \brief Return an all upper-case version of this, does not modify this
-	*/
-	inline XsString uppered() const
-	{
-		XsString tmp = *this;
-		XsString_toUpper(&tmp);
-		return tmp;
-	}
+    /*! \brief Return an all upper-case version of this, does not modify this
+    */
+    inline XsString uppered() const
+    {
+        XsString tmp = *this;
+        XsString_toUpper(&tmp);
+        return tmp;
+    }
 };
 
 #ifndef XSENS_NO_STL
@@ -649,7 +649,7 @@ namespace std
 template<typename _CharT, typename _Traits>
 basic_ostream<_CharT, _Traits>& operator<<(basic_ostream<_CharT, _Traits>& o, XsString const& xs)
 {
-	return (o << xs.toStdString());
+    return (o << xs.toStdString());
 }
 }
 #endif

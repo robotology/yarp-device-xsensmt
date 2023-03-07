@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -34,21 +34,21 @@
 #define XSENS_DEBUGTOOLS_H
 
 #ifndef XSTRINGIFY
-	#define XSTRINGIFY2(x) #x
-	#define XSTRINGIFY(x) XSTRINGIFY2(x)
+    #define XSTRINGIFY2(x) #x
+    #define XSTRINGIFY(x) XSTRINGIFY2(x)
 #endif
 
 #ifdef __cplusplus
-	#ifdef _MSC_VER
-		#define XSENS_COMPILER_WARNING(n, w) __pragma(message(__FILE__ "(" XSTRINGIFY(__LINE__) "): warning " n ": " w));
-	#else
-		// the warning needs to be made literal. String concatenation is unfortunately not performed before _Pragma
-		#define XCW_GCCWARNING(w) _Pragma(XSTRINGIFY(GCC warning #w))
-		#define XSENS_COMPILER_WARNING(n, w) XCW_GCCWARNING(w (n))
-	#endif
+    #ifdef _MSC_VER
+        #define XSENS_COMPILER_WARNING(n, w) __pragma(message(__FILE__ "(" XSTRINGIFY(__LINE__) "): warning " n ": " w));
+    #else
+        // the warning needs to be made literal. String concatenation is unfortunately not performed before _Pragma
+        #define XCW_GCCWARNING(w) _Pragma(XSTRINGIFY(GCC warning #w))
+        #define XSENS_COMPILER_WARNING(n, w) XCW_GCCWARNING(w (n))
+    #endif
 #else
-	// old/plain C compilers don't support these keywords
-	#define XSENS_COMPILER_WARNING(n, w)
+    // old/plain C compilers don't support these keywords
+    #define XSENS_COMPILER_WARNING(n, w)
 #endif
 #define XSENS_COMPILER_WARNING0(w) XSENS_COMPILER_WARNING("X0000", w)
 

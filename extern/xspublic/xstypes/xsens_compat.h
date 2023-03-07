@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -124,12 +124,12 @@ int32_t strcpy_s(char (&dest)[size], const char *src) __compat_defdeprecated;
 template <uint32_t size>
 int32_t strcpy_s(char (&dest)[size], const char *src)
 {
-	if (!src) return EINVAL;
-	if (size == 0 || size < strlen(src) + 1) return ERANGE;
+    if (!src) return EINVAL;
+    if (size == 0 || size < strlen(src) + 1) return ERANGE;
 
-	strcpy(dest, src);
+    strcpy(dest, src);
 
-	return 0;
+    return 0;
 }
 #endif
 #endif
@@ -143,13 +143,13 @@ int32_t strncpy_s(char (&dest)[size], const char *src, uint32_t count) __compat_
 template <uint32_t size>
 int32_t strncpy_s(char (&dest)[size], const char *src, uint32_t count)
 {
-	if (!src) return EINVAL;
-	size_t itemsToAdd = (count < strlen(src) ? count : strlen(src));
-	if (size == 0 || size < itemsToAdd + 1) return ERANGE;
+    if (!src) return EINVAL;
+    size_t itemsToAdd = (count < strlen(src) ? count : strlen(src));
+    if (size == 0 || size < itemsToAdd + 1) return ERANGE;
 
-	strncpy(dest, src, count);
+    strncpy(dest, src, count);
 
-	return 0;
+    return 0;
 }
 #endif
 #endif
@@ -163,12 +163,12 @@ int32_t strcat_s(char (&dest)[size], const char *src) __compat_defdeprecated;
 template <uint32_t size>
 int32_t strcat_s(char (&dest)[size], const char *src)
 {
-	if (!src) return EINVAL;
-	if (size == 0 || size < strlen(src) + strlen(dest) + 1) return ERANGE;
+    if (!src) return EINVAL;
+    if (size == 0 || size < strlen(src) + strlen(dest) + 1) return ERANGE;
 
-	strcat (dest, src);
+    strcat (dest, src);
 
-	return 0;
+    return 0;
 }
 #endif
 #endif
@@ -194,7 +194,7 @@ XSEXTC int fopen_s(FILE **file, const char *filename, const char *mode) __compat
 #ifdef HAVE_WCSCASECMP
 #define _wcsicmp wcscasecmp
 #else
-#define _wcsicmp(s1, s2)		compat_wcsnicmp(s1, s2, 0x7fffffff)
+#define _wcsicmp(s1, s2)        compat_wcsnicmp(s1, s2, 0x7fffffff)
 XSEXTC int compat_wcsnicmp(const wchar_t* s1, const wchar_t* s2, size_t length) __compat_defdeprecated;
 #endif
 
@@ -202,7 +202,7 @@ XSEXTC int compat_wcsnicmp(const wchar_t* s1, const wchar_t* s2, size_t length) 
 #ifdef HAVE_WCSNCASECMP
 #define _wcsnicmp wcsncasecmp
 #else
-#define _wcsnicmp(s1, s2, n)	compat_wcsnicmp(s1, s2, n)
+#define _wcsnicmp(s1, s2, n)    compat_wcsnicmp(s1, s2, n)
 XSEXTC int compat_wcsnicmp(const wchar_t* s1, const wchar_t* s2, size_t length) __compat_defdeprecated;
 #endif
 
@@ -254,26 +254,26 @@ XSEXTC char *strtok_s(char *token, const char *delim, char **context) __compat_d
 XSEXTC int compat_finite(XsReal x) __compat_deprecated("Use XsMath_isFinite instead");
 #endif
 
-#define LOBYTE(w)	((uint8_t)((w) & 0xff))
-#define HIBYTE(w)	((uint8_t)(((w) >> 8) & 0xff))
+#define LOBYTE(w)    ((uint8_t)((w) & 0xff))
+#define HIBYTE(w)    ((uint8_t)(((w) >> 8) & 0xff))
 
 #define __assume(val)
 
 #if !defined(HAVE_CDECL)
-#	if !defined(__cdecl)
-#		if defined(__x86_64__)
-#			define __cdecl
-#		else
-#			define __cdecl __attribute__((cdecl))
-#		endif
-#	endif
-#	if !defined(__stdcall)
-#		if defined(__x86_64__)
-#			define __stdcall
-#		else
-#			define __stdcall __attribute__((stdcall))
-#		endif
-#	endif
+#    if !defined(__cdecl)
+#        if defined(__x86_64__)
+#            define __cdecl
+#        else
+#            define __cdecl __attribute__((cdecl))
+#        endif
+#    endif
+#    if !defined(__stdcall)
+#        if defined(__x86_64__)
+#            define __stdcall
+#        else
+#            define __stdcall __attribute__((stdcall))
+#        endif
+#    endif
 #endif
 
 #ifndef HAVE__UNLINK
@@ -307,14 +307,14 @@ static inline void EnterCriticalSection(CRITICAL_SECTION *cs) __compat_deprecate
 static inline int TryEnterCriticalSection(CRITICAL_SECTION *cs) __compat_deprecated("Use XsMutex instead");
 static inline void LeaveCriticalSection(CRITICAL_SECTION *cs) __compat_deprecated("Use XsMutex instead");
 
-static inline void InitializeCriticalSection(CRITICAL_SECTION *cs)	{ pthread_mutex_init(cs, 0); }
-static inline void DeleteCriticalSection(CRITICAL_SECTION *cs)		{ pthread_mutex_destroy(cs); }
-static inline void EnterCriticalSection(CRITICAL_SECTION *cs)		{ pthread_mutex_lock(cs); }
-static inline int TryEnterCriticalSection(CRITICAL_SECTION *cs)		{ return (pthread_mutex_trylock(cs) == 0); }
-static inline void LeaveCriticalSection(CRITICAL_SECTION *cs)		{ pthread_mutex_unlock(cs); }
+static inline void InitializeCriticalSection(CRITICAL_SECTION *cs)    { pthread_mutex_init(cs, 0); }
+static inline void DeleteCriticalSection(CRITICAL_SECTION *cs)        { pthread_mutex_destroy(cs); }
+static inline void EnterCriticalSection(CRITICAL_SECTION *cs)        { pthread_mutex_lock(cs); }
+static inline int TryEnterCriticalSection(CRITICAL_SECTION *cs)        { return (pthread_mutex_trylock(cs) == 0); }
+static inline void LeaveCriticalSection(CRITICAL_SECTION *cs)        { pthread_mutex_unlock(cs); }
 
 #ifndef DWORD
-#	define DWORD uint32_t
+#    define DWORD uint32_t
 #endif
 
 XSEXTC int IsBadWritePtr(void *p, size_t size);
@@ -331,9 +331,9 @@ XSEXTC int IsBadWritePtr(void *p, size_t size);
 // \todo Remove override define when linux compiler supports it
 #ifdef __GNUC__
 #if (__GNUC__ >= 4) && (__GNUC_MINOR__ >= 7)
-	// override keyword supported
+    // override keyword supported
 #else
-	#define override
+    #define override
 #endif
 #endif
 

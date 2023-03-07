@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -32,95 +32,95 @@
 
 #include "journalfile.h"
 #ifdef _MSC_VER
-	#include <Windows.h>
+    #include <Windows.h>
 #endif
 
-/*!	\class JournalFile
-	\brief A class containing a journal file and some meta-data
-	\details These objects are managed by Journaller through gJournalFileMap.
+/*!    \class JournalFile
+    \brief A class containing a journal file and some meta-data
+    \details These objects are managed by Journaller through gJournalFileMap.
 */
 
 /*! \var volatile std::atomic_int JournalFile::m_refCount
-	\brief A reference counter that tracks how many Journaller objects use this file
+    \brief A reference counter that tracks how many Journaller objects use this file
 */
 
 /*! \brief Constructor, requires a filename
-	\details
-	\param name The (path and) filename of the log file to be used
-	\param purge When set to true (default) the file will be cleared when opened
+    \details
+    \param name The (path and) filename of the log file to be used
+    \param purge When set to true (default) the file will be cleared when opened
 */
 JournalFile::JournalFile(const XsString& name, bool purge)
-	: m_refCount(1)
-	, m_filename(name)
+    : m_refCount(1)
+    , m_filename(name)
 {
 #ifdef _MSC_VER
-	if (m_filename.find(':') < 0 && m_filename.find('/') < 0 && m_filename.find('\\') < 0)
-	{
-		char cwdBuf[1024];
-		GetCurrentDirectoryA(1024, cwdBuf);
-		m_filename = XsString(cwdBuf) + XsString("\\") + m_filename;
-	}
+    if (m_filename.find(':') < 0 && m_filename.find('/') < 0 && m_filename.find('\\') < 0)
+    {
+        char cwdBuf[1024];
+        GetCurrentDirectoryA(1024, cwdBuf);
+        m_filename = XsString(cwdBuf) + XsString("\\") + m_filename;
+    }
 #endif
 
-	if (purge || (m_file.openText(m_filename, false) != XRV_OK))
-		m_file.createText(m_filename, false);
-	if (m_file.isOpen())
-		m_file.seek_r(0);
+    if (purge || (m_file.openText(m_filename, false) != XRV_OK))
+        m_file.createText(m_filename, false);
+    if (m_file.isOpen())
+        m_file.seek_r(0);
 }
 
 /*! \brief Destructor, flushes remaining data and closes the file */
 JournalFile::~JournalFile()
 {
-	try
-	{
-		flush();
-		m_file.close();
-	}
-	catch (...)
-	{
-	}
+    try
+    {
+        flush();
+        m_file.close();
+    }
+    catch (...)
+    {
+    }
 }
 
 /*! \brief Flush remaining data to disk */
 void JournalFile::flush()
 {
-	m_file.flush();
+    m_file.flush();
 }
 
 /*! \brief Increase reference count of JournalFile by 1
-	\return The new ref count value
+    \return The new ref count value
 */
 int JournalFile::addRef()
 {
-	return ++m_refCount;
+    return ++m_refCount;
 }
 
 /*! \brief Returns the current ref count value
-	\return The ref count value
+    \return The ref count value
 */
 int JournalFile::refCount() volatile const
 {
-	return m_refCount.load();
+    return m_refCount.load();
 }
 
 /*! \brief Decrease reference count of JournalFile by 1
-	\return The new ref count value
+    \return The new ref count value
 */
 int JournalFile::removeRef()
 {
-	return --m_refCount;
+    return --m_refCount;
 }
 
 /*! \brief Returns the (path +) filename of the open file */
 XsString JournalFile::filename() const
 {
-	return m_filename;
+    return m_filename;
 }
 
 /*! \brief Appends \a msg to the end of the current data stream */
 JournalFile& JournalFile::operator<<(std::string const& msg)
 {
-	if (m_file.isOpen())
-		m_file.write(msg.c_str(), (XsFilePos) sizeof(char), (XsFilePos) msg.length());
-	return *this;
+    if (m_file.isOpen())
+        m_file.write(msg.c_str(), (XsFilePos) sizeof(char), (XsFilePos) msg.length());
+    return *this;
 }

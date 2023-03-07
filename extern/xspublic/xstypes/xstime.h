@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -35,7 +35,7 @@
 
 #include "xstypesconfig.h"
 #ifdef _WIN32
-	#include <windows.h>
+    #include <windows.h>
 #endif
 
 #include <time.h>
@@ -70,8 +70,8 @@ XSTYPES_DLL_API int64_t XsTime_localToUtc();
 namespace XsTime
 {
 #ifdef __GNUC__
-	#pragma GCC diagnostic push
-	#pragma GCC diagnostic ignored "-Wunused-variable"
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wunused-variable"
 #endif
 /*! \brief The number of seconds in a day */
 static const XsTimeStamp& secPerDay = XsTime_secPerDay;
@@ -80,81 +80,81 @@ static const XsTimeStamp& milliSecPerDay = XsTime_milliSecPerDay;
 /*! \brief The maximum possible timestamp  */
 static const XsTimeStamp& timeStampMax = XsTime_timeStampMax;
 #ifdef __GNUC__
-	#pragma GCC diagnostic pop
+    #pragma GCC diagnostic pop
 #endif
 
 //! \copydoc XsTime_getTimeOfDay
 inline uint32_t getTimeOfDay(tm* date_ = NULL, time_t* secs_ = NULL)
 {
-	return XsTime_getTimeOfDay(date_, secs_);
+    return XsTime_getTimeOfDay(date_, secs_);
 }
 
 //! \copydoc XsTime_getDateTime
 inline int64_t getDateTime(tm* date = 0)
 {
-	return XsTime_getDateTime(date);
+    return XsTime_getDateTime(date);
 }
 
 //! \copydoc XsTime_getDateAsString
 inline void getDateAsString(char* dest, tm const* date = 0)
 {
-	XsTime_getDateAsString(dest, date);
+    XsTime_getDateAsString(dest, date);
 }
 
 //! \copydoc XsTime_getTimeAsString
 inline void getTimeAsString(char* dest, tm const* date = 0)
 {
-	XsTime_getTimeAsString(dest, date);
+    XsTime_getTimeAsString(dest, date);
 }
 
 /*! \brief Returns the date as a readable string
-	\param date to convert to string
-	\returns The date as a readable string
-	\sa XsTime_getDateAsWString
+    \param date to convert to string
+    \returns The date as a readable string
+    \sa XsTime_getDateAsWString
 */
 inline XsString getDateAsString(tm const* date = 0)
 {
-	wchar_t wcharBuf[9];
-	XsTime_getDateAsWString(wcharBuf, date);
-	wcharBuf[8] = 0;
-	return XsString(wcharBuf);
+    wchar_t wcharBuf[9];
+    XsTime_getDateAsWString(wcharBuf, date);
+    wcharBuf[8] = 0;
+    return XsString(wcharBuf);
 }
 
 /*! \brief Returns the time as a readable string
-	\param time to convert to string
-	\returns The time as a readable string
-	\sa XsTime_getTimeAsWString
+    \param time to convert to string
+    \returns The time as a readable string
+    \sa XsTime_getTimeAsWString
 */
 inline XsString getTimeAsString(tm const* time = 0)
 {
-	wchar_t wcharBuf[9];
-	XsTime_getTimeAsWString(wcharBuf, time);
-	wcharBuf[8] = 0;
-	return XsString(wcharBuf);
+    wchar_t wcharBuf[9];
+    XsTime_getTimeAsWString(wcharBuf, time);
+    wcharBuf[8] = 0;
+    return XsString(wcharBuf);
 }
 
 //! \copydoc XsTime_msleep
 inline void msleep(uint32_t ms) noexcept
 {
-	XsTime_msleep(ms);
+    XsTime_msleep(ms);
 }
 
 //! \copydoc XsTime_udelay
 inline void udelay(uint64_t us) noexcept
 {
-	XsTime_udelay(us);
+    XsTime_udelay(us);
 }
 
 //! \copydoc XsTime_initializeTime
 inline void initializeTime()
 {
-	XsTime_initializeTime();
+    XsTime_initializeTime();
 }
 
 //! \copydoc XsTime_timeStampNow
 inline int64_t timeStampNow(XsTimeStamp* now = 0)
 {
-	return XsTime_timeStampNow(now);
+    return XsTime_timeStampNow(now);
 }
 }
 #endif

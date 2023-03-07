@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -41,43 +41,43 @@
 #include "xsfloatmath.h"
 
 #if defined(SQUISHCOCO)
-	#define XSMATHCONST		static const
-	#define XSMATHINLINE2	static
-	#define XSMATHINLINE	static
-	#define WANTXSMATH2		1
-#else	// normal operation
-	#if defined( __cplusplus)
-		#if defined(__ADSP21000__)
-			#define XSMATHCONST		static const
-			#define XSMATHINLINE	inline static
-			#define WANTXSMATH2		0
-		#elif defined(__ANDROID_API__) || defined(__APPLE__)
-			#define XSMATHCONST		static constexpr
-			#define XSMATHINLINE	inline static
-			#define WANTXSMATH2		1
-		#elif defined(__AVR32__)
-			#define XSMATHCONST		static const
-			#define XSMATHINLINE	inline static
-			#define WANTXSMATH2		0
-		#else
-			#define XSMATHCONST		static constexpr
-			#define XSMATHINLINE	inline static constexpr
-			#define WANTXSMATH2		1
-		#endif
-		#define XSMATHINLINE2	inline static
-	#else
-		#define XSMATHCONST		static const
-		#define XSMATHINLINE	static
-		#define XSMATHINLINE2	static
-		#define WANTXSMATH2		0
-	#endif
+    #define XSMATHCONST        static const
+    #define XSMATHINLINE2    static
+    #define XSMATHINLINE    static
+    #define WANTXSMATH2        1
+#else    // normal operation
+    #if defined( __cplusplus)
+        #if defined(__ADSP21000__)
+            #define XSMATHCONST        static const
+            #define XSMATHINLINE    inline static
+            #define WANTXSMATH2        0
+        #elif defined(__ANDROID_API__) || defined(__APPLE__)
+            #define XSMATHCONST        static constexpr
+            #define XSMATHINLINE    inline static
+            #define WANTXSMATH2        1
+        #elif defined(__AVR32__)
+            #define XSMATHCONST        static const
+            #define XSMATHINLINE    inline static
+            #define WANTXSMATH2        0
+        #else
+            #define XSMATHCONST        static constexpr
+            #define XSMATHINLINE    inline static constexpr
+            #define WANTXSMATH2        1
+        #endif
+        #define XSMATHINLINE2    inline static
+    #else
+        #define XSMATHCONST        static const
+        #define XSMATHINLINE    static
+        #define XSMATHINLINE2    static
+        #define WANTXSMATH2        0
+    #endif
 #endif
 
 /*! \namespace XsMath
-	\brief Namespace for mathematical constants and operations.
+    \brief Namespace for mathematical constants and operations.
 */
 /*! \addtogroup cinterface C Interface
-	@{
+    @{
 */
 
 //! \brief The value e
@@ -90,29 +90,29 @@ XSMATHCONST XsReal XsMath_tinyValue = 1.0e-16;
 XSMATHCONST XsReal XsMath_hugeValue = 1.0e+16;
 
 #ifdef XSENS_SINGLE_PRECISION
-	//! \brief A value related to the precision of floating point arithmetic (1.192092895507813e-07)
-	XSMATHCONST XsReal XsMath_epsilon = 1.192092895507813e-07;
-	//! \brief Square root of XsMath_epsilon
-	XSMATHCONST XsReal XsMath_sqrtEpsilon = 3.452669830012439e-04;
-	//! \brief Value that represents the subnormal number in floating point wizardry
-	XSMATHCONST XsReal XsMath_denormalized = 1e-37;
-	//! \brief Square root of XsMath_denormalized
-	XSMATHCONST XsReal XsMath_sqrtDenormalized = 3.1622776601683793319988935444327e-19;
+    //! \brief A value related to the precision of floating point arithmetic (1.192092895507813e-07)
+    XSMATHCONST XsReal XsMath_epsilon = 1.192092895507813e-07;
+    //! \brief Square root of XsMath_epsilon
+    XSMATHCONST XsReal XsMath_sqrtEpsilon = 3.452669830012439e-04;
+    //! \brief Value that represents the subnormal number in floating point wizardry
+    XSMATHCONST XsReal XsMath_denormalized = 1e-37;
+    //! \brief Square root of XsMath_denormalized
+    XSMATHCONST XsReal XsMath_sqrtDenormalized = 3.1622776601683793319988935444327e-19;
 #else
-	//! \brief A value related to the precision of floating point arithmetic (2.2204460492503131e-016)
-	XSMATHCONST XsReal XsMath_epsilon = 2.2204460492503131e-016;
-	//! \brief Square root of XsMath_epsilon
-	XSMATHCONST XsReal XsMath_sqrtEpsilon = 1.4901161193847656e-008;
-	//! \brief Value that represents the subnormal number in floating point wizardry
-	XSMATHCONST XsReal XsMath_denormalized = 1e-307;
-	//! \brief Square root of XsMath_denormalized
-	XSMATHCONST XsReal XsMath_sqrtDenormalized = 3.1622776601683793319988935444327e-154;
+    //! \brief A value related to the precision of floating point arithmetic (2.2204460492503131e-016)
+    XSMATHCONST XsReal XsMath_epsilon = 2.2204460492503131e-016;
+    //! \brief Square root of XsMath_epsilon
+    XSMATHCONST XsReal XsMath_sqrtEpsilon = 1.4901161193847656e-008;
+    //! \brief Value that represents the subnormal number in floating point wizardry
+    XSMATHCONST XsReal XsMath_denormalized = 1e-307;
+    //! \brief Square root of XsMath_denormalized
+    XSMATHCONST XsReal XsMath_sqrtDenormalized = 3.1622776601683793319988935444327e-154;
 #endif
 
 //! \brief Value to convert radians to degrees by multiplication
-XSMATHCONST XsReal XsMath_rad2degValue = 57.295779513082320876798154814105;	// (180.0/pi)
+XSMATHCONST XsReal XsMath_rad2degValue = 57.295779513082320876798154814105;    // (180.0/pi)
 //! \brief Value to convert degrees to radians by multiplication
-XSMATHCONST XsReal XsMath_deg2radValue = 0.017453292519943295769236907684886;	// (pi/180.0)
+XSMATHCONST XsReal XsMath_deg2radValue = 0.017453292519943295769236907684886;    // (pi/180.0)
 
 //! \brief 0
 XSMATHCONST XsReal XsMath_zero = 0.0;
@@ -145,53 +145,53 @@ XSMATHCONST XsReal XsMath_sqrt2 = 1.4142135623730950488016887242097;
 XSMATHCONST XsReal XsMath_sqrtHalf = 0.5 * 1.4142135623730950488016887242097;
 
 #ifdef XSENS_SINGLE_PRECISION
-	//! \brief infinity value
-	XSMATHCONST XsReal XsMath_infinity = FLT_MAX;
+    //! \brief infinity value
+    XSMATHCONST XsReal XsMath_infinity = FLT_MAX;
 #else
-	//! \brief infinity value
-	XSMATHCONST XsReal XsMath_infinity = DBL_MAX;
+    //! \brief infinity value
+    XSMATHCONST XsReal XsMath_infinity = DBL_MAX;
 #endif
 
 /*! \brief Returns asin(\a x) for -1 < x < 1
 */
 XSMATHINLINE XsReal XsMath_asinClamped(const XsReal x)
 {
-	return x <= XsMath_minusOne ? XsMath_minusHalfPi : x >= XsMath_one ? XsMath_halfPi : asin(x);
+    return x <= XsMath_minusOne ? XsMath_minusHalfPi : x >= XsMath_one ? XsMath_halfPi : asin(x);
 }
 
-/*!	\brief Convert radians to degrees
+/*!    \brief Convert radians to degrees
 */
 XSMATHINLINE XsReal XsMath_rad2deg(XsReal radians)
 {
-	return XsMath_rad2degValue * radians;
+    return XsMath_rad2degValue * radians;
 }
 
-/*!	\brief Convert degrees to radians
+/*!    \brief Convert degrees to radians
 */
 XSMATHINLINE XsReal XsMath_deg2rad(XsReal degrees)
 {
-	return XsMath_deg2radValue * degrees;
+    return XsMath_deg2radValue * degrees;
 }
 
-/*!	\brief Returns \a a to the power of 2
+/*!    \brief Returns \a a to the power of 2
 */
 XSMATHINLINE XsReal XsMath_pow2(XsReal a)
 {
-	return a * a;
+    return a * a;
 }
 
-/*!	\brief Returns \a a to the power of 3
+/*!    \brief Returns \a a to the power of 3
 */
 XSMATHINLINE XsReal XsMath_pow3(XsReal a)
 {
-	return a * a * a;
+    return a * a * a;
 }
 
-/*!	\brief Returns \a a to the power of 5
+/*!    \brief Returns \a a to the power of 5
 */
 XSMATHINLINE XsReal XsMath_pow5(XsReal a)
 {
-	return XsMath_pow2(a) * XsMath_pow3(a);
+    return XsMath_pow2(a) * XsMath_pow3(a);
 }
 
 /*! \brief Returns non-zero if \a x is finite
@@ -199,39 +199,39 @@ XSMATHINLINE XsReal XsMath_pow5(XsReal a)
 XSMATHINLINE2 int XsMath_isFinite(XsReal x)
 {
 #ifdef _MSC_VER
-	switch (_fpclass(x))
-	{
-		case _FPCLASS_SNAN:
-		case _FPCLASS_QNAN:
-		case _FPCLASS_NINF:
-		case _FPCLASS_PINF:
-			return 0;
+    switch (_fpclass(x))
+    {
+        case _FPCLASS_SNAN:
+        case _FPCLASS_QNAN:
+        case _FPCLASS_NINF:
+        case _FPCLASS_PINF:
+            return 0;
 
-		case _FPCLASS_NN:
-		case _FPCLASS_ND:
-		case _FPCLASS_NZ:
-		case _FPCLASS_PZ:
-		case _FPCLASS_PD:
-		case _FPCLASS_PN:
-			return 1;
+        case _FPCLASS_NN:
+        case _FPCLASS_ND:
+        case _FPCLASS_NZ:
+        case _FPCLASS_PZ:
+        case _FPCLASS_PD:
+        case _FPCLASS_PN:
+            return 1;
 
-		default:
-			return _finite(x);
-	}
+        default:
+            return _finite(x);
+    }
 #elif defined(isfinite) || defined(__APPLE__)
-	return isfinite(x);
+    return isfinite(x);
 #elif defined(__ANDROID_API__)
-	return finite(x);
+    return finite(x);
 #elif __GNUC__
 #ifdef __cplusplus
-	return std::isfinite(x);
+    return std::isfinite(x);
 #else
-	return isfinite(x);
+    return isfinite(x);
 #endif
 #elif defined(_ADI_COMPILER)
-	return !(isnan(x) || isinf(x));
+    return !(isnan(x) || isinf(x));
 #else
-	return 1;
+    return 1;
 #endif
 }
 
@@ -239,34 +239,34 @@ XSMATHINLINE2 int XsMath_isFinite(XsReal x)
 */
 XSMATHINLINE2 int32_t XsMath_floatToLong(float d)
 {
-	return (d >= 0) ? (int32_t) floorf(d + 0.5f) : (int32_t) ceilf(d - 0.5f);
+    return (d >= 0) ? (int32_t) floorf(d + 0.5f) : (int32_t) ceilf(d - 0.5f);
 }
 
 /*! \brief Returns \a d integer converted from a single precision floating point value
 */
 XSMATHINLINE2 int64_t XsMath_floatToInt64(float d)
 {
-	return (d >= 0) ? (int64_t) floorf(d + 0.5f) : (int64_t) ceilf(d - 0.5f);
+    return (d >= 0) ? (int64_t) floorf(d + 0.5f) : (int64_t) ceilf(d - 0.5f);
 }
 
 /*! \brief Returns \a d integer converted from a double precision floating point value
 */
 XSMATHINLINE2 int32_t XsMath_doubleToLong(double d)
 {
-	return (d >= 0) ? (int32_t) floor(d + 0.5) : (int32_t) ceil(d - 0.5);
+    return (d >= 0) ? (int32_t) floor(d + 0.5) : (int32_t) ceil(d - 0.5);
 }
 
 /*! \brief Returns \a d integer converted from a double precision floating point value
 */
 XSMATHINLINE2 int64_t XsMath_doubleToInt64(double d)
 {
-	return (d >= 0) ? (int64_t) floor(d + 0.5) : (int64_t) ceil(d - 0.5);
+    return (d >= 0) ? (int64_t) floor(d + 0.5) : (int64_t) ceil(d - 0.5);
 }
 
 #ifdef __cplusplus
-	#ifndef XSMATH2_H
-		#include "xsmath2.h"
-	#endif
+    #ifndef XSMATH2_H
+        #include "xsmath2.h"
+    #endif
 #endif
 
 /*! @} */

@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -36,60 +36,60 @@
 #include <xstypes/xsresultvalue.h>
 #include <xstypes/xsstring.h>
 
-/*!	\class LastResultManager
-	\brief This class manages a result code with optional additional text
-	\details It can be treated like a simple XsResultValue, but gives extra options
+/*!    \class LastResultManager
+    \brief This class manages a result code with optional additional text
+    \details It can be treated like a simple XsResultValue, but gives extra options
 */
 class LastResultManager
 {
-	XsResultValue m_lastResult;
-	XsString m_lastResultText;
+    XsResultValue m_lastResult;
+    XsString m_lastResultText;
 public:
-	LastResultManager() : m_lastResult(XRV_OK) {}
+    LastResultManager() : m_lastResult(XRV_OK) {}
 
-	/*! \brief Sets the last results
-		\param res : The result value to set
-		\param text : The result text to set
-	*/
-	void set(XsResultValue res, XsString const& text)
-	{
-		m_lastResult = res;
-		m_lastResultText = text;
-	}
+    /*! \brief Sets the last results
+        \param res : The result value to set
+        \param text : The result text to set
+    */
+    void set(XsResultValue res, XsString const& text)
+    {
+        m_lastResult = res;
+        m_lastResultText = text;
+    }
 
-	/*! \returns The last result value
-	*/
-	XsResultValue lastResult() const
-	{
-		return m_lastResult;
-	}
+    /*! \returns The last result value
+    */
+    XsResultValue lastResult() const
+    {
+        return m_lastResult;
+    }
 
-	/*! \returns The last result text
-	*/
-	XsString lastResultText() const
-	{
-		if (m_lastResultText.empty())
-			return XsResultValue_toString(m_lastResult);
-		return m_lastResultText;
-	}
+    /*! \returns The last result text
+    */
+    XsString lastResultText() const
+    {
+        if (m_lastResultText.empty())
+            return XsResultValue_toString(m_lastResult);
+        return m_lastResultText;
+    }
 
-	/*! \brief Assignment operator, copies contents from the \a res result value
-		\param res : The result value to copy from
-		\returns The assigned result value
-	*/
-	XsResultValue operator = (XsResultValue res)
-	{
-		m_lastResult = res;
-		m_lastResultText.clear();
-		return res;
-	}
+    /*! \brief Assignment operator, copies contents from the \a res result value
+        \param res : The result value to copy from
+        \returns The assigned result value
+    */
+    XsResultValue operator = (XsResultValue res)
+    {
+        m_lastResult = res;
+        m_lastResultText.clear();
+        return res;
+    }
 
-	/*! \returns The last result value
-	*/
-	operator XsResultValue() const
-	{
-		return m_lastResult;
-	}
+    /*! \returns The last result value
+    */
+    operator XsResultValue() const
+    {
+        return m_lastResult;
+    }
 };
 
 #endif

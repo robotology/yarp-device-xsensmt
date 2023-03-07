@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -36,41 +36,41 @@
 #include "mtibasedevice.h"
 
 /*! \class MtiX0Device
-	\brief The MTi device used for the X0-series
+    \brief The MTi device used for the X0-series
 */
 class MtiX0Device : public MtiBaseDeviceEx
 {
 public:
-	//! \copybrief MtiXDevice::constructStandalone
-	static XsDevice* constructStandalone(Communicator* comm)
-	{
-		return new MtiX0Device(comm);
-	}
+    //! \copybrief MtiXDevice::constructStandalone
+    static XsDevice* constructStandalone(Communicator* comm)
+    {
+        return new MtiX0Device(comm);
+    }
 
-	explicit MtiX0Device(Communicator* comm);
+    explicit MtiX0Device(Communicator* comm);
 
-	//! \brief An empty constructor for a master device
-	explicit MtiX0Device(XsDevice* master) : MtiBaseDeviceEx(master) {};
-	virtual ~MtiX0Device();
+    //! \brief An empty constructor for a master device
+    explicit MtiX0Device(XsDevice* master) : MtiBaseDeviceEx(master) {};
+    virtual ~MtiX0Device();
 
-	XsStringOutputTypeArray supportedStringOutputTypes() const override;
-	uint32_t supportedStatusFlags() const override;
+    XsStringOutputTypeArray supportedStringOutputTypes() const override;
+    uint32_t supportedStatusFlags() const override;
 
 protected:
-	MtiBaseDevice::BaseFrequencyResult getBaseFrequencyInternal(XsDataIdentifier dataType = XDI_None) const override;
+    MtiBaseDevice::BaseFrequencyResult getBaseFrequencyInternal(XsDataIdentifier dataType = XDI_None) const override;
 };
 
 #ifndef XDA_PRIVATE_BUILD
 /*! \class MtiX0DeviceEx
-	\brief The internal base class for MTi-X0 series devices
+    \brief The internal base class for MTi-X0 series devices
 */
 struct MtiX0DeviceEx : public MtiX0Device
 {
-	//! \copybrief MtiX0Device::MtiX0Device
-	explicit MtiX0DeviceEx(Communicator* comm) : MtiX0Device(comm) {};
+    //! \copybrief MtiX0Device::MtiX0Device
+    explicit MtiX0DeviceEx(Communicator* comm) : MtiX0Device(comm) {};
 
-	//! \copybrief MtiX0Device::MtiX0Device
-	explicit MtiX0DeviceEx(XsDevice* master) : MtiX0Device(master) {};
+    //! \copybrief MtiX0Device::MtiX0Device
+    explicit MtiX0DeviceEx(XsDevice* master) : MtiX0Device(master) {};
 };
 #else
 #include "mtix0deviceex.h"

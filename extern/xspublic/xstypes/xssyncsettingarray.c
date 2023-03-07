@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -36,48 +36,48 @@
 #include <string.h>
 
 /*! \struct XsSyncSettingArray
-	\brief A list of XsSyncSetting values
-	\sa XsArray
+    \brief A list of XsSyncSetting values
+    \sa XsArray
 */
 
 /*! \copydoc XsArrayDescriptor::itemCopy
-	\note Specialization for XsSyncSetting*/
+    \note Specialization for XsSyncSetting*/
 void copySyncSetting(XsSyncSetting* to, XsSyncSetting const* from)
 {
-	*to = *from;
+    *to = *from;
 }
 
 /*! \copydoc XsArrayDescriptor::itemCompare
-	\note Specialization for XsSyncSetting*/
+    \note Specialization for XsSyncSetting*/
 int compareSyncSetting(XsSyncSetting const* a, XsSyncSetting const* b)
 {
-	return XsSyncSetting_compare(a, b);
+    return XsSyncSetting_compare(a, b);
 }
 
 //! \brief zero the pointer value
 void zeroSyncSetting(XsSyncSetting* a)
 {
-	memset(a, 0, sizeof(XsSyncSetting));
-	a->m_line = XSL_Invalid;
+    memset(a, 0, sizeof(XsSyncSetting));
+    a->m_line = XSL_Invalid;
 }
 
 //! \brief Descriptor for XsSyncSettingArray
 XsArrayDescriptor const g_xsSyncSettingArrayDescriptor =
 {
-	sizeof(XsSyncSetting),
-	XSEXPCASTITEMSWAP XsSyncSetting_swap,
-	XSEXPCASTITEMMAKE zeroSyncSetting,		// construct
-	XSEXPCASTITEMCOPY copySyncSetting,		// copy construct
-	0,										// destruct
-	XSEXPCASTITEMCOPY copySyncSetting,
-	XSEXPCASTITEMCOMP compareSyncSetting,
-	XSEXPCASTRAWCOPY XsArray_rawCopy	// raw copy
+    sizeof(XsSyncSetting),
+    XSEXPCASTITEMSWAP XsSyncSetting_swap,
+    XSEXPCASTITEMMAKE zeroSyncSetting,        // construct
+    XSEXPCASTITEMCOPY copySyncSetting,        // copy construct
+    0,                                        // destruct
+    XSEXPCASTITEMCOPY copySyncSetting,
+    XSEXPCASTITEMCOMP compareSyncSetting,
+    XSEXPCASTRAWCOPY XsArray_rawCopy    // raw copy
 };
 
 /*! \copydoc XsArray_constructDerived
-	\note Specialization for XsSyncSettingArray
+    \note Specialization for XsSyncSettingArray
 */
 void XsSyncSettingArray_construct(XsSyncSettingArray* thisPtr, XsSize count, XsSyncSetting const* src)
 {
-	XsArray_construct(thisPtr, &g_xsSyncSettingArrayDescriptor, count, src);
+    XsArray_construct(thisPtr, &g_xsSyncSettingArrayDescriptor, count, src);
 }

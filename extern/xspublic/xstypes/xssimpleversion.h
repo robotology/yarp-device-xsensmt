@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -59,134 +59,134 @@ XSTYPES_DLL_API void XsSimpleVersion_osVersion(XsSimpleVersion* thisPtr);
 struct XsSimpleVersion
 {
 #ifdef __cplusplus
-	//! \brief Constructs a simple-version object using the supplied parameters or an empty version object if no parameters are given.
-	explicit XsSimpleVersion(int vmaj = 0, int vmin = 0, int vrev = 0)
-		: m_major((uint8_t) vmaj)
-		, m_minor((uint8_t) vmin)
-		, m_revision((uint8_t) vrev)
-	{}
+    //! \brief Constructs a simple-version object using the supplied parameters or an empty version object if no parameters are given.
+    explicit XsSimpleVersion(int vmaj = 0, int vmin = 0, int vrev = 0)
+        : m_major((uint8_t) vmaj)
+        , m_minor((uint8_t) vmin)
+        , m_revision((uint8_t) vrev)
+    {}
 
-	//! \brief Constructs a simple-version object based upon the \a other object
-	XsSimpleVersion(const XsSimpleVersion& other)
-		: m_major(other.m_major)
-		, m_minor(other.m_minor)
-		, m_revision(other.m_revision)
-	{}
+    //! \brief Constructs a simple-version object based upon the \a other object
+    XsSimpleVersion(const XsSimpleVersion& other)
+        : m_major(other.m_major)
+        , m_minor(other.m_minor)
+        , m_revision(other.m_revision)
+    {}
 
-	//! \brief Assign the simple-version from the \a other object
-	XsSimpleVersion& operator = (const XsSimpleVersion& other)
-	{
-		m_major = other.m_major;
-		m_minor = other.m_minor;
-		m_revision = other.m_revision;
-		return *this;
-	}
+    //! \brief Assign the simple-version from the \a other object
+    XsSimpleVersion& operator = (const XsSimpleVersion& other)
+    {
+        m_major = other.m_major;
+        m_minor = other.m_minor;
+        m_revision = other.m_revision;
+        return *this;
+    }
 
-	/*! \brief Test if the \a other simple-version is equal to this. */
-	inline bool operator == (const XsSimpleVersion& other) const
-	{
-		return !XsSimpleVersion_compare(this, &other);
-	}
+    /*! \brief Test if the \a other simple-version is equal to this. */
+    inline bool operator == (const XsSimpleVersion& other) const
+    {
+        return !XsSimpleVersion_compare(this, &other);
+    }
 
-	/*! \brief Test if the \a other simple-version is different to this. */
-	inline bool operator != (const XsSimpleVersion& other) const
-	{
-		if (m_major != other.m_major || m_minor != other.m_minor || m_revision != other.m_revision)
-			return true;
+    /*! \brief Test if the \a other simple-version is different to this. */
+    inline bool operator != (const XsSimpleVersion& other) const
+    {
+        if (m_major != other.m_major || m_minor != other.m_minor || m_revision != other.m_revision)
+            return true;
 
-		return false;
-	}
+        return false;
+    }
 
-	/*! \brief Test if the \a other version is lower than this. The comparison involves only the version numbers (major, minor and revision). */
-	inline bool operator < (const XsSimpleVersion& other) const
-	{
-		if (m_major < other.m_major)
-			return true;
-		else if (m_major > other.m_major)
-			return false;
+    /*! \brief Test if the \a other version is lower than this. The comparison involves only the version numbers (major, minor and revision). */
+    inline bool operator < (const XsSimpleVersion& other) const
+    {
+        if (m_major < other.m_major)
+            return true;
+        else if (m_major > other.m_major)
+            return false;
 
-		if (m_minor < other.m_minor)
-			return true;
-		else if (m_minor > other.m_minor)
-			return false;
+        if (m_minor < other.m_minor)
+            return true;
+        else if (m_minor > other.m_minor)
+            return false;
 
-		if (m_revision < other.m_revision)
-			return true;
-		else
-			return false;
-	}
+        if (m_revision < other.m_revision)
+            return true;
+        else
+            return false;
+    }
 
-	/*! \brief Test if the \a other version is lower or equal than this. */
-	inline bool operator <= (const XsSimpleVersion& other) const
-	{
-		if (m_major < other.m_major)
-			return true;
-		else if (m_major > other.m_major)
-			return false;
+    /*! \brief Test if the \a other version is lower or equal than this. */
+    inline bool operator <= (const XsSimpleVersion& other) const
+    {
+        if (m_major < other.m_major)
+            return true;
+        else if (m_major > other.m_major)
+            return false;
 
-		if (m_minor < other.m_minor)
-			return true;
-		else if (m_minor > other.m_minor)
-			return false;
+        if (m_minor < other.m_minor)
+            return true;
+        else if (m_minor > other.m_minor)
+            return false;
 
-		if (m_revision < other.m_revision)
-			return true;
-		else
-			return m_revision == other.m_revision;
-	}
+        if (m_revision < other.m_revision)
+            return true;
+        else
+            return m_revision == other.m_revision;
+    }
 
-	/*! \brief Test if the \a other version is higher than this. */
-	inline bool operator > (const XsSimpleVersion& other) const
-	{
-		return !(*this <= other);
-	}
+    /*! \brief Test if the \a other version is higher than this. */
+    inline bool operator > (const XsSimpleVersion& other) const
+    {
+        return !(*this <= other);
+    }
 
-	/*! \brief Test if the \a other version is higher or equal than this. */
-	inline bool operator >= (const XsSimpleVersion& other) const
-	{
-		return !(*this < other);
-	}
+    /*! \brief Test if the \a other version is higher or equal than this. */
+    inline bool operator >= (const XsSimpleVersion& other) const
+    {
+        return !(*this < other);
+    }
 
-	//! \brief \copybrief XsSimpleVersion_empty
-	inline bool empty() const
-	{
-		return 0 != XsSimpleVersion_empty(this);
-	}
+    //! \brief \copybrief XsSimpleVersion_empty
+    inline bool empty() const
+    {
+        return 0 != XsSimpleVersion_empty(this);
+    }
 
-	//! \brief Return the \e major part of the version
-	inline int major() const
-	{
-		return (int) m_major;
-	}
-	//! \brief Return the \e minor part of the version
-	inline int minor() const
-	{
-		return (int) m_minor;
-	}
-	//! \brief Return the \e revision part of the version
-	inline int revision() const
-	{
-		return (int) m_revision;
-	}
+    //! \brief Return the \e major part of the version
+    inline int major() const
+    {
+        return (int) m_major;
+    }
+    //! \brief Return the \e minor part of the version
+    inline int minor() const
+    {
+        return (int) m_minor;
+    }
+    //! \brief Return the \e revision part of the version
+    inline int revision() const
+    {
+        return (int) m_revision;
+    }
 
-	//! \brief \copybrief XsSimpleVersion_osVersion
-	inline static XsSimpleVersion osVersion()
-	{
-		static XsSimpleVersion rv = []()
-		{
-			XsSimpleVersion rv;
-			XsSimpleVersion_osVersion(&rv);
-			return rv;
-		}
-		();
-		return rv;
-	}
+    //! \brief \copybrief XsSimpleVersion_osVersion
+    inline static XsSimpleVersion osVersion()
+    {
+        static XsSimpleVersion rv = []()
+        {
+            XsSimpleVersion rv;
+            XsSimpleVersion_osVersion(&rv);
+            return rv;
+        }
+        ();
+        return rv;
+    }
 
 private:
 #endif
-	uint8_t m_major;			//!< The major part of the version number
-	uint8_t m_minor;			//!< The minor part of the version number
-	uint8_t m_revision;			//!< The revision number of the version
+    uint8_t m_major;            //!< The major part of the version number
+    uint8_t m_minor;            //!< The minor part of the version number
+    uint8_t m_revision;            //!< The revision number of the version
 };
 
 #endif

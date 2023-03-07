@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -38,33 +38,33 @@ namespace xsens
 {
 
 /*! \class ReplyObjectDeleter
-	\brief A class that deletes a reply object and removes it from the given monitor
+    \brief A class that deletes a reply object and removes it from the given monitor
 */
 class ReplyObjectDeleter
 {
 public:
-	// create a reply object deleter
-	ReplyObjectDeleter(ReplyObjectRemover* monitor = NULL) :
-		m_monitor(monitor)
-	{
-	}
+    // create a reply object deleter
+    ReplyObjectDeleter(ReplyObjectRemover* monitor = NULL) :
+        m_monitor(monitor)
+    {
+    }
 
-	// delete the ReplyObject and remove it from m_monitor
-	// not necessarily in that order
-	void operator()(ReplyObject* p) const
-	{
-		if (m_monitor)
-			m_monitor->removeObject(p);
-		delete p;
-	}
+    // delete the ReplyObject and remove it from m_monitor
+    // not necessarily in that order
+    void operator()(ReplyObject* p) const
+    {
+        if (m_monitor)
+            m_monitor->removeObject(p);
+        delete p;
+    }
 private:
-	ReplyObjectRemover* m_monitor;
+    ReplyObjectRemover* m_monitor;
 };
 
 
 /*! \class ReplyMonitor
-	\brief A monitor class for receiving replies messages in a thread
-	\details This class monitors for a desired message, and releases a semaphore when the message is received
+    \brief A monitor class for receiving replies messages in a thread
+    \details This class monitors for a desired message, and releases a semaphore when the message is received
 */
 
 /*! \brief Default constructor */
@@ -77,72 +77,72 @@ ReplyMonitor::~ReplyMonitor(void)
 }
 
 /*! \brief Add a reply object to the reply monitor
-	\param[in] replyObject the ReplyObject to add
-	\returns a shared pointer to this object
+    \param[in] replyObject the ReplyObject to add
+    \returns a shared pointer to this object
 */
 std::shared_ptr<ReplyObject> ReplyMonitor::addReplyObject(ReplyObject* replyObject)
 {
-	xsens::Lock locky(&m_mutex);
-	m_objectList.push_back(replyObject);
-	return std::shared_ptr<ReplyObject>(replyObject, ReplyObjectDeleter(this));
+    xsens::Lock locky(&m_mutex);
+    m_objectList.push_back(replyObject);
+    return std::shared_ptr<ReplyObject>(replyObject, ReplyObjectDeleter(this));
 }
 
 /*! \brief Remove an object from the list
-	\param obj The shared pointer to the object to remove
-	\note This does not delete the object
+    \param obj The shared pointer to the object to remove
+    \note This does not delete the object
 */
 void ReplyMonitor::removeObject(std::shared_ptr<ReplyObject> const& obj)
 {
-	removeObject(obj.get());
+    removeObject(obj.get());
 }
 
 /*! \brief Remove an object from the list
-	\param obj The object to remove
-	\note This does not delete the object
+    \param obj The object to remove
+    \note This does not delete the object
 */
 void ReplyMonitor::removeObject(ReplyObject* obj)
 {
-	xsens::Lock locky(&m_mutex);
-	if (m_objectList.empty())
-		return;
+    xsens::Lock locky(&m_mutex);
+    if (m_objectList.empty())
+        return;
 
-	std::vector<ReplyObject*>::iterator it = std::find(m_objectList.begin(), m_objectList.end(), obj);
-	if (it == m_objectList.end())
-		return;
+    std::vector<ReplyObject*>::iterator it = std::find(m_objectList.begin(), m_objectList.end(), obj);
+    if (it == m_objectList.end())
+        return;
 
-	m_objectList.erase(it);
+    m_objectList.erase(it);
 }
 
 /*! \brief Put a reply in the monitor
-	\param message The message to add as a reply
-	\returns true if the message is delivered
+    \param message The message to add as a reply
+    \returns true if the message is delivered
 */
 bool ReplyMonitor::addReply(const XsMessage& message)
 {
-	xsens::Lock locky(&m_mutex);
-	size_t numElements = m_objectList.size();
-	for (size_t i = 0; i < numElements; i++)
-	{
-		if (m_objectList[i]->isReplyFor(message))
-		{
-			ReplyObject* tmp = m_objectList[i];
-			m_objectList.erase(m_objectList.begin() + (ptrdiff_t) i);
-			tmp->setMessage(message);
-			return true;
-		}
-	}
-	return false;
+    xsens::Lock locky(&m_mutex);
+    size_t numElements = m_objectList.size();
+    for (size_t i = 0; i < numElements; i++)
+    {
+        if (m_objectList[i]->isReplyFor(message))
+        {
+            ReplyObject* tmp = m_objectList[i];
+            m_objectList.erase(m_objectList.begin() + (ptrdiff_t) i);
+            tmp->setMessage(message);
+            return true;
+        }
+    }
+    return false;
 }
 
 /*! \brief Dumps the current list of objects to wait for to the supplied journaller
 */
 void ReplyMonitor::dumpObjectList(Journaller* journal, JournalLogLevel level) const
 {
-	xsens::Lock locky(&m_mutex);
-	size_t numElements = m_objectList.size();
-	JLGENERIC(journal, level, "Waiting for " << numElements << " objects");
-	for (size_t i = 0; i < numElements; i++)
-		JLGENERIC(journal, level, i << ": msg ID = " << JLHEXLOG((int) m_objectList[i]->msgId()));
+    xsens::Lock locky(&m_mutex);
+    size_t numElements = m_objectList.size();
+    JLGENERIC(journal, level, "Waiting for " << numElements << " objects");
+    for (size_t i = 0; i < numElements; i++)
+        JLGENERIC(journal, level, i << ": msg ID = " << JLHEXLOG((int) m_objectList[i]->msgId()));
 }
 
-}	// namespace xsens
+}    // namespace xsens

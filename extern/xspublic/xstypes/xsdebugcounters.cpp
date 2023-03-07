@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -45,80 +45,80 @@ volatile std::atomic_int XsArray_freeCount_value(0);
 
 extern "C" {
 
-	int XsVector_resetDebugCounts(void)
-	{
-		return XsVector_allocCount_value.exchange(0) + XsVector_freeCount_value.exchange(0);
-	}
+    int XsVector_resetDebugCounts(void)
+    {
+        return XsVector_allocCount_value.exchange(0) + XsVector_freeCount_value.exchange(0);
+    }
 
-	int XsVector_allocCount(void)
-	{
-		return XsVector_allocCount_value.load();
-	}
+    int XsVector_allocCount(void)
+    {
+        return XsVector_allocCount_value.load();
+    }
 
-	int XsVector_freeCount(void)
-	{
-		return XsVector_freeCount_value.load();
-	}
+    int XsVector_freeCount(void)
+    {
+        return XsVector_freeCount_value.load();
+    }
 
-	int XsVector_incAllocCount(void)
-	{
-		return ++XsVector_allocCount_value;
-	}
+    int XsVector_incAllocCount(void)
+    {
+        return ++XsVector_allocCount_value;
+    }
 
-	int XsVector_incFreeCount(void)
-	{
-		return ++XsVector_freeCount_value;
-	}
+    int XsVector_incFreeCount(void)
+    {
+        return ++XsVector_freeCount_value;
+    }
 
-	int XsMatrix_resetDebugCounts(void)
-	{
-		return XsMatrix_allocCount_value.exchange(0) + XsMatrix_freeCount_value.exchange(0);
-	}
+    int XsMatrix_resetDebugCounts(void)
+    {
+        return XsMatrix_allocCount_value.exchange(0) + XsMatrix_freeCount_value.exchange(0);
+    }
 
-	int XsMatrix_allocCount(void)
-	{
-		return XsMatrix_allocCount_value.load();
-	}
+    int XsMatrix_allocCount(void)
+    {
+        return XsMatrix_allocCount_value.load();
+    }
 
-	int XsMatrix_freeCount(void)
-	{
-		return XsMatrix_freeCount_value.load();
-	}
+    int XsMatrix_freeCount(void)
+    {
+        return XsMatrix_freeCount_value.load();
+    }
 
-	int XsMatrix_incAllocCount(void)
-	{
-		return ++XsMatrix_allocCount_value;
-	}
+    int XsMatrix_incAllocCount(void)
+    {
+        return ++XsMatrix_allocCount_value;
+    }
 
-	int XsMatrix_incFreeCount(void)
-	{
-		return ++XsMatrix_freeCount_value;
-	}
+    int XsMatrix_incFreeCount(void)
+    {
+        return ++XsMatrix_freeCount_value;
+    }
 
-	int XsArray_resetDebugCounts(void)
-	{
-		return XsArray_allocCount_value.exchange(0) + XsArray_freeCount_value.exchange(0);
-	}
+    int XsArray_resetDebugCounts(void)
+    {
+        return XsArray_allocCount_value.exchange(0) + XsArray_freeCount_value.exchange(0);
+    }
 
-	int XsArray_allocCount(void)
-	{
-		return XsArray_allocCount_value.load();
-	}
+    int XsArray_allocCount(void)
+    {
+        return XsArray_allocCount_value.load();
+    }
 
-	int XsArray_freeCount(void)
-	{
-		return XsArray_freeCount_value.load();
-	}
+    int XsArray_freeCount(void)
+    {
+        return XsArray_freeCount_value.load();
+    }
 
-	int XsArray_incAllocCount(void)
-	{
-		return ++XsArray_allocCount_value;
-	}
+    int XsArray_incAllocCount(void)
+    {
+        return ++XsArray_allocCount_value;
+    }
 
-	int XsArray_incFreeCount(void)
-	{
-		return ++XsArray_freeCount_value;
-	}
+    int XsArray_incFreeCount(void)
+    {
+        return ++XsArray_freeCount_value;
+    }
 
 } // extern "C"
 

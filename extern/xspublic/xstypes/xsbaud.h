@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -36,8 +36,8 @@
 #include "xstypesconfig.h"
 
 
-/*!	\addtogroup enums Global enumerations
-	@{
+/*!    \addtogroup enums Global enumerations
+    @{
 */
 
 #include "xsbaudcode.h"
@@ -61,29 +61,29 @@ XSTYPES_DLL_API XsBaudRate XsBaud_numericToRate(int numeric);
 } // extern "C"
 
 /*! \namespace XsBaud
-	\brief Namespace for Baud rate and Baud code constants and conversions
+    \brief Namespace for Baud rate and Baud code constants and conversions
 */
 namespace XsBaud
 {
 /*! \copydoc XsBaud_codeToRate */
 inline XsBaudRate codeToRate(XsBaudCode baudcode)
 {
-	return XsBaud_codeToRate(baudcode);
+    return XsBaud_codeToRate(baudcode);
 }
 /*! \copydoc XsBaud_rateToCode */
 inline XsBaudCode rateToCode(XsBaudRate baudrate)
 {
-	return XsBaud_rateToCode(baudrate);
+    return XsBaud_rateToCode(baudrate);
 }
 /*! \copydoc XsBaud_rateToNumeric */
 inline int rateToNumeric(XsBaudRate baudrate)
 {
-	return XsBaud_rateToNumeric(baudrate);
+    return XsBaud_rateToNumeric(baudrate);
 }
 /*! \copydoc XsBaud_numericToRate*/
 inline XsBaudRate numericToRate(int numeric)
 {
-	return XsBaud_numericToRate(numeric);
+    return XsBaud_numericToRate(numeric);
 }
 }
 
@@ -96,7 +96,7 @@ namespace std
 template<typename _CharT, typename _Traits>
 basic_ostream<_CharT, _Traits>& operator<<(basic_ostream<_CharT, _Traits>& o, XsBaudRate const& xd)
 {
-	return (o << XsBaud::rateToNumeric(xd));
+    return (o << XsBaud::rateToNumeric(xd));
 }
 }
 #endif

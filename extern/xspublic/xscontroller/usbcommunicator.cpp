@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -34,21 +34,21 @@
 #include "usbinterface.h"
 
 /*! \class UsbCommunicator
-	\brief A class that uses USB to communicate
+    \brief A class that uses USB to communicate
 */
 
 /*! \brief Construct and returns new USB communicator
-	\returns The new USB communicator
+    \returns The new USB communicator
 */
 Communicator* UsbCommunicator::construct()
 {
-	return new UsbCommunicator;
+    return new UsbCommunicator;
 }
 
 /*! \brief Default constructor
 */
 UsbCommunicator::UsbCommunicator()
-	: m_usbInterface(nullptr)
+    : m_usbInterface(nullptr)
 {
 }
 
@@ -60,46 +60,46 @@ UsbCommunicator::~UsbCommunicator()
 */
 XsResultValue UsbCommunicator::gotoConfig(bool detectRs485)
 {
-	XsResultValue r = SerialPortCommunicator::gotoConfig(detectRs485);
+    XsResultValue r = SerialPortCommunicator::gotoConfig(detectRs485);
 
-	if (r == XRV_OK)
-	{
-		m_usbInterface->setRawIo(false);
-		m_usbInterface->setTimeout(0);
-	}
-	return r;
+    if (r == XRV_OK)
+    {
+        m_usbInterface->setRawIo(false);
+        m_usbInterface->setTimeout(0);
+    }
+    return r;
 }
 
 /*! \copybrief Communicator::gotoMeasurement
 */
 XsResultValue UsbCommunicator::gotoMeasurement()
 {
-	XsResultValue r = SerialPortCommunicator::gotoMeasurement();
-	if (r == XRV_OK)
-	{
-		m_usbInterface->setRawIo(true);
-		m_usbInterface->setTimeout(2000);
-	}
-	return r;
+    XsResultValue r = SerialPortCommunicator::gotoMeasurement();
+    if (r == XRV_OK)
+    {
+        m_usbInterface->setRawIo(true);
+        m_usbInterface->setTimeout(2000);
+    }
+    return r;
 }
 
 /*! \brief Creates a stream interface
-	\param pi The port to use
-	\returns The shared pointer to a stream interface
+    \param pi The port to use
+    \returns The shared pointer to a stream interface
 */
 std::shared_ptr<StreamInterface> UsbCommunicator::createStreamInterface(const XsPortInfo& pi)
 {
-	assert(pi.isUsb());
-	m_usbInterface = new UsbInterface();
-	std::shared_ptr<StreamInterface> stream(m_usbInterface,
-		[this](StreamInterface * intf)
-	{
-		m_usbInterface = nullptr;
-		delete intf;
-	}
-	);
+    assert(pi.isUsb());
+    m_usbInterface = new UsbInterface();
+    std::shared_ptr<StreamInterface> stream(m_usbInterface,
+        [this](StreamInterface * intf)
+    {
+        m_usbInterface = nullptr;
+        delete intf;
+    }
+    );
 
-	setLastResult(m_usbInterface->open(pi));
+    setLastResult(m_usbInterface->open(pi));
 
-	return stream;
+    return stream;
 }

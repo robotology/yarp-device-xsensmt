@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -34,27 +34,27 @@
 #include "xsmessage.h"
 
 /*! \struct XsMessageArray
-	\brief A list of XsMessage values
-	\sa XsArray
+    \brief A list of XsMessage values
+    \sa XsArray
 */
 
 //! \brief Descriptor for XsMessageArray
 XsArrayDescriptor const g_xsMessageArrayDescriptor =
 {
-	sizeof(XsMessage),
-	XSEXPCASTITEMSWAP XsMessage_swap,
-	XSEXPCASTITEMMAKE XsMessage_construct,
-	XSEXPCASTITEMCOPY XsMessage_copyConstruct,
-	XSEXPCASTITEMMAKE XsMessage_destruct,
-	XSEXPCASTITEMCOPY XsMessage_copy,
-	XSEXPCASTITEMCOMP XsMessage_compare,
-	0
+    sizeof(XsMessage),
+    XSEXPCASTITEMSWAP XsMessage_swap,
+    XSEXPCASTITEMMAKE XsMessage_construct,
+    XSEXPCASTITEMCOPY XsMessage_copyConstruct,
+    XSEXPCASTITEMMAKE XsMessage_destruct,
+    XSEXPCASTITEMCOPY XsMessage_copy,
+    XSEXPCASTITEMCOMP XsMessage_compare,
+    0
 };
 
 /*! \copydoc XsArray_constructDerived
-	\note Specialization for XsStringArray
+    \note Specialization for XsStringArray
 */
 void XsMessageArray_construct(XsMessageArray* thisPtr, XsSize count, XsMessage const* src)
 {
-	XsArray_construct(thisPtr, &g_xsMessageArrayDescriptor, count, src);
+    XsArray_construct(thisPtr, &g_xsMessageArrayDescriptor, count, src);
 }

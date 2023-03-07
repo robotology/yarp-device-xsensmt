@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -92,173 +92,173 @@ struct XsDevicePtrArray;
 //AUTO }
 
 #ifndef XsensThreadReturn
-	#define XsensThreadReturn	XSENS_THREAD_RETURN	// for generator
-	#define XsensThreadParam	XSENS_THREAD_PARAM	// for generator
+    #define XsensThreadReturn    XSENS_THREAD_RETURN    // for generator
+    #define XsensThreadParam    XSENS_THREAD_PARAM    // for generator
 #endif
 
 struct XsControl : public CallbackManagerXda
 {
 public:
-	XsControl();
-	~XsControl();
+    XsControl();
+    ~XsControl();
 
-	void flushInputBuffers();
+    void flushInputBuffers();
 
-	static XsString resultText(XsResultValue resultCode);
+    static XsString resultText(XsResultValue resultCode);
 
-	void clearHardwareError();
-	void close();
+    void clearHardwareError();
+    void close();
 
-	bool openPort(const XsString& portname, XsBaudRate baudrate, uint32_t timeout = 0, bool detectRs485 = false);
-	bool openPort(XsPortInfo& portinfo, uint32_t timeout = 0, bool detectRs485 = false);
-	bool openPortWithCredentials(XsPortInfo& portinfo, XsString const& id, XsString const& key, uint32_t timeout = 0);
-	bool openCustomPort(int channelId, uint32_t channelLatency, bool detectRs485 = false);
-	virtual bool openImarPort_internal(const XsString& portname, XsBaudRate baudrate, int imarType, uint32_t timeout = 0);
+    bool openPort(const XsString& portname, XsBaudRate baudrate, uint32_t timeout = 0, bool detectRs485 = false);
+    bool openPort(XsPortInfo& portinfo, uint32_t timeout = 0, bool detectRs485 = false);
+    bool openPortWithCredentials(XsPortInfo& portinfo, XsString const& id, XsString const& key, uint32_t timeout = 0);
+    bool openCustomPort(int channelId, uint32_t channelLatency, bool detectRs485 = false);
+    virtual bool openImarPort_internal(const XsString& portname, XsBaudRate baudrate, int imarType, uint32_t timeout = 0);
 #ifndef XSENS_NO_PORT_NUMBERS
-	XSNOLINUXEXPORT bool openPort(int portNr, XsBaudRate baudrate, uint32_t timeout = 0, bool detectRs485 = false);
+    XSNOLINUXEXPORT bool openPort(int portNr, XsBaudRate baudrate, uint32_t timeout = 0, bool detectRs485 = false);
 #endif
-	void closePort(const XsString& portname);
-	void closePort(const XsDeviceId& deviceId);
-	void closePort(const XsPortInfo& portinfo);
-	void closeCustomPort(int channelId);
+    void closePort(const XsString& portname);
+    void closePort(const XsDeviceId& deviceId);
+    void closePort(const XsPortInfo& portinfo);
+    void closeCustomPort(int channelId);
 #ifndef XSENS_NO_PORT_NUMBERS
-	XSNOLINUXEXPORT void closePort(int portNr);
+    XSNOLINUXEXPORT void closePort(int portNr);
 #endif
-	void closePort(XsDevice* device);
+    void closePort(XsDevice* device);
 
-	XsPortInfo customPortInfo(int channelId) const;
+    XsPortInfo customPortInfo(int channelId) const;
 
-	bool openLogFile(const XsString& filename);
+    bool openLogFile(const XsString& filename);
 
-	XsResultValue lastResult() const;
-	XsString lastResultText() const;
-	XsResultValue lastHardwareError() const;
-	XsDeviceId lastHardwareErrorDeviceId() const;
+    XsResultValue lastResult() const;
+    XsString lastResultText() const;
+    XsResultValue lastHardwareError() const;
+    XsDeviceId lastHardwareErrorDeviceId() const;
 
-	int deviceCount() const;
-	int mainDeviceCount() const;
-	std::vector<XsDeviceId> mainDeviceIds() const;
-	virtual int mtCount() const;
-	virtual std::vector<XsDeviceId> mtDeviceIds() const;
-	virtual std::vector<XsDeviceId> deviceIds() const;
-	XsDevice* getDeviceFromLocationId(uint16_t locationId) const;
-	XsDeviceId dockDeviceId(const XsDeviceId& deviceId) const;
+    int deviceCount() const;
+    int mainDeviceCount() const;
+    std::vector<XsDeviceId> mainDeviceIds() const;
+    virtual int mtCount() const;
+    virtual std::vector<XsDeviceId> mtDeviceIds() const;
+    virtual std::vector<XsDeviceId> deviceIds() const;
+    XsDevice* getDeviceFromLocationId(uint16_t locationId) const;
+    XsDeviceId dockDeviceId(const XsDeviceId& deviceId) const;
 
-	virtual bool isDeviceWireless(const XsDeviceId& deviceId) const;
-	virtual bool isDeviceDocked(const XsDeviceId& deviceId) const;
+    virtual bool isDeviceWireless(const XsDeviceId& deviceId) const;
+    virtual bool isDeviceDocked(const XsDeviceId& deviceId) const;
 
-	virtual bool loadFilterProfiles(const XsString& filename);
+    virtual bool loadFilterProfiles(const XsString& filename);
 
-	XsOption enabledOptions() const;
-	XsOption disabledOptions() const;
-	void setOptions(XsOption enable, XsOption disable);
-	void setOptionsForce(XsOption enabled);
+    XsOption enabledOptions() const;
+    XsOption disabledOptions() const;
+    void setOptions(XsOption enable, XsOption disable);
+    void setOptionsForce(XsOption enabled);
 
-	bool setInitialPositionLLA(const XsVector& lla);
+    bool setInitialPositionLLA(const XsVector& lla);
 
-	XsDevice* device(const XsDeviceId& deviceId) const;
-	XsDevicePtrArray mainDevices() const;
-	XsDevice* broadcast() const;
+    XsDevice* device(const XsDeviceId& deviceId) const;
+    XsDevicePtrArray mainDevices() const;
+    XsDevice* broadcast() const;
 
-	void transmissionReceived(int channelId, const XsByteArray& data);
+    void transmissionReceived(int channelId, const XsByteArray& data);
 #ifdef DOXYGEN
-	// Explicit inheritance for generator and doxygen
-	void XSNOCOMEXPORT clearCallbackHandlers(bool chain = true);
-	void XSNOCOMEXPORT addCallbackHandler(XsCallbackPlainC* cb, bool chain = true);
-	void XSNOCOMEXPORT removeCallbackHandler(XsCallbackPlainC* cb, bool chain = true);
+    // Explicit inheritance for generator and doxygen
+    void XSNOCOMEXPORT clearCallbackHandlers(bool chain = true);
+    void XSNOCOMEXPORT addCallbackHandler(XsCallbackPlainC* cb, bool chain = true);
+    void XSNOCOMEXPORT removeCallbackHandler(XsCallbackPlainC* cb, bool chain = true);
 #endif
 
-	// these are only required to allow using the lib the same way as to using the dll
-	static XSNOEXPORT XsControl* construct();
-	XSNOEXPORT void destruct()
-	{
-		delete this;
-	}
+    // these are only required to allow using the lib the same way as to using the dll
+    static XSNOEXPORT XsControl* construct();
+    XSNOEXPORT void destruct()
+    {
+        delete this;
+    }
 
-	virtual bool XSNOEXPORT finalizeOpenPort(Communicator* communicator, XsPortInfo& portinfo, uint32_t timeout, bool detectRs485);
-	void gotoConfig();
-	void gotoMeasurement();
+    virtual bool XSNOEXPORT finalizeOpenPort(Communicator* communicator, XsPortInfo& portinfo, uint32_t timeout, bool detectRs485);
+    void gotoConfig();
+    void gotoMeasurement();
 
-	XsResultValue startRestoreCommunication(const XsString& portName);
-	void stopRestoreCommunication();
+    XsResultValue startRestoreCommunication(const XsString& portName);
+    void stopRestoreCommunication();
 
 protected:
-	virtual XsDevice* XSNOCOMEXPORT addMasterDevice(Communicator* communicator);
+    virtual XsDevice* XSNOCOMEXPORT addMasterDevice(Communicator* communicator);
 
 #ifndef DOXYGEN
-	XSNOEXPORT XsControl(const XsControl&) = delete;
+    XSNOEXPORT XsControl(const XsControl&) = delete;
 #endif
 
-	//void gotoOperational(const XsDeviceId& stationId = XsDeviceId());
+    //void gotoOperational(const XsDeviceId& stationId = XsDeviceId());
 
-	//! Boolean variable for enabling/disabling the use of fake messages
-	bool m_useFakeMessages;
+    //! Boolean variable for enabling/disabling the use of fake messages
+    bool m_useFakeMessages;
 
-	//! This list contains device-information and cached data per device.
-	std::vector<XsDevice*> m_deviceList;
+    //! This list contains device-information and cached data per device.
+    std::vector<XsDevice*> m_deviceList;
 
-	//! This map contains the proxy channels
-	std::map<int, ProxyCommunicator*> m_proxyChannels;
+    //! This map contains the proxy channels
+    std::map<int, ProxyCommunicator*> m_proxyChannels;
 
-	//! The last result of an operation
-	mutable LastResultManager m_lastResult;
+    //! The last result of an operation
+    mutable LastResultManager m_lastResult;
 
-	//! Contains the last serious error reported by CMT3
-	XsResultValue m_lastHwError;
+    //! Contains the last serious error reported by CMT3
+    XsResultValue m_lastHwError;
 
-	//! Contains the XsDevice ID of the device that caused the last hardware error
-	XsDeviceId m_lastHwErrorDeviceId;
+    //! Contains the XsDevice ID of the device that caused the last hardware error
+    XsDeviceId m_lastHwErrorDeviceId;
 
-	////////////////////
-	// thread management, multiple locks should always use this same order
-	//! Controls access to the serial ports, also used to suspend the thread.
-	mutable xsens::MutexReadWrite m_portMutex;
-	//! Always held by the thread when it is running
-	mutable xsens::Mutex m_runMutex;
+    ////////////////////
+    // thread management, multiple locks should always use this same order
+    //! Controls access to the serial ports, also used to suspend the thread.
+    mutable xsens::MutexReadWrite m_portMutex;
+    //! Always held by the thread when it is running
+    mutable xsens::Mutex m_runMutex;
 
-	//! AwindaStationIndication of threads started or not
-	volatile std::atomic_bool m_recording;
+    //! AwindaStationIndication of threads started or not
+    volatile std::atomic_bool m_recording;
 
-	void updateRecordingState();
+    void updateRecordingState();
 
-	XsDevice* findDevice(const XsDeviceId& deviceId) const;
+    XsDevice* findDevice(const XsDeviceId& deviceId) const;
 
-	virtual void removeExistingDevice(XsDeviceId const& deviceId);
+    virtual void removeExistingDevice(XsDeviceId const& deviceId);
 
-	//! Find the xs3 info of the given id
-	Communicator* findXbusInterface(const XsDeviceId& deviceId) const;
-	Communicator* findXbusInterface(const XsPortInfo& portInfo) const;
-	Communicator* findXbusInterface(const XsString& portName) const;
+    //! Find the xs3 info of the given id
+    Communicator* findXbusInterface(const XsDeviceId& deviceId) const;
+    Communicator* findXbusInterface(const XsPortInfo& portInfo) const;
+    Communicator* findXbusInterface(const XsString& portName) const;
 
-	void closePortByIndex(uint32_t index);
+    void closePortByIndex(uint32_t index);
 
-	//! The broadcast device object
-	BroadcastDevice* m_broadcaster;
+    //! The broadcast device object
+    BroadcastDevice* m_broadcaster;
 
-	//! Contains all enable options
-	XsOption m_optionsEnable;
+    //! Contains all enable options
+    XsOption m_optionsEnable;
 
-	//! Contsins all disabled options
-	XsOption m_optionsDisable;
+    //! Contsins all disabled options
+    XsOption m_optionsDisable;
 
-	//! This vector contains the latitude, longitude and altitude
-	XsVector3 m_latLonAlt;
+    //! This vector contains the latitude, longitude and altitude
+    XsVector3 m_latLonAlt;
 
-	void setPersistentSettings(XsDevice* dev);
+    void setPersistentSettings(XsDevice* dev);
 
-	//! The device factory object
-	DeviceFactory* m_deviceFactory;
+    //! The device factory object
+    DeviceFactory* m_deviceFactory;
 
-	//! The communicator factory object
-	XdaCommunicatorFactory* m_communicatorFactory;
+    //! The communicator factory object
+    XdaCommunicatorFactory* m_communicatorFactory;
 
-	//! The restore communication object
-	RestoreCommunication* m_restoreCommunication;
+    //! The restore communication object
+    RestoreCommunication* m_restoreCommunication;
 
-	/*! \cond XS_INTERNAL */
-	friend class BroadcastDevice;
-	friend class BroadcastForwardFunc;
-	/*! \endcond */ // XS_INTERNAL
+    /*! \cond XS_INTERNAL */
+    friend class BroadcastDevice;
+    friend class BroadcastForwardFunc;
+    /*! \endcond */ // XS_INTERNAL
 };
 
 #endif

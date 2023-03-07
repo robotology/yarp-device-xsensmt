@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -32,28 +32,28 @@
 
 #include "xssnapshot.h"
 
-/*!	\struct XsSnapshot
-	\brief Container for Snapshot data.
+/*!    \struct XsSnapshot
+    \brief Container for Snapshot data.
 */
 
 /*! \addtogroup cinterface C Interface
-	@{
+    @{
 */
 
 /*! \relates XsSnapshot
-	\brief Construct an %XsSnapshot object
+    \brief Construct an %XsSnapshot object
 */
 void XsSnapshot_construct(XsSnapshot* thisPtr)
 {
-	memset(thisPtr, 0, sizeof(XsSnapshot));
+    memset(thisPtr, 0, sizeof(XsSnapshot));
 }
 
-/*!	\relates XsSnapshot
-	\brief Destruct an %XsSnapshot object
+/*!    \relates XsSnapshot
+    \brief Destruct an %XsSnapshot object
 */
 void XsSnapshot_destruct(XsSnapshot* thisPtr)
 {
-	(void) thisPtr;
+    (void) thisPtr;
 }
 
 /*! @} */

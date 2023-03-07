@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -43,38 +43,38 @@ struct XsDevice;
 class DeviceFactory
 {
 public:
-	DeviceFactory();
-	virtual ~DeviceFactory() {}
+    DeviceFactory();
+    virtual ~DeviceFactory() {}
 
-	//! \brief Provides the device type ID as unsigned int
-	typedef unsigned int DeviceTypeId;
+    //! \brief Provides the device type ID as unsigned int
+    typedef unsigned int DeviceTypeId;
 
-	//! \brief A function prototype that provides the device factory and communicator
-	typedef XsDevice* (*MasterConstructFunc)(DeviceFactory& deviceFactory, Communicator* comm);
+    //! \brief A function prototype that provides the device factory and communicator
+    typedef XsDevice* (*MasterConstructFunc)(DeviceFactory& deviceFactory, Communicator* comm);
 
-	//! \brief A function prototype that provides the communicator
-	typedef XsDevice* (*StandaloneConstructFunc)(Communicator* comm);
+    //! \brief A function prototype that provides the communicator
+    typedef XsDevice* (*StandaloneConstructFunc)(Communicator* comm);
 
-	virtual XsDevice* createMasterDevice(Communicator* communicator, bool doInitialize = true);
+    virtual XsDevice* createMasterDevice(Communicator* communicator, bool doInitialize = true);
 
-	virtual DeviceTypeId deviceToTypeId(XsDeviceId const& deviceId) const;
+    virtual DeviceTypeId deviceToTypeId(XsDeviceId const& deviceId) const;
 
-	bool registerStandaloneDeviceType(DeviceTypeId deviceTypeId, StandaloneConstructFunc constructFunc);
-	bool registerMasterDeviceType(DeviceTypeId deviceTypeId, MasterConstructFunc constructFunc);
+    bool registerStandaloneDeviceType(DeviceTypeId deviceTypeId, StandaloneConstructFunc constructFunc);
+    bool registerMasterDeviceType(DeviceTypeId deviceTypeId, MasterConstructFunc constructFunc);
 
-	bool initializeDevice(XsDevice& device) const;
+    bool initializeDevice(XsDevice& device) const;
 
-	virtual void removeExistingDevice(XsDeviceId const& deviceId);
-	virtual void registerDevices();
+    virtual void removeExistingDevice(XsDeviceId const& deviceId);
+    virtual void registerDevices();
 
 protected:
-	virtual XsDevice* constructDevice(DeviceTypeId deviceTypeId, Communicator* comm);
+    virtual XsDevice* constructDevice(DeviceTypeId deviceTypeId, Communicator* comm);
 
-	virtual bool initializeDevice(XsDevice* device) const;
+    virtual bool initializeDevice(XsDevice* device) const;
 
 private:
-	std::map<DeviceTypeId, MasterConstructFunc> m_masterConstructors;
-	std::map<DeviceTypeId, StandaloneConstructFunc> m_standaloneConstructors;
+    std::map<DeviceTypeId, MasterConstructFunc> m_masterConstructors;
+    std::map<DeviceTypeId, StandaloneConstructFunc> m_standaloneConstructors;
 };
 
 namespace DeviceType

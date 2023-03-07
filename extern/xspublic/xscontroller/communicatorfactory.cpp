@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -48,35 +48,35 @@ CommunicatorFactory::~CommunicatorFactory()
 */
 bool CommunicatorFactory::registerType(CommunicatorTypeId typeId, CommunicatorConstructFunc constructFunc, PortInfoMatchFunc matchFunc)
 {
-	return m_constructors.emplace(ConstructorsMap::value_type(typeId, std::make_pair(constructFunc, matchFunc))).second;
+    return m_constructors.emplace(ConstructorsMap::value_type(typeId, std::make_pair(constructFunc, matchFunc))).second;
 }
 
 /*! \brief Create a communicator based on a port info
 */
 Communicator* CommunicatorFactory::create(const XsPortInfo& portInfo) const
 {
-	CommunicatorTypeId id = portInfoToCommunicatorId(portInfo);
-	return construct(id);
+    CommunicatorTypeId id = portInfoToCommunicatorId(portInfo);
+    return construct(id);
 }
 
 /*! \brief Create a communicator based on a filename
 */
 Communicator* CommunicatorFactory::create(const XsString& filename) const
 {
-	CommunicatorTypeId id = filenameToCommunicatorId(filename);
-	return construct(id);
+    CommunicatorTypeId id = filenameToCommunicatorId(filename);
+    return construct(id);
 }
 
 /*! \brief Construct a communicator based on \a typeId
 */
 Communicator* CommunicatorFactory::construct(CommunicatorTypeId typeId) const
 {
-	Communicator* c = nullptr;
-	if (typeId != CommunicatorType::INVALID)
-	{
-		ConstructorsMap::const_iterator i = m_constructors.find(typeId);
-		if (i != m_constructors.end())
-			c = i->second.first();
-	}
-	return c;
+    Communicator* c = nullptr;
+    if (typeId != CommunicatorType::INVALID)
+    {
+        ConstructorsMap::const_iterator i = m_constructors.find(typeId);
+        if (i != m_constructors.end())
+            c = i->second.first();
+    }
+    return c;
 }

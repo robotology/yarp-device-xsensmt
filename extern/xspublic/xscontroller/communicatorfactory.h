@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -43,67 +43,67 @@ struct XsString;
 struct XsPortInfo;
 
 /*! \class CommunicatorFactory
-	\brief A Factory for the communicators
+    \brief A Factory for the communicators
 */
 class CommunicatorFactory
 {
 public:
-	/*! \brief Create a new CommunicatorFactory and register its basic types
-		\return A unique pointer to the created factory
-	*/
-	template <typename T>
-	static std::unique_ptr<T> createFactory()
-	{
-		auto factory = std::make_unique<T>();
-		factory->registerCommunicatorTypes();
-		return factory;
-	}
+    /*! \brief Create a new CommunicatorFactory and register its basic types
+        \return A unique pointer to the created factory
+    */
+    template <typename T>
+    static std::unique_ptr<T> createFactory()
+    {
+        auto factory = std::make_unique<T>();
+        factory->registerCommunicatorTypes();
+        return factory;
+    }
 
-	CommunicatorFactory();
-	virtual ~CommunicatorFactory();
+    CommunicatorFactory();
+    virtual ~CommunicatorFactory();
 
-	//! The typedef of the communicator type ID
-	typedef unsigned int CommunicatorTypeId;
+    //! The typedef of the communicator type ID
+    typedef unsigned int CommunicatorTypeId;
 
-	//! The typedef of the communicator constructor function
-	typedef Communicator* (*CommunicatorConstructFunc)();
+    //! The typedef of the communicator constructor function
+    typedef Communicator* (*CommunicatorConstructFunc)();
 
-	//! The typedef of the port info match function
-	typedef bool (*PortInfoMatchFunc)(const XsPortInfo&);
+    //! The typedef of the port info match function
+    typedef bool (*PortInfoMatchFunc)(const XsPortInfo&);
 
-	Communicator* create(const XsPortInfo& portInfo) const;
-	Communicator* create(const XsString& filename) const;
+    Communicator* create(const XsPortInfo& portInfo) const;
+    Communicator* create(const XsString& filename) const;
 
-	bool registerType(CommunicatorTypeId typeId, CommunicatorConstructFunc constructFunc, PortInfoMatchFunc matchFunc);
+    bool registerType(CommunicatorTypeId typeId, CommunicatorConstructFunc constructFunc, PortInfoMatchFunc matchFunc);
 
-	/*! \brief Match a filename to a communicator
-		\param filename A name of file
-		\returns A communicator type ID
-	*/
-	virtual CommunicatorTypeId filenameToCommunicatorId(const XsString& filename) const = 0;
+    /*! \brief Match a filename to a communicator
+        \param filename A name of file
+        \returns A communicator type ID
+    */
+    virtual CommunicatorTypeId filenameToCommunicatorId(const XsString& filename) const = 0;
 
-	/*! \brief Match a XsPortInfo to a communicator
-		\param portInfo An information about the port
-		\returns A communicator type ID
-	*/
-	virtual CommunicatorTypeId portInfoToCommunicatorId(const XsPortInfo& portInfo) const = 0;
+    /*! \brief Match a XsPortInfo to a communicator
+        \param portInfo An information about the port
+        \returns A communicator type ID
+    */
+    virtual CommunicatorTypeId portInfoToCommunicatorId(const XsPortInfo& portInfo) const = 0;
 
-	/*! \brief Registrates communicator types */
-	virtual void registerCommunicatorTypes() {}
+    /*! \brief Registrates communicator types */
+    virtual void registerCommunicatorTypes() {}
 
 protected:
-	//! The typedef of a map for a communicator type ID and constructors map
-	typedef std::map<CommunicatorTypeId, std::pair<CommunicatorConstructFunc, PortInfoMatchFunc>> ConstructorsMap;
+    //! The typedef of a map for a communicator type ID and constructors map
+    typedef std::map<CommunicatorTypeId, std::pair<CommunicatorConstructFunc, PortInfoMatchFunc>> ConstructorsMap;
 
-	//! \returns A constant reference to the constructors map
-	ConstructorsMap const& constructors() const
-	{
-		return m_constructors;
-	}
-	virtual Communicator* construct(CommunicatorTypeId communicator) const;
+    //! \returns A constant reference to the constructors map
+    ConstructorsMap const& constructors() const
+    {
+        return m_constructors;
+    }
+    virtual Communicator* construct(CommunicatorTypeId communicator) const;
 
 private:
-	ConstructorsMap m_constructors;
+    ConstructorsMap m_constructors;
 };
 
 namespace CommunicatorType

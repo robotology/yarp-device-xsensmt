@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -38,13 +38,13 @@
 #include <stdlib.h>
 #include <stdio.h>
 #ifdef _WIN32
-	#include <windows.h>
-	//#	include <sys/types.h>
+    #include <windows.h>
+    //#    include <sys/types.h>
 #else
-	#include <termios.h>
-	// these are not required by level 1, but to keep the higher levels platform-independent they are put here
-	#include <string.h>
-	#include <stddef.h>
+    #include <termios.h>
+    // these are not required by level 1, but to keep the higher levels platform-independent they are put here
+    #include <string.h>
+    #include <stddef.h>
 #endif
 
 #include "streaminterface.h"
@@ -56,40 +56,40 @@ class UsbInterfacePrivate;
 
 class UsbInterface : public StreamInterface
 {
-	UsbInterfacePrivate* d;
+    UsbInterfacePrivate* d;
 
 public:
-	UsbInterface();
-	~UsbInterface();
+    UsbInterface();
+    ~UsbInterface();
 
-	XsResultValue open(const XsPortInfo& portInfo, XsFilePos readBufSize = 0, XsFilePos writeBufSize = 0, PortOptions = PO_XsensDefaults) override;
-	XsResultValue close(void);
-	XsResultValue closeUsb(void);
-	XsResultValue flushData(void);
+    XsResultValue open(const XsPortInfo& portInfo, XsFilePos readBufSize = 0, XsFilePos writeBufSize = 0, PortOptions = PO_XsensDefaults) override;
+    XsResultValue close(void);
+    XsResultValue closeUsb(void);
+    XsResultValue flushData(void);
 
-	bool isOpen(void) const;
-	uint8_t usbBus() const;
-	uint8_t usbAddress() const;
+    bool isOpen(void) const;
+    uint8_t usbBus() const;
+    uint8_t usbAddress() const;
 
-	XsResultValue getLastResult(void) const;
+    XsResultValue getLastResult(void) const;
 
-	XsResultValue setTimeout(uint32_t ms);
-	uint32_t getTimeout(void) const;
+    XsResultValue setTimeout(uint32_t ms);
+    uint32_t getTimeout(void) const;
 
-	void setRawIo(bool enable);
-	bool getRawIo(void);
+    void setRawIo(bool enable);
+    bool getRawIo(void);
 
-	XsResultValue writeData(const XsByteArray& data, XsFilePos* written = NULL) override;
-	XsResultValue readData(XsFilePos maxLength, XsByteArray& data) override;
-	using IoInterface::waitForData;
+    XsResultValue writeData(const XsByteArray& data, XsFilePos* written = NULL) override;
+    XsResultValue readData(XsFilePos maxLength, XsByteArray& data) override;
+    using IoInterface::waitForData;
 
-	XsResultValue writeData(XsFilePos length, const void* data, XsFilePos* written = NULL);
-	XsResultValue readData(XsFilePos maxLength, void* data, XsFilePos* length = NULL);
-	XsResultValue waitForData(XsFilePos maxLength, void* data, XsFilePos* length = NULL);
+    XsResultValue writeData(XsFilePos length, const void* data, XsFilePos* written = NULL);
+    XsResultValue readData(XsFilePos maxLength, void* data, XsFilePos* length = NULL);
+    XsResultValue waitForData(XsFilePos maxLength, void* data, XsFilePos* length = NULL);
 
-	void getPortName(XsString& portname) const;
+    void getPortName(XsString& portname) const;
 
-	XSENS_DISABLE_COPY(UsbInterface);
+    XSENS_DISABLE_COPY(UsbInterface);
 };
 
 #endif

@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -37,54 +37,54 @@
 #include <string>
 
 /*! \class AbstractAdditionalLogger
-	Interface for all additional loggers that can be attached to the Journaller
+    Interface for all additional loggers that can be attached to the Journaller
 */
 class AbstractAdditionalLogger
 {
 public:
-	/*! \brief Destructor */
-	virtual ~AbstractAdditionalLogger() {}
+    /*! \brief Destructor */
+    virtual ~AbstractAdditionalLogger() {}
 
-	/*! \returns true if loglevel \a level should be logged, false otherwise
-		\param[in] level The log level to check
-	*/
-	virtual bool logLevel(JournalLogLevel level) const = 0;
+    /*! \returns true if loglevel \a level should be logged, false otherwise
+        \param[in] level The log level to check
+    */
+    virtual bool logLevel(JournalLogLevel level) const = 0;
 
-	/*! \returns the current log level
-	*/
-	virtual JournalLogLevel logLevel() const = 0;
+    /*! \returns the current log level
+    */
+    virtual JournalLogLevel logLevel() const = 0;
 
-	/*! \returns the current debug log level
-	*/
-	virtual JournalLogLevel debugLevel() const = 0;
+    /*! \returns the current debug log level
+    */
+    virtual JournalLogLevel debugLevel() const = 0;
 
-	/*! \brief Set the current log level
-		\param[in] level The new log level
-	*/
-	virtual void setLogLevel(JournalLogLevel level) = 0;
+    /*! \brief Set the current log level
+        \param[in] level The new log level
+    */
+    virtual void setLogLevel(JournalLogLevel level) = 0;
 
-	/*! \brief Set the current debug log level
-		\param[in] level The new debug log level
-	*/
-	virtual void setDebugLevel(JournalLogLevel level) = 0;
+    /*! \brief Set the current debug log level
+        \param[in] level The new debug log level
+    */
+    virtual void setDebugLevel(JournalLogLevel level) = 0;
 
-	/*! \brief Write line to the log
-		\param[in] level The log level
-		\param[in] file The name of the file from which the logging originates
-		\param[in] line The line number from which the logging originates
-		\param[in] function The name of the function from which the logging originates
-		\param[in] msg The actual log message
-	*/
-	virtual void log(JournalLogLevel level, char const* file, int line, char const* function, std::string const& msg) = 0;
+    /*! \brief Write line to the log
+        \param[in] level The log level
+        \param[in] file The name of the file from which the logging originates
+        \param[in] line The line number from which the logging originates
+        \param[in] function The name of the function from which the logging originates
+        \param[in] msg The actual log message
+    */
+    virtual void log(JournalLogLevel level, char const* file, int line, char const* function, std::string const& msg) = 0;
 
-	/*! \brief Write line to the log without decoration (timestamp, thread)
-		\param[in] level The log level
-		\param[in] file The name of the file from which the logging originates
-		\param[in] line The line number from which the logging originates
-		\param[in] function The name of the function from which the logging originates
-		\param[in] msg The actual log message
-	*/
-	virtual void logNoDecoration(JournalLogLevel level, char const* file, int line, char const* function, std::string const& msg) = 0;
+    /*! \brief Write line to the log without decoration (timestamp, thread)
+        \param[in] level The log level
+        \param[in] file The name of the file from which the logging originates
+        \param[in] line The line number from which the logging originates
+        \param[in] function The name of the function from which the logging originates
+        \param[in] msg The actual log message
+    */
+    virtual void logNoDecoration(JournalLogLevel level, char const* file, int line, char const* function, std::string const& msg) = 0;
 };
 
 #endif

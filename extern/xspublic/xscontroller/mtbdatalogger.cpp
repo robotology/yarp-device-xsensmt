@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -35,127 +35,127 @@
 #include "protocolhandler.h"
 
 /*! \class MtbDataLogger
-	\brief A class for logging the mtb data
+    \brief A class for logging the mtb data
 */
 
 /*! \brief Default constructor
 */
 MtbDataLogger::MtbDataLogger() :
-	m_lastResult(XRV_OK)
+    m_lastResult(XRV_OK)
 {
 }
 
 MtbDataLogger::~MtbDataLogger()
 {
-	try
-	{
-		close(false);
-	}
-	catch (...)
-	{
-	}
+    try
+    {
+        close(false);
+    }
+    catch (...)
+    {
+    }
 }
 
 /*! \brief Open a log file for output.
-	\details This function opens the supplied log file for writing.
-	\param filename The name of the file to open. It is recommended to use a fully qualified path+filename.
-	\note This function is only available in configuration mode.
-	\returns True if successful
-	\see close
+    \details This function opens the supplied log file for writing.
+    \param filename The name of the file to open. It is recommended to use a fully qualified path+filename.
+    \note This function is only available in configuration mode.
+    \returns True if successful
+    \see close
 */
 bool MtbDataLogger::create(const XsString& filename)
 {
-	if (m_ioInterfaceFile)
-	{
-		m_lastResult = XRV_ALREADYOPEN;
-		return false;
-	}
+    if (m_ioInterfaceFile)
+    {
+        m_lastResult = XRV_ALREADYOPEN;
+        return false;
+    }
 
-	m_ioInterfaceFile = std::shared_ptr<IoInterfaceFile>(new IoInterfaceFile);
-	m_lastResult = m_ioInterfaceFile->create(filename);
-	if (m_lastResult != XRV_OK)
-	{
-		m_ioInterfaceFile.reset();
-		return false;
-	}
+    m_ioInterfaceFile = std::shared_ptr<IoInterfaceFile>(new IoInterfaceFile);
+    m_lastResult = m_ioInterfaceFile->create(filename);
+    if (m_lastResult != XRV_OK)
+    {
+        m_ioInterfaceFile.reset();
+        return false;
+    }
 
-	//m_readOnly = false;
+    //m_readOnly = false;
 
-	// check if we can actually write to the file
-	char testData[] = "Xsens";
-	XsByteArray test((unsigned char*) testData, 5, XSDF_None);
+    // check if we can actually write to the file
+    char testData[] = "Xsens";
+    XsByteArray test((unsigned char*) testData, 5, XSDF_None);
 
-	m_lastResult = m_ioInterfaceFile->writeData(test, nullptr);
-	if (m_lastResult == XRV_OK)
-		m_lastResult = m_ioInterfaceFile->deleteData(0, 5);
-	if (m_lastResult != XRV_OK)
-	{
-		m_ioInterfaceFile->close();
-		m_ioInterfaceFile.reset();
-	}
-	return m_lastResult == XRV_OK;
+    m_lastResult = m_ioInterfaceFile->writeData(test, nullptr);
+    if (m_lastResult == XRV_OK)
+        m_lastResult = m_ioInterfaceFile->deleteData(0, 5);
+    if (m_lastResult != XRV_OK)
+    {
+        m_ioInterfaceFile->close();
+        m_ioInterfaceFile.reset();
+    }
+    return m_lastResult == XRV_OK;
 }
 
 /*! \brief Closes the file
 */
 void MtbDataLogger::close()
 {
-	close(false);
+    close(false);
 }
 
 /*! \brief Closes and if requested deletes the file
-	\param deleteFile If set to true then deletes the file
+    \param deleteFile If set to true then deletes the file
 */
 void MtbDataLogger::close(bool deleteFile)
 {
-	if (m_ioInterfaceFile)
-	{
-		if (deleteFile)
-			m_ioInterfaceFile->closeAndDelete();
-		else
-			m_ioInterfaceFile->close();
-		//removeChainedManager(m_ioInterfaceFile);
-		m_ioInterfaceFile.reset();
-	}
+    if (m_ioInterfaceFile)
+    {
+        if (deleteFile)
+            m_ioInterfaceFile->closeAndDelete();
+        else
+            m_ioInterfaceFile->close();
+        //removeChainedManager(m_ioInterfaceFile);
+        m_ioInterfaceFile.reset();
+    }
 }
 
 /*! \brief Overloadable function to allow easier testing
 */
 bool MtbDataLogger::writeMessage(const XsMessage& message)
 {
-	if (!m_ioInterfaceFile)
-	{
-		m_lastResult = XRV_NOFILEOPEN;
-		return false;
-	}
+    if (!m_ioInterfaceFile)
+    {
+        m_lastResult = XRV_NOFILEOPEN;
+        return false;
+    }
 
-	XsByteArray raw;
-	if (ProtocolHandler::composeMessage(raw, message) != -1)
-		m_lastResult = m_ioInterfaceFile->writeData(raw, nullptr);
-	else
-		m_lastResult = XRV_DATACORRUPT;
+    XsByteArray raw;
+    if (ProtocolHandler::composeMessage(raw, message) != -1)
+        m_lastResult = m_ioInterfaceFile->writeData(raw, nullptr);
+    else
+        m_lastResult = XRV_DATACORRUPT;
 
-	return m_lastResult == XRV_OK;
+    return m_lastResult == XRV_OK;
 }
 
 /*! \brief Write precomposed raw data to the file stream */
 bool MtbDataLogger::writeRaw(const XsByteArray& raw)
 {
-	if (!m_ioInterfaceFile)
-	{
-		m_lastResult = XRV_NOFILEOPEN;
-		return false;
-	}
+    if (!m_ioInterfaceFile)
+    {
+        m_lastResult = XRV_NOFILEOPEN;
+        return false;
+    }
 
-	m_lastResult = m_ioInterfaceFile->writeData(raw, nullptr);
-	return m_lastResult == XRV_OK;
+    m_lastResult = m_ioInterfaceFile->writeData(raw, nullptr);
+    return m_lastResult == XRV_OK;
 }
 
 /*! \returns the filename of the file that we're logging to (if any)
 */
 XsString MtbDataLogger::filename() const
 {
-	if (!m_ioInterfaceFile)
-		return XsString();
-	return m_ioInterfaceFile->getFileName();
+    if (!m_ioInterfaceFile)
+        return XsString();
+    return m_ioInterfaceFile->getFileName();
 }

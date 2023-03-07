@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -34,25 +34,25 @@
 #include <xstypes/xstypedefs.h>
 
 /*! \addtogroup cinterface C Interface
-	@{
+    @{
 */
 
 /*! \brief Convert the device state to a human readable string */
 const char* XsConnectivityState_toString(XsConnectivityState s)
 {
-	switch (s)
-	{
-			XS_ENUM_TO_STR_CASE(XCS_Disconnected);
-			XS_ENUM_TO_STR_CASE(XCS_Rejected);
-			XS_ENUM_TO_STR_CASE(XCS_PluggedIn);
-			XS_ENUM_TO_STR_CASE(XCS_Wireless);
-			XS_ENUM_TO_STR_CASE(XCS_WirelessOutOfRange);
-			XS_ENUM_TO_STR_CASE(XCS_File);
-			XS_ENUM_TO_STR_CASE(XCS_Unknown);
-		default:
-			;
-	}
-	return "UnknownState";
+    switch (s)
+    {
+            XS_ENUM_TO_STR_CASE(XCS_Disconnected);
+            XS_ENUM_TO_STR_CASE(XCS_Rejected);
+            XS_ENUM_TO_STR_CASE(XCS_PluggedIn);
+            XS_ENUM_TO_STR_CASE(XCS_Wireless);
+            XS_ENUM_TO_STR_CASE(XCS_WirelessOutOfRange);
+            XS_ENUM_TO_STR_CASE(XCS_File);
+            XS_ENUM_TO_STR_CASE(XCS_Unknown);
+        default:
+            ;
+    }
+    return "UnknownState";
 }
 
 /*! @} */

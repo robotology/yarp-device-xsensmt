@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -36,54 +36,54 @@
 #include "mtibasedevice.h"
 
 /*! \class Mti8X0Device
-	\brief The MTi device used for the 8X0-series
+    \brief The MTi device used for the 8X0-series
 */
 class Mti8X0Device : public MtiBaseDeviceEx
 {
 public:
-	//! \copybrief MtiXDevice::constructStandalone
-	static XsDevice* constructStandalone(Communicator* comm)
-	{
-		return new Mti8X0Device(comm);
-	}
+    //! \copybrief MtiXDevice::constructStandalone
+    static XsDevice* constructStandalone(Communicator* comm)
+    {
+        return new Mti8X0Device(comm);
+    }
 
-	explicit Mti8X0Device(Communicator* comm);
+    explicit Mti8X0Device(Communicator* comm);
 
-	//! \brief An empty constructor for a master device
-	explicit Mti8X0Device(XsDevice* master) : MtiBaseDeviceEx(master) {}
-	virtual ~Mti8X0Device();
+    //! \brief An empty constructor for a master device
+    explicit Mti8X0Device(XsDevice* master) : MtiBaseDeviceEx(master) {}
+    virtual ~Mti8X0Device();
 
-	XsStringOutputTypeArray supportedStringOutputTypes() const override;
-	bool setStringOutputMode6x0(uint32_t type, uint16_t frequency);
-	uint32_t supportedStatusFlags() const override;
-	XsString shortProductCode() const override;
-	XsCanOutputConfigurationArray canOutputConfiguration() const override;
-	bool setCanOutputConfiguration(XsCanOutputConfigurationArray& config) override;
+    XsStringOutputTypeArray supportedStringOutputTypes() const override;
+    bool setStringOutputMode6x0(uint32_t type, uint16_t frequency);
+    uint32_t supportedStatusFlags() const override;
+    XsString shortProductCode() const override;
+    XsCanOutputConfigurationArray canOutputConfiguration() const override;
+    bool setCanOutputConfiguration(XsCanOutputConfigurationArray& config) override;
 
-	XsIntArray portConfiguration() const override;
-	bool setPortConfiguration(XsIntArray& config) override;
+    XsIntArray portConfiguration() const override;
+    bool setPortConfiguration(XsIntArray& config) override;
 
-	uint32_t canConfiguration() const override;
-	bool setCanConfiguration(uint32_t config) override;
+    uint32_t canConfiguration() const override;
+    bool setCanConfiguration(uint32_t config) override;
 
 protected:
-	uint8_t syncLine(const XsSyncSetting& setting) const override;
-	bool hasIccSupport() const override;
+    uint8_t syncLine(const XsSyncSetting& setting) const override;
+    bool hasIccSupport() const override;
 
-	MtiBaseDevice::BaseFrequencyResult getBaseFrequencyInternal(XsDataIdentifier dataType = XDI_None) const override;
+    MtiBaseDevice::BaseFrequencyResult getBaseFrequencyInternal(XsDataIdentifier dataType = XDI_None) const override;
 };
 
 #ifndef XDA_PRIVATE_BUILD
 /*! \class Mti8X0DeviceEx
-	\brief The internal base class for MTi-8X0 series devices
+    \brief The internal base class for MTi-8X0 series devices
 */
 struct Mti8X0DeviceEx : public Mti8X0Device
 {
-	//! \copybrief Mti8X0Device::Mti8X0Device
-	explicit Mti8X0DeviceEx(Communicator* comm) : Mti8X0Device(comm) {};
+    //! \copybrief Mti8X0Device::Mti8X0Device
+    explicit Mti8X0DeviceEx(Communicator* comm) : Mti8X0Device(comm) {};
 
-	//! \copybrief Mti8X0Device::Mti8X0Device
-	explicit Mti8X0DeviceEx(XsDevice* master) : Mti8X0Device(master) {};
+    //! \copybrief Mti8X0Device::Mti8X0Device
+    explicit Mti8X0DeviceEx(XsDevice* master) : Mti8X0Device(master) {};
 };
 #else
 #include "mtix00deviceex.h"

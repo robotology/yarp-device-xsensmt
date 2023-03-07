@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -36,46 +36,46 @@
 #include "mtibasedevice.h"
 
 /*! \class MtiXDevice
-	\brief The MTi device used for the X-series
+    \brief The MTi device used for the X-series
 */
 class MtiXDevice : public MtiBaseDeviceEx
 {
 public:
-	/*! \brief Constructs a standalone device using a provided communicator
-		\param comm The communicator to use
-		\return The constructed device
-	*/
-	static XsDevice* constructStandalone(Communicator* comm)
-	{
-		return new MtiXDevice(comm);
-	}
+    /*! \brief Constructs a standalone device using a provided communicator
+        \param comm The communicator to use
+        \return The constructed device
+    */
+    static XsDevice* constructStandalone(Communicator* comm)
+    {
+        return new MtiXDevice(comm);
+    }
 
-	explicit MtiXDevice(Communicator* comm);
+    explicit MtiXDevice(Communicator* comm);
 
-	//! \brief An empty constructor for a master device
-	explicit MtiXDevice(XsDevice* master) : MtiBaseDeviceEx(master) {}
-	virtual ~MtiXDevice();
+    //! \brief An empty constructor for a master device
+    explicit MtiXDevice(XsDevice* master) : MtiBaseDeviceEx(master) {}
+    virtual ~MtiXDevice();
 
-	uint32_t supportedStatusFlags() const override;
-	XsString shortProductCode() const override;
+    uint32_t supportedStatusFlags() const override;
+    XsString shortProductCode() const override;
 
 protected:
-	bool hasIccSupport() const override;
+    bool hasIccSupport() const override;
 
-	MtiBaseDevice::BaseFrequencyResult getBaseFrequencyInternal(XsDataIdentifier dataType = XDI_None) const override;
+    MtiBaseDevice::BaseFrequencyResult getBaseFrequencyInternal(XsDataIdentifier dataType = XDI_None) const override;
 };
 
 #ifndef XDA_PRIVATE_BUILD
 /*! \class MtiXDeviceEx
-	\brief The internal base class for MTi-X series devices
+    \brief The internal base class for MTi-X series devices
 */
 struct MtiXDeviceEx : public MtiXDevice
 {
-	//! \copybrief MtiXDevice::MtiXDevice
-	explicit MtiXDeviceEx(Communicator* comm) : MtiXDevice(comm) {};
+    //! \copybrief MtiXDevice::MtiXDevice
+    explicit MtiXDeviceEx(Communicator* comm) : MtiXDevice(comm) {};
 
-	//! \copybrief MtiXDevice::MtiXDevice
-	explicit MtiXDeviceEx(XsDevice* master) : MtiXDevice(master) {};
+    //! \copybrief MtiXDevice::MtiXDevice
+    explicit MtiXDeviceEx(XsDevice* master) : MtiXDevice(master) {};
 };
 #else
 #include "mtixdeviceex.h"

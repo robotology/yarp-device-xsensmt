@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -39,43 +39,43 @@
 */
 struct XsIccRepMotionResult
 {
-	float m_ddtAccuracy;	//!< The ddtAccuracy of the In-Run Compass Calibration
-	uint8_t m_dimension;	//!< The dimension of the In-Run Compass Calibration
-	uint8_t m_status;		//!< The status of the In-Run Compass Calibration
+    float m_ddtAccuracy;    //!< The ddtAccuracy of the In-Run Compass Calibration
+    uint8_t m_dimension;    //!< The dimension of the In-Run Compass Calibration
+    uint8_t m_status;        //!< The status of the In-Run Compass Calibration
 
 #ifdef __cplusplus
-	XsIccRepMotionResult() : m_ddtAccuracy(0.0), m_dimension(0), m_status(0)
-	{
+    XsIccRepMotionResult() : m_ddtAccuracy(0.0), m_dimension(0), m_status(0)
+    {
 
-	}
+    }
 
-	/*! \brief Copy constructor for a filter profile object
-		\param other the filter profile object to construct a copy of
-	*/
-	XsIccRepMotionResult(const XsIccRepMotionResult& other)
-		: m_ddtAccuracy(other.m_ddtAccuracy)
-		, m_dimension(other.m_dimension)
-		, m_status(other.m_status)
-	{
-	}
+    /*! \brief Copy constructor for a filter profile object
+        \param other the filter profile object to construct a copy of
+    */
+    XsIccRepMotionResult(const XsIccRepMotionResult& other)
+        : m_ddtAccuracy(other.m_ddtAccuracy)
+        , m_dimension(other.m_dimension)
+        , m_status(other.m_status)
+    {
+    }
 
-	//! \returns the ddtAccuracy
-	inline float ddtAccuracy() const
-	{
-		return m_ddtAccuracy;
-	}
+    //! \returns the ddtAccuracy
+    inline float ddtAccuracy() const
+    {
+        return m_ddtAccuracy;
+    }
 
-	//! \returns the dimension
-	inline uint8_t dimension() const
-	{
-		return m_dimension;
-	}
+    //! \returns the dimension
+    inline uint8_t dimension() const
+    {
+        return m_dimension;
+    }
 
-	//! \returns the status
-	inline uint8_t status() const
-	{
-		return m_status;
-	}
+    //! \returns the status
+    inline uint8_t status() const
+    {
+        return m_status;
+    }
 #endif
 };
 

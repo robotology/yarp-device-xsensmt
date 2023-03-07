@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -41,42 +41,42 @@ struct XsDataPacket;
 class PacketStamper
 {
 public:
-	PacketStamper();
-	void resetTosEstimation();
+    PacketStamper();
+    void resetTosEstimation();
 
-	static const int64_t AWINDABOUNDARY;
-	static const int64_t MTSCBOUNDARY;
-	static const int64_t SC8BOUNDARY;
+    static const int64_t AWINDABOUNDARY;
+    static const int64_t MTSCBOUNDARY;
+    static const int64_t SC8BOUNDARY;
 
-	static int64_t calculateLargePacketCounter(int64_t frameCounter, int64_t lastCounter, int64_t boundary);
-	static int64_t calculateLargeSampleTime(int64_t frameTime, int64_t lastTime);
-	int64_t stampPacket(XsDataPacket& pack, XsDataPacket const& highest);
+    static int64_t calculateLargePacketCounter(int64_t frameCounter, int64_t lastCounter, int64_t boundary);
+    static int64_t calculateLargeSampleTime(int64_t frameTime, int64_t lastTime);
+    int64_t stampPacket(XsDataPacket& pack, XsDataPacket const& highest);
 
 protected:
-	/*! Holds a data point for the clock estimation algorithm */
-	struct DataPair
-	{
-		int64_t m_pid;	//!< Packet ID of data item
-		int64_t m_toa;	//!< Time Of Arrival of data item
+    /*! Holds a data point for the clock estimation algorithm */
+    struct DataPair
+    {
+        int64_t m_pid;    //!< Packet ID of data item
+        int64_t m_toa;    //!< Time Of Arrival of data item
 
-		//! Returns true if the items are equal
-		bool operator == (DataPair const& other) const
-		{
-			return m_pid == other.m_pid && m_toa == other.m_toa;
-		}
-	};
-	DataPair m_latest;		//!< Latest known data (later data may arrive with a lower pid, which will not be put in this item)
-	DataPair m_linearize;	//!< The very first item received, used to normalize to 0,0 so we have less computational issues with large numbers
-	std::list<DataPair> m_dataPoints;	//!< The filtered history of interesting data items
+        //! Returns true if the items are equal
+        bool operator == (DataPair const& other) const
+        {
+            return m_pid == other.m_pid && m_toa == other.m_toa;
+        }
+    };
+    DataPair m_latest;        //!< Latest known data (later data may arrive with a lower pid, which will not be put in this item)
+    DataPair m_linearize;    //!< The very first item received, used to normalize to 0,0 so we have less computational issues with large numbers
+    std::list<DataPair> m_dataPoints;    //!< The filtered history of interesting data items
 
-	double m_toa0;	//!< The recomputed Time Of Arrival of PID 0
-	double m_rate;	//!< The estimated clock rate per pid
-	int m_rejectionCountdown;	//!< A countdown value that is used after the input sanity check rejects input to reject subsequent samples as well.
+    double m_toa0;    //!< The recomputed Time Of Arrival of PID 0
+    double m_rate;    //!< The estimated clock rate per pid
+    int m_rejectionCountdown;    //!< A countdown value that is used after the input sanity check rejects input to reject subsequent samples as well.
 
-	void estimateTos(XsDataPacket& pack);
-	int64_t estimateTosInternal(int64_t pid, int64_t toa);
-	void estimateClockParameters();
-	bool rejectOutlier();
+    void estimateTos(XsDataPacket& pack);
+    int64_t estimateTosInternal(int64_t pid, int64_t toa);
+    void estimateClockParameters();
+    bool rejectOutlier();
 };
 
 #endif

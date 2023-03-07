@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -43,61 +43,61 @@
 class SerialCommunicator : public DeviceCommunicator, public DataParser
 {
 public:
-	SerialCommunicator();
+    SerialCommunicator();
 
-	XsResultValue gotoConfig(bool detectRs485 = false) override;
-	XsResultValue gotoMeasurement() override;
+    XsResultValue gotoConfig(bool detectRs485 = false) override;
+    XsResultValue gotoMeasurement() override;
 
-	void handleMessage(const XsMessage& msg) override;
+    void handleMessage(const XsMessage& msg) override;
 
-	void flushPort() override;
-	void closePort() override;
-	bool isPortOpen() const override;
-	XsPortInfo portInfo() const override;
-	bool openPort(const XsPortInfo& portInfo, OpenPortStage stage = OPS_Full, bool detectRs485 = false) override;
-	bool reopenPort(OpenPortStage stage = OPS_Full, bool skipDeviceIdCheck = false) override;
-	bool isDockedAt(Communicator* other) const override;
+    void flushPort() override;
+    void closePort() override;
+    bool isPortOpen() const override;
+    XsPortInfo portInfo() const override;
+    bool openPort(const XsPortInfo& portInfo, OpenPortStage stage = OPS_Full, bool detectRs485 = false) override;
+    bool reopenPort(OpenPortStage stage = OPS_Full, bool skipDeviceIdCheck = false) override;
+    bool isDockedAt(Communicator* other) const override;
 
-	XsResultValue writeRawData(const XsByteArray& data) override;
+    XsResultValue writeRawData(const XsByteArray& data) override;
 
-	XsVersion firmwareRevision();
-	XsVersion hardwareRevision();
+    XsVersion firmwareRevision();
+    XsVersion hardwareRevision();
 protected:
-	virtual ~SerialCommunicator();
-	virtual void prepareForDestruction() override;
+    virtual ~SerialCommunicator();
+    virtual void prepareForDestruction() override;
 
-	/*! \brief Creates a stream interface
-		\param pi The port information to use
-		\returns The shared pointer to a stream interface
-	*/
-	virtual std::shared_ptr<StreamInterface> createStreamInterface(const XsPortInfo& pi) = 0;
+    /*! \brief Creates a stream interface
+        \param pi The port information to use
+        \returns The shared pointer to a stream interface
+    */
+    virtual std::shared_ptr<StreamInterface> createStreamInterface(const XsPortInfo& pi) = 0;
 
-	XsResultValue readDataToBuffer(XsByteArray& raw) override;
-	XsResultValue processBufferedData(const XsByteArray& rawIn, std::deque<XsMessage>& messages) override;
+    XsResultValue readDataToBuffer(XsByteArray& raw) override;
+    XsResultValue processBufferedData(const XsByteArray& rawIn, std::deque<XsMessage>& messages) override;
 
-	bool isActive() const;
+    bool isActive() const;
 
-	void setDoGotoConfig(bool doit);
-	void stopPollThread();	// made protected for TestCommunicator testing
-	virtual XsResultValue getFirmwareRevision();
-	virtual XsResultValue getHardwareRevision();
+    void setDoGotoConfig(bool doit);
+    void stopPollThread();    // made protected for TestCommunicator testing
+    virtual XsResultValue getFirmwareRevision();
+    virtual XsResultValue getHardwareRevision();
 
-	/*! \returns The default interface timeout
-	*/
-	virtual uint32_t defaultInterfaceTimeout() const
-	{
-		return 0;
-	}
+    /*! \returns The default interface timeout
+    */
+    virtual uint32_t defaultInterfaceTimeout() const
+    {
+        return 0;
+    }
 
-	XsPortInfo m_activePortInfo;	//!< The information about the port this communicator is currently connected to
+    XsPortInfo m_activePortInfo;    //!< The information about the port this communicator is currently connected to
 
 private:
-	MtThread m_thread;
-	std::shared_ptr<StreamInterface> m_streamInterface;
-	XsVersion m_firmwareRevision;
-	XsVersion m_hardwareRevision;
+    MtThread m_thread;
+    std::shared_ptr<StreamInterface> m_streamInterface;
+    XsVersion m_firmwareRevision;
+    XsVersion m_hardwareRevision;
 
-	void startPollThread();
+    void startPollThread();
 };
 
 #endif

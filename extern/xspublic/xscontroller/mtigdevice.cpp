@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -34,25 +34,25 @@
 #include <xstypes/xsstringoutputtypearray.h>
 #include <xstypes/xsstatusflag.h>
 
-#define MTMK4_700_LEGACY_FW_VERSION_MAJOR		1
-#define MTMK4_700_LEGACY_FW_VERSION_MINOR		3
-#define MTMK4_700_LEGACY_FW_VERSION_REVISION	7
+#define MTMK4_700_LEGACY_FW_VERSION_MAJOR        1
+#define MTMK4_700_LEGACY_FW_VERSION_MINOR        3
+#define MTMK4_700_LEGACY_FW_VERSION_REVISION    7
 
 using namespace xsens;
 
 /*! \brief Constructs a device
-	\param comm The communicator to construct with
+    \param comm The communicator to construct with
 */
 MtigDevice::MtigDevice(Communicator* comm)
-	: MtiBaseDeviceEx(comm)
+    : MtiBaseDeviceEx(comm)
 {
 }
 
 /*! \brief An empty constructor
-	\param master The master device
+    \param master The master device
 */
 MtigDevice::MtigDevice(XsDevice* master)
-	: MtiBaseDeviceEx(master)
+    : MtiBaseDeviceEx(master)
 {
 }
 
@@ -64,121 +64,121 @@ MtigDevice::~MtigDevice()
 
 XsStringOutputTypeArray MtigDevice::supportedStringOutputTypes() const
 {
-	XsStringOutputTypeArray outputs;
-	outputs.push_back(XSOT_HCHDM);
-	outputs.push_back(XSOT_HCHDG);
-	outputs.push_back(XSOT_TSS2);
-	outputs.push_back(XSOT_PHTRO);
-	outputs.push_back(XSOT_PRDID);
-	outputs.push_back(XSOT_EM1000);
-	outputs.push_back(XSOT_PSONCMS);
-	outputs.push_back(XSOT_HCMTW);
-	outputs.push_back(XSOT_HEHDT);
-	outputs.push_back(XSOT_HEROT);
-	outputs.push_back(XSOT_GPGGA);
-	outputs.push_back(XSOT_PTCF);
-	outputs.push_back(XSOT_XSVEL);
-	outputs.push_back(XSOT_GPZDA);
-	outputs.push_back(XSOT_GPRMC);
+    XsStringOutputTypeArray outputs;
+    outputs.push_back(XSOT_HCHDM);
+    outputs.push_back(XSOT_HCHDG);
+    outputs.push_back(XSOT_TSS2);
+    outputs.push_back(XSOT_PHTRO);
+    outputs.push_back(XSOT_PRDID);
+    outputs.push_back(XSOT_EM1000);
+    outputs.push_back(XSOT_PSONCMS);
+    outputs.push_back(XSOT_HCMTW);
+    outputs.push_back(XSOT_HEHDT);
+    outputs.push_back(XSOT_HEROT);
+    outputs.push_back(XSOT_GPGGA);
+    outputs.push_back(XSOT_PTCF);
+    outputs.push_back(XSOT_XSVEL);
+    outputs.push_back(XSOT_GPZDA);
+    outputs.push_back(XSOT_GPRMC);
 
-	return outputs;
+    return outputs;
 }
 
 /*! \brief Returns the base update rate (hz) corresponding to the dataType
 */
 MtiBaseDevice::BaseFrequencyResult MtigDevice::getBaseFrequencyInternal(XsDataIdentifier dataType) const
 {
-	MtiBaseDevice::BaseFrequencyResult result;
-	result.m_frequency = 0;
-	result.m_divedable = true;
+    MtiBaseDevice::BaseFrequencyResult result;
+    result.m_frequency = 0;
+    result.m_divedable = true;
 
-	if ((dataType & XDI_FullTypeMask) == XDI_AccelerationHR || (dataType & XDI_FullTypeMask) == XDI_RateOfTurnHR)
-	{
-		result.m_frequency = 1000;
-		result.m_divedable = false;
+    if ((dataType & XDI_FullTypeMask) == XDI_AccelerationHR || (dataType & XDI_FullTypeMask) == XDI_RateOfTurnHR)
+    {
+        result.m_frequency = 1000;
+        result.m_divedable = false;
 
-		return result;
-	}
+        return result;
+    }
 
-	auto baseFreq = [this](XsDataIdentifier dataType)
-	{
-		static const XsVersion legacyFwVersion(MTMK4_700_LEGACY_FW_VERSION_MAJOR, MTMK4_700_LEGACY_FW_VERSION_MINOR, MTMK4_700_LEGACY_FW_VERSION_REVISION);
-		bool const isLegacyFirmware = (firmwareVersion() <= legacyFwVersion);
+    auto baseFreq = [this](XsDataIdentifier dataType)
+    {
+        static const XsVersion legacyFwVersion(MTMK4_700_LEGACY_FW_VERSION_MAJOR, MTMK4_700_LEGACY_FW_VERSION_MINOR, MTMK4_700_LEGACY_FW_VERSION_REVISION);
+        bool const isLegacyFirmware = (firmwareVersion() <= legacyFwVersion);
 
-		XsDataIdentifier fullType = (dataType & XDI_FullTypeMask);
+        XsDataIdentifier fullType = (dataType & XDI_FullTypeMask);
 
-		switch (dataType & XDI_TypeMask)
-		{
-			case XDI_None:
-				return 2000;
-			case XDI_TimestampGroup:
-				return XDI_MAX_FREQUENCY_VAL;
+        switch (dataType & XDI_TypeMask)
+        {
+            case XDI_None:
+                return 2000;
+            case XDI_TimestampGroup:
+                return XDI_MAX_FREQUENCY_VAL;
 
-			case XDI_RawSensorGroup:
-				return 2000;
-			case XDI_AnalogInGroup:
-				return 2000;
-			case XDI_StatusGroup:
-				return 2000;
+            case XDI_RawSensorGroup:
+                return 2000;
+            case XDI_AnalogInGroup:
+                return 2000;
+            case XDI_StatusGroup:
+                return 2000;
 
-			case XDI_TemperatureGroup:
-				return 400;
-			case XDI_PositionGroup:
-				return 400;
-			case XDI_VelocityGroup:
-				return 400;
-			case XDI_OrientationGroup:
-				return 400;
-			case XDI_AccelerationGroup:
-				return 400;
-			case XDI_AngularVelocityGroup:
-				return 400;
-			case XDI_MagneticGroup:
-				return 100;
-			case XDI_PressureGroup:
-				return 50;
+            case XDI_TemperatureGroup:
+                return 400;
+            case XDI_PositionGroup:
+                return 400;
+            case XDI_VelocityGroup:
+                return 400;
+            case XDI_OrientationGroup:
+                return 400;
+            case XDI_AccelerationGroup:
+                return 400;
+            case XDI_AngularVelocityGroup:
+                return 400;
+            case XDI_MagneticGroup:
+                return 100;
+            case XDI_PressureGroup:
+                return 50;
 
-			case XDI_GnssGroup:
-				if (fullType == XDI_GnssPvtPulse)
-					return 0;  // RTK only
-				return isLegacyFirmware ? 0 : 4;
-			default:
-				return 0;
-		}
-	};
+            case XDI_GnssGroup:
+                if (fullType == XDI_GnssPvtPulse)
+                    return 0;  // RTK only
+                return isLegacyFirmware ? 0 : 4;
+            default:
+                return 0;
+        }
+    };
 
-	result.m_frequency = baseFreq(dataType);
+    result.m_frequency = baseFreq(dataType);
 
-	if (((dataType & XDI_TypeMask) == XDI_TimestampGroup) || ((dataType & XDI_TypeMask) == XDI_GnssGroup))
-		result.m_divedable = false;
+    if (((dataType & XDI_TypeMask) == XDI_TimestampGroup) || ((dataType & XDI_TypeMask) == XDI_GnssGroup))
+        result.m_divedable = false;
 
-	return result;
+    return result;
 }
 
 uint32_t MtigDevice::supportedStatusFlags() const
 {
-	return (uint32_t)(
-			//|XSF_SelfTestOk
-			XSF_OrientationValid
-			| XSF_GpsValid
-			| XSF_NoRotationMask
-			| XSF_RepresentativeMotion
-			| XSF_ExternalClockSynced
-			| XSF_ClipAccX
-			| XSF_ClipAccY
-			| XSF_ClipAccZ
-			| XSF_ClipGyrX
-			| XSF_ClipGyrY
-			| XSF_ClipGyrZ
-			| XSF_ClipMagX
-			| XSF_ClipMagY
-			| XSF_ClipMagZ
-			//|XSF_Retransmitted
-			| XSF_ClippingDetected
-			//|XSF_Interpolated
-			| XSF_SyncIn
-			| XSF_SyncOut
-			| XSF_FilterMode
-			| XSF_HaveGnssTimePulse
-		);
+    return (uint32_t)(
+            //|XSF_SelfTestOk
+            XSF_OrientationValid
+            | XSF_GpsValid
+            | XSF_NoRotationMask
+            | XSF_RepresentativeMotion
+            | XSF_ExternalClockSynced
+            | XSF_ClipAccX
+            | XSF_ClipAccY
+            | XSF_ClipAccZ
+            | XSF_ClipGyrX
+            | XSF_ClipGyrY
+            | XSF_ClipGyrZ
+            | XSF_ClipMagX
+            | XSF_ClipMagY
+            | XSF_ClipMagZ
+            //|XSF_Retransmitted
+            | XSF_ClippingDetected
+            //|XSF_Interpolated
+            | XSF_SyncIn
+            | XSF_SyncOut
+            | XSF_FilterMode
+            | XSF_HaveGnssTimePulse
+        );
 }

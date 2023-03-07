@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -33,22 +33,22 @@
 #ifndef XSCALIBRATEDDATAMODE_H
 #define XSCALIBRATEDDATAMODE_H
 
-/*!	\addtogroup enums Global enumerations
-	@{
+/*!    \addtogroup enums Global enumerations
+    @{
 */
 /*! \brief Legacy calibrated data output selection flags */
 enum XsCalibratedDataMode
 {
-	XCDM_None			= 0,
-	XCDM_Acceleration	= (1 << 0),
-	XCDM_GyroscopeData	= (1 << 1),
-	XCDM_MagneticField	= (1 << 2),
+    XCDM_None            = 0,
+    XCDM_Acceleration    = (1 << 0),
+    XCDM_GyroscopeData    = (1 << 1),
+    XCDM_MagneticField    = (1 << 2),
 
-	XCDM_AccGyr = XCDM_Acceleration | XCDM_GyroscopeData,
-	XCDM_AccMag = XCDM_Acceleration | XCDM_MagneticField,
-	XCDM_GyrMag = XCDM_GyroscopeData | XCDM_MagneticField,
+    XCDM_AccGyr = XCDM_Acceleration | XCDM_GyroscopeData,
+    XCDM_AccMag = XCDM_Acceleration | XCDM_MagneticField,
+    XCDM_GyrMag = XCDM_GyroscopeData | XCDM_MagneticField,
 
-	XCDM_All = XCDM_Acceleration | XCDM_GyroscopeData | XCDM_MagneticField
+    XCDM_All = XCDM_Acceleration | XCDM_GyroscopeData | XCDM_MagneticField
 };
 /*! @} */
 typedef enum XsCalibratedDataMode XsCalibratedDataMode;

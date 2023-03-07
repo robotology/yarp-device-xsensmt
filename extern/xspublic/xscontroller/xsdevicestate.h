@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -36,21 +36,21 @@
 #include "xscontrollerconfig.h"
 #include <xstypes/xsarray.h>
 
-/*!	\addtogroup enums Global enumerations
-	@{
+/*!    \addtogroup enums Global enumerations
+    @{
 */
 
 //AUTO namespace xscontroller {
 /*! \brief XsDevice state identifiers */
 enum XsDeviceState
 {
-	XDS_Initial,					/*!< Initial unknown state */
-	XDS_Config,						/*!< Configuration mode. */
-	XDS_Measurement,				/*!< Measurement mode, devices are transmitting data. */
-	XDS_WaitingForRecordingStart,	/*!< The device is in measurement mode and waiting for an external trigger to go to recording state. \note Awinda Station only */
-	XDS_Recording,					/*!< Same as measurement mode, but on Awinda systems retransmissions now also occur. \note Only on an Awinda Station is this an actual state in the device. For other devices, the state exists only in XDA. */
-	XDS_FlushingData,				/*!< The device has been notified that it should stop recording. It is still measuring data and may flush retransmitted data to XDA. When XDA decides that it will not receive any more data that should be recorded, the state will be switched to XDS_Measurement automatically */
-	XDS_Destructing					/*!< The device is being destructed. After this callback, the device and any references to it are invalid. */
+    XDS_Initial,                    /*!< Initial unknown state */
+    XDS_Config,                        /*!< Configuration mode. */
+    XDS_Measurement,                /*!< Measurement mode, devices are transmitting data. */
+    XDS_WaitingForRecordingStart,    /*!< The device is in measurement mode and waiting for an external trigger to go to recording state. \note Awinda Station only */
+    XDS_Recording,                    /*!< Same as measurement mode, but on Awinda systems retransmissions now also occur. \note Only on an Awinda Station is this an actual state in the device. For other devices, the state exists only in XDA. */
+    XDS_FlushingData,                /*!< The device has been notified that it should stop recording. It is still measuring data and may flush retransmitted data to XDA. When XDA decides that it will not receive any more data that should be recorded, the state will be switched to XDS_Measurement automatically */
+    XDS_Destructing                    /*!< The device is being destructed. After this callback, the device and any references to it are invalid. */
 };
 /*! @} */
 typedef enum XsDeviceState XsDeviceState;
@@ -70,7 +70,7 @@ XDA_DLL_API const char* XsDeviceState_toString(XsDeviceState s);
 template<typename _CharT, typename _Traits>
 std::basic_ostream<_CharT, _Traits>& operator<<(std::basic_ostream<_CharT, _Traits>& o, XsDeviceState const& xds)
 {
-	return (o << XsDeviceState_toString(xds));
+    return (o << XsDeviceState_toString(xds));
 }
 #endif // XSENS_NO_STL
 

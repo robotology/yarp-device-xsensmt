@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -40,7 +40,7 @@
 extern "C" {
 #endif
 #ifndef __cplusplus
-#define XSTRIGGERINDICATIONDATA_INITIALIZER	{ 0, 0, 0, 0 }
+#define XSTRIGGERINDICATIONDATA_INITIALIZER    { 0, 0, 0, 0 }
 #endif
 
 struct XsTriggerIndicationData;
@@ -56,42 +56,42 @@ XSTYPES_DLL_API int XsTriggerIndicationData_valid(const struct XsTriggerIndicati
 /*! \brief Data for a trigger indication message */
 struct XsTriggerIndicationData
 {
-	uint8_t m_line;			//!< The line number
-	uint8_t m_polarity;		//!< The polarity
-	uint32_t m_timestamp;	//!< The timestamp
-	uint16_t m_frameNumber;	//!< The frame number
+    uint8_t m_line;            //!< The line number
+    uint8_t m_polarity;        //!< The polarity
+    uint32_t m_timestamp;    //!< The timestamp
+    uint16_t m_frameNumber;    //!< The frame number
 
 #ifdef __cplusplus
-	/*! Constructor
-		\param[in] line Line
-		\param[in] polarity Polarity
-		\param[in] timestamp Timestamp
-		\param[in] frameNumber Frame number
-	*/
-	explicit XsTriggerIndicationData(uint8_t line = 0, uint8_t polarity = 0, uint32_t timestamp = 0, uint16_t frameNumber = 0)
-		: m_line(line), m_polarity(polarity), m_timestamp(timestamp), m_frameNumber(frameNumber)
-	{}
+    /*! Constructor
+        \param[in] line Line
+        \param[in] polarity Polarity
+        \param[in] timestamp Timestamp
+        \param[in] frameNumber Frame number
+    */
+    explicit XsTriggerIndicationData(uint8_t line = 0, uint8_t polarity = 0, uint32_t timestamp = 0, uint16_t frameNumber = 0)
+        : m_line(line), m_polarity(polarity), m_timestamp(timestamp), m_frameNumber(frameNumber)
+    {}
 
-	/*! \brief \copybrief XsTriggerIndicationData_destruct */
-	inline void clear()
-	{
-		XsTriggerIndicationData_destruct(this);
-	}
+    /*! \brief \copybrief XsTriggerIndicationData_destruct */
+    inline void clear()
+    {
+        XsTriggerIndicationData_destruct(this);
+    }
 
-	/*! \brief \copybrief XsTriggerIndicationData_valid */
-	inline bool valid() const
-	{
-		return 0 != XsTriggerIndicationData_valid(this);
-	}
+    /*! \brief \copybrief XsTriggerIndicationData_valid */
+    inline bool valid() const
+    {
+        return 0 != XsTriggerIndicationData_valid(this);
+    }
 
-	/*! \brief Returns true if all fields of this and \a other are exactly identical */
-	inline bool operator == (XsTriggerIndicationData const& other) const
-	{
-		return m_line == other.m_line &&
-			m_polarity == other.m_polarity &&
-			m_timestamp == other.m_timestamp &&
-			m_frameNumber == other.m_frameNumber;
-	}
+    /*! \brief Returns true if all fields of this and \a other are exactly identical */
+    inline bool operator == (XsTriggerIndicationData const& other) const
+    {
+        return m_line == other.m_line &&
+            m_polarity == other.m_polarity &&
+            m_timestamp == other.m_timestamp &&
+            m_frameNumber == other.m_frameNumber;
+    }
 #endif
 };
 

@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -44,29 +44,29 @@ class IProtocolManager
 {
 public:
 
-	//! \brief Destructor
-	virtual ~IProtocolManager() {}
+    //! \brief Destructor
+    virtual ~IProtocolManager() {}
 
-	/*! \brief Will let all supported protocols attempt finding a raw message in the given raw data
-		\param type: The protocol type to us
-		\param raw: The input raw byte array in which to look for a message
-		\returns A MessageLocation object describing the best possible found message \sa MessageLocation
-	*/
-	virtual MessageLocation findMessage(XsProtocolType& type, const XsByteArray& raw) = 0;
+    /*! \brief Will let all supported protocols attempt finding a raw message in the given raw data
+        \param type: The protocol type to us
+        \param raw: The input raw byte array in which to look for a message
+        \returns A MessageLocation object describing the best possible found message \sa MessageLocation
+    */
+    virtual MessageLocation findMessage(XsProtocolType& type, const XsByteArray& raw) = 0;
 
-	/*! \brief Converts \a raw data using \a location into a %XsMessage object.
-		\param type: The protocol type to use.
-		\param location: The location of a message to convert from \a raw data.
-		\param raw: The raw byte stream.
-		\returns A %XsMessage object that was converted from raw byte stream.
-	*/
-	virtual XsMessage convertToMessage(XsProtocolType& type, MessageLocation& location, const XsByteArray& raw) = 0;
+    /*! \brief Converts \a raw data using \a location into a %XsMessage object.
+        \param type: The protocol type to use.
+        \param location: The location of a message to convert from \a raw data.
+        \param raw: The raw byte stream.
+        \returns A %XsMessage object that was converted from raw byte stream.
+    */
+    virtual XsMessage convertToMessage(XsProtocolType& type, MessageLocation& location, const XsByteArray& raw) = 0;
 
-	/*! \brief Performs a sanity check on the given message
-		\param msg: The message to check
-		\returns true if the message passes the protocol managers sanity checks
-	*/
-	virtual bool validateMessage(XsMessage const& msg) const = 0;
+    /*! \brief Performs a sanity check on the given message
+        \param msg: The message to check
+        \returns true if the message passes the protocol managers sanity checks
+    */
+    virtual bool validateMessage(XsMessage const& msg) const = 0;
 };
 
 #endif

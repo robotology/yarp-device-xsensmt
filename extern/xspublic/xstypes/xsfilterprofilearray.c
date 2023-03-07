@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -35,69 +35,69 @@
 #include <memory.h>
 
 /*! \struct XsFilterProfileArray
-	\brief A list of XsFilterProfile values
-	\sa XsArray
+    \brief A list of XsFilterProfile values
+    \sa XsArray
 */
 
 /*! \copydoc XsArrayDescriptor::itemSwap
-	\note Specialization for XsFilterProfile
+    \note Specialization for XsFilterProfile
 */
 void swapFilterProfile(XsFilterProfile* a, XsFilterProfile* b)
 {
-	XsFilterProfile tmp = *a;
-	*a = *b;
-	*b = tmp;
+    XsFilterProfile tmp = *a;
+    *a = *b;
+    *b = tmp;
 }
 
 /*! \copydoc XsArrayDescriptor::itemCopy
-	\note Specialization for XsFilterProfile
+    \note Specialization for XsFilterProfile
 */
 void copyFilterProfile(XsFilterProfile* to, XsFilterProfile const* from)
 {
-	*to = *from;
+    *to = *from;
 }
 
 /*! \copydoc XsArrayDescriptor::itemCompare
-	\note Specialization for XsFilterProfile
+    \note Specialization for XsFilterProfile
 */
 int compareFilterProfile(XsFilterProfile const* a, XsFilterProfile const* b)
 {
-	if (a->m_filterType != b->m_filterType)
-		return (a->m_filterType < b->m_filterType) ? -1 : 1;
-	if (a->m_type != b->m_type)
-		return (a->m_type < b->m_type) ? -1 : 1;
-	if (a->m_filterMajor != b->m_filterMajor)
-		return (a->m_filterMajor < b->m_filterMajor) ? -1 : 1;
-	if (a->m_filterMinor != b->m_filterMinor)
-		return (a->m_filterMinor < b->m_filterMinor) ? -1 : 1;
-	if (a->m_version != b->m_version)
-		return (a->m_version < b->m_version) ? -1 : 1;
-	return 0;
+    if (a->m_filterType != b->m_filterType)
+        return (a->m_filterType < b->m_filterType) ? -1 : 1;
+    if (a->m_type != b->m_type)
+        return (a->m_type < b->m_type) ? -1 : 1;
+    if (a->m_filterMajor != b->m_filterMajor)
+        return (a->m_filterMajor < b->m_filterMajor) ? -1 : 1;
+    if (a->m_filterMinor != b->m_filterMinor)
+        return (a->m_filterMinor < b->m_filterMinor) ? -1 : 1;
+    if (a->m_version != b->m_version)
+        return (a->m_version < b->m_version) ? -1 : 1;
+    return 0;
 }
 
 //! \brief zero the pointer value
 void zeroFilterProfile(XsFilterProfile* a)
 {
-	memset(a, 0, sizeof(XsFilterProfile));
+    memset(a, 0, sizeof(XsFilterProfile));
 }
 
 //! \brief Descriptor for XsFilterProfileArray
 XsArrayDescriptor const g_xsFilterProfileArrayDescriptor =
 {
-	sizeof(XsFilterProfile),
-	XSEXPCASTITEMSWAP swapFilterProfile,	// swap
-	XSEXPCASTITEMMAKE zeroFilterProfile,	// construct
-	XSEXPCASTITEMCOPY copyFilterProfile,	// copy construct
-	XSEXPCASTITEMMAKE zeroFilterProfile,	// destruct
-	XSEXPCASTITEMCOPY copyFilterProfile,	// copy
-	XSEXPCASTITEMCOMP compareFilterProfile,	// compare
-	XSEXPCASTRAWCOPY XsArray_rawCopy
+    sizeof(XsFilterProfile),
+    XSEXPCASTITEMSWAP swapFilterProfile,    // swap
+    XSEXPCASTITEMMAKE zeroFilterProfile,    // construct
+    XSEXPCASTITEMCOPY copyFilterProfile,    // copy construct
+    XSEXPCASTITEMMAKE zeroFilterProfile,    // destruct
+    XSEXPCASTITEMCOPY copyFilterProfile,    // copy
+    XSEXPCASTITEMCOMP compareFilterProfile,    // compare
+    XSEXPCASTRAWCOPY XsArray_rawCopy
 };
 
 /*! \copydoc XsArray_constructDerived
-	\note Specialization for XsFilterProfileArray
+    \note Specialization for XsFilterProfileArray
 */
 void XsFilterProfileArray_construct(XsFilterProfileArray* thisPtr, XsSize count, XsFilterProfile const* src)
 {
-	XsArray_construct(thisPtr, &g_xsFilterProfileArrayDescriptor, count, src);
+    XsArray_construct(thisPtr, &g_xsFilterProfileArrayDescriptor, count, src);
 }

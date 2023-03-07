@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -35,22 +35,22 @@
 
 #include <xstypes/xssyncline.h>
 
-/*!	\addtogroup enums Global enumerations
-	@{
+/*!    \addtogroup enums Global enumerations
+    @{
 */
 /*! \brief Synchronization line identifiers for the Mk4 devices, only to be used directly in Xbus messages */
 enum SyncLineMk4
 {
-	XSL4_ClockIn = 0,		//!< External clock sync \ref XSL_ClockIn
-	XSL4_GnssClockIn = 1,	//!< GNSS clock sync \ref XSL_GnssClockIn
-	XSL4_In = 2,			//!< Send data line \ref XSL_In1
-	XSL4_BiIn = 3,			//!< Bidirectional sync line, configured as input \ref XSL_Bi1In
-	XSL4_BiOut = 4,			//!< Bidirectional sync line, configured as output \ref XSL_Bi1Out
-	XSL4_ExtTimepulseIn = 5,//!< External Timepulse input \ref XSL_ExtTimepulseIn
-	XSL4_ReqData = 6,		//!< Serial data sync option, use XMID_ReqData message id for this \ref XSL_ReqData
-	XSL4_Gnss1Pps = 8,		//!< GNSS 1PPS sync line \ref XSL_Gnss1Pps
+    XSL4_ClockIn = 0,        //!< External clock sync \ref XSL_ClockIn
+    XSL4_GnssClockIn = 1,    //!< GNSS clock sync \ref XSL_GnssClockIn
+    XSL4_In = 2,            //!< Send data line \ref XSL_In1
+    XSL4_BiIn = 3,            //!< Bidirectional sync line, configured as input \ref XSL_Bi1In
+    XSL4_BiOut = 4,            //!< Bidirectional sync line, configured as output \ref XSL_Bi1Out
+    XSL4_ExtTimepulseIn = 5,//!< External Timepulse input \ref XSL_ExtTimepulseIn
+    XSL4_ReqData = 6,        //!< Serial data sync option, use XMID_ReqData message id for this \ref XSL_ReqData
+    XSL4_Gnss1Pps = 8,        //!< GNSS 1PPS sync line \ref XSL_Gnss1Pps
 
-	XSL4_Invalid
+    XSL4_Invalid
 };
 /*! @} */
 typedef enum SyncLineMk4 SyncLineMk4;

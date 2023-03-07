@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -38,20 +38,20 @@
 #include <xstypes/xsdeviceid.h>
 
 #ifndef __cplusplus
-	#define XSGPSSATELLITEINFO_INITIALIZER	{ 0, 0, 0, 0 }
-	#define XSGPSSTATUS_INITIALIZER	{ 0, XSGPSSATELLITEINFO_INITIALIZER, XSGPSSATELLITEINFO_INITIALIZER, XSGPSSATELLITEINFO_INITIALIZER, XSGPSSATELLITEINFO_INITIALIZER, XSGPSSATELLITEINFO_INITIALIZER, XSGPSSATELLITEINFO_INITIALIZER, XSGPSSATELLITEINFO_INITIALIZER, XSGPSSATELLITEINFO_INITIALIZER, XSGPSSATELLITEINFO_INITIALIZER, XSGPSSATELLITEINFO_INITIALIZER, XSGPSSATELLITEINFO_INITIALIZER, XSGPSSATELLITEINFO_INITIALIZER, XSGPSSATELLITEINFO_INITIALIZER, XSGPSSATELLITEINFO_INITIALIZER, XSGPSSATELLITEINFO_INITIALIZER, XSGPSSATELLITEINFO_INITIALIZER };
+    #define XSGPSSATELLITEINFO_INITIALIZER    { 0, 0, 0, 0 }
+    #define XSGPSSTATUS_INITIALIZER    { 0, XSGPSSATELLITEINFO_INITIALIZER, XSGPSSATELLITEINFO_INITIALIZER, XSGPSSATELLITEINFO_INITIALIZER, XSGPSSATELLITEINFO_INITIALIZER, XSGPSSATELLITEINFO_INITIALIZER, XSGPSSATELLITEINFO_INITIALIZER, XSGPSSATELLITEINFO_INITIALIZER, XSGPSSATELLITEINFO_INITIALIZER, XSGPSSATELLITEINFO_INITIALIZER, XSGPSSATELLITEINFO_INITIALIZER, XSGPSSATELLITEINFO_INITIALIZER, XSGPSSATELLITEINFO_INITIALIZER, XSGPSSATELLITEINFO_INITIALIZER, XSGPSSATELLITEINFO_INITIALIZER, XSGPSSATELLITEINFO_INITIALIZER, XSGPSSATELLITEINFO_INITIALIZER };
 #endif
 
-#define XS_MAX_SVINFO		16
+#define XS_MAX_SVINFO        16
 
 /*! \brief Storage for status of one GPS satellite, used by MTi-G only
 */
 struct XsGpsSatelliteInfo
 {
-	uint8_t m_id;				//!< Satellite ID
-	uint8_t m_navigationStatus;	//!< Navigation status of the Satellite (see low-level documentation for interpretation)
-	uint8_t m_signalQuality;	//!< Signal quality
-	uint8_t m_signalStrength;	//!< Signal strength
+    uint8_t m_id;                //!< Satellite ID
+    uint8_t m_navigationStatus;    //!< Navigation status of the Satellite (see low-level documentation for interpretation)
+    uint8_t m_signalQuality;    //!< Signal quality
+    uint8_t m_signalStrength;    //!< Signal strength
 };
 typedef struct XsGpsSatelliteInfo XsGpsSatelliteInfo;
 
@@ -59,8 +59,8 @@ typedef struct XsGpsSatelliteInfo XsGpsSatelliteInfo;
 */
 struct GpsStatus
 {
-	XsDeviceId m_deviceId;						//!< The device that reported the GPS status
-	XsGpsSatelliteInfo m_svInfo[XS_MAX_SVINFO];	//!< An array of the GPS satellite infos
+    XsDeviceId m_deviceId;                        //!< The device that reported the GPS status
+    XsGpsSatelliteInfo m_svInfo[XS_MAX_SVINFO];    //!< An array of the GPS satellite infos
 };
 typedef struct GpsStatus GpsStatus;
 

@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -44,10 +44,10 @@ struct XsFingerData;
 extern "C" {
 #endif
 #ifndef __cplusplus
-#define XSFINGERDATA_INITIALIZER {	XSQUATERNION_INITIALIZER, XSVECTOR3_INITIALIZER, XSVECTOR3_INITIALIZER, 0, 0, 0}
-#define XSGLOVEDATA_INITIALIZER {	XSFINGERDATA_INITIALIZER, XSFINGERDATA_INITIALIZER, XSFINGERDATA_INITIALIZER, XSFINGERDATA_INITIALIZER, XSFINGERDATA_INITIALIZER, XSFINGERDATA_INITIALIZER, \
-		XSFINGERDATA_INITIALIZER, XSFINGERDATA_INITIALIZER, XSFINGERDATA_INITIALIZER, XSFINGERDATA_INITIALIZER, XSFINGERDATA_INITIALIZER, XSFINGERDATA_INITIALIZER, \
-		0 ,0 ,0 ,0 }
+#define XSFINGERDATA_INITIALIZER {    XSQUATERNION_INITIALIZER, XSVECTOR3_INITIALIZER, XSVECTOR3_INITIALIZER, 0, 0, 0}
+#define XSGLOVEDATA_INITIALIZER {    XSFINGERDATA_INITIALIZER, XSFINGERDATA_INITIALIZER, XSFINGERDATA_INITIALIZER, XSFINGERDATA_INITIALIZER, XSFINGERDATA_INITIALIZER, XSFINGERDATA_INITIALIZER, \
+        XSFINGERDATA_INITIALIZER, XSFINGERDATA_INITIALIZER, XSFINGERDATA_INITIALIZER, XSFINGERDATA_INITIALIZER, XSFINGERDATA_INITIALIZER, XSFINGERDATA_INITIALIZER, \
+        0 ,0 ,0 ,0 }
 #endif
 
 XSTYPES_DLL_API void XsFingerData_construct(struct XsFingerData* thisPtr);
@@ -64,116 +64,116 @@ XSTYPES_DLL_API void XsGloveData_swap(struct XsGloveData* lhs, struct XsGloveDat
 } // extern "C"
 #endif
 
-#define XSFINGERSEGMENTCOUNT	12
+#define XSFINGERSEGMENTCOUNT    12
 
 /*! \brief A container for Finger data
 */
 struct XsFingerData
 {
 #ifdef __cplusplus
-	//! \brief Construct an empty object
-	inline XsFingerData()
-		: m_flags(0)
-	{
-	}
+    //! \brief Construct an empty object
+    inline XsFingerData()
+        : m_flags(0)
+    {
+    }
 
-	//! \brief Construct an initialized object
-	inline XsFingerData(const XsQuaternion& dq, const XsVector& dv, const XsVector& mag, const uint16_t flags)
-		: m_orientationIncrement(dq)
-		, m_velocityIncrement(dv)
-		, m_mag(mag)
-		, m_flags(flags)
-	{
-	}
+    //! \brief Construct an initialized object
+    inline XsFingerData(const XsQuaternion& dq, const XsVector& dv, const XsVector& mag, const uint16_t flags)
+        : m_orientationIncrement(dq)
+        , m_velocityIncrement(dv)
+        , m_mag(mag)
+        , m_flags(flags)
+    {
+    }
 
-	//! \brief Copy constructor
-	inline XsFingerData(const XsFingerData& other)
-		: m_orientationIncrement(other.m_orientationIncrement)
-		, m_velocityIncrement(other.m_velocityIncrement)
-		, m_mag(other.m_mag)
-		, m_flags(other.m_flags)
-	{
-	}
+    //! \brief Copy constructor
+    inline XsFingerData(const XsFingerData& other)
+        : m_orientationIncrement(other.m_orientationIncrement)
+        , m_velocityIncrement(other.m_velocityIncrement)
+        , m_mag(other.m_mag)
+        , m_flags(other.m_flags)
+    {
+    }
 
-	//! \brief Assignment operator
-	inline const XsFingerData& operator=(const XsFingerData& other)
-	{
-		if (this != &other)
-		{
-			m_orientationIncrement = other.m_orientationIncrement;
-			m_velocityIncrement = other.m_velocityIncrement;
-			m_mag = other.m_mag;
-			m_flags = other.m_flags;
-		}
-		return *this;
-	}
+    //! \brief Assignment operator
+    inline const XsFingerData& operator=(const XsFingerData& other)
+    {
+        if (this != &other)
+        {
+            m_orientationIncrement = other.m_orientationIncrement;
+            m_velocityIncrement = other.m_velocityIncrement;
+            m_mag = other.m_mag;
+            m_flags = other.m_flags;
+        }
+        return *this;
+    }
 
-	//! \brief Clear the object so it contains unity data
-	inline void clear()
-	{
-		m_orientationIncrement = XsQuaternion::identity();
-		m_velocityIncrement.setZero();
-		m_mag.setZero();
-	}
+    //! \brief Clear the object so it contains unity data
+    inline void clear()
+    {
+        m_orientationIncrement = XsQuaternion::identity();
+        m_velocityIncrement.setZero();
+        m_mag.setZero();
+    }
 
-	//! \brief Returns the contained orientation increment
-	inline const XsQuaternion& orientationIncrement() const
-	{
-		return m_orientationIncrement;
-	}
+    //! \brief Returns the contained orientation increment
+    inline const XsQuaternion& orientationIncrement() const
+    {
+        return m_orientationIncrement;
+    }
 
-	//! \brief Returns the contained velocity increment
-	inline const XsVector3& velocityIncrement() const
-	{
-		return m_velocityIncrement;
-	}
+    //! \brief Returns the contained velocity increment
+    inline const XsVector3& velocityIncrement() const
+    {
+        return m_velocityIncrement;
+    }
 
-	//! \brief Returns the mag
-	inline const XsVector3& mag() const
-	{
-		return m_mag;
-	}
+    //! \brief Returns the mag
+    inline const XsVector3& mag() const
+    {
+        return m_mag;
+    }
 
-	//! \brief Returns the flags
-	inline uint16_t flags() const
-	{
-		return m_flags;
-	}
+    //! \brief Returns the flags
+    inline uint16_t flags() const
+    {
+        return m_flags;
+    }
 
-	/*! \brief Returns true if all fields of this and \a other are exactly identical */
-	inline bool operator == (const XsFingerData& other) const
-	{
-		return	m_orientationIncrement == other.m_orientationIncrement &&
-			m_velocityIncrement == other.m_velocityIncrement &&
-			m_mag == other.m_mag &&
-			m_flags == other.m_flags;
-	}
+    /*! \brief Returns true if all fields of this and \a other are exactly identical */
+    inline bool operator == (const XsFingerData& other) const
+    {
+        return    m_orientationIncrement == other.m_orientationIncrement &&
+            m_velocityIncrement == other.m_velocityIncrement &&
+            m_mag == other.m_mag &&
+            m_flags == other.m_flags;
+    }
 
-	/*! \brief Returns true if not all fields of this and \a other are exactly identical */
-	inline bool operator != (const XsFingerData& other) const
-	{
-		return !operator==(other);
-	}
+    /*! \brief Returns true if not all fields of this and \a other are exactly identical */
+    inline bool operator != (const XsFingerData& other) const
+    {
+        return !operator==(other);
+    }
 
-	/*! \brief Swap the contents of this with \a other */
-	inline void swap(XsFingerData& other)
-	{
-		XsFingerData_swap(this, &other);
-	}
+    /*! \brief Swap the contents of this with \a other */
+    inline void swap(XsFingerData& other)
+    {
+        XsFingerData_swap(this, &other);
+    }
 
-	/*! \brief Swap the contents of \a first with \a second */
-	friend void swap(XsFingerData& first, XsFingerData& second)
-	{
-		first.swap(second);
-	}
+    /*! \brief Swap the contents of \a first with \a second */
+    friend void swap(XsFingerData& first, XsFingerData& second)
+    {
+        first.swap(second);
+    }
 
 protected:
 #endif
 
-	XsQuaternion	m_orientationIncrement;	//!< The orientation increment for this segment
-	XsVector3		m_velocityIncrement;	//!< The velocity increment for this segment
-	XsVector3		m_mag;					//!< The magnetic field data for this segment
-	uint16_t		m_flags;				//!< Data quality flags (LSB --> MSB: acc x,y,z gyr x,y,z mag x,y,z)
+    XsQuaternion    m_orientationIncrement;    //!< The orientation increment for this segment
+    XsVector3        m_velocityIncrement;    //!< The velocity increment for this segment
+    XsVector3        m_mag;                    //!< The magnetic field data for this segment
+    uint16_t        m_flags;                //!< Data quality flags (LSB --> MSB: acc x,y,z gyr x,y,z mag x,y,z)
 };
 typedef struct XsFingerData XsFingerData;
 
@@ -182,102 +182,102 @@ typedef struct XsFingerData XsFingerData;
 struct XsGloveData
 {
 #ifdef __cplusplus
-	//! \brief Construct an empty object
-	inline XsGloveData()
-		: m_frameNumber(0)
-		, m_validSampleFlags(0)
-	{
-	}
+    //! \brief Construct an empty object
+    inline XsGloveData()
+        : m_frameNumber(0)
+        , m_validSampleFlags(0)
+    {
+    }
 
-	//! \brief Construct an initialized object
-	inline XsGloveData(const uint16_t frameNumber, const uint16_t validSampleFlags, const XsFingerData* fingerData)
-		: m_frameNumber(frameNumber)
-		, m_validSampleFlags(validSampleFlags)
-	{
-		for (int i = 0; i < XSFINGERSEGMENTCOUNT; ++i)
-			m_fingerData[i] = fingerData[i];
-	}
+    //! \brief Construct an initialized object
+    inline XsGloveData(const uint16_t frameNumber, const uint16_t validSampleFlags, const XsFingerData* fingerData)
+        : m_frameNumber(frameNumber)
+        , m_validSampleFlags(validSampleFlags)
+    {
+        for (int i = 0; i < XSFINGERSEGMENTCOUNT; ++i)
+            m_fingerData[i] = fingerData[i];
+    }
 
-	//! \brief Copy constructor
-	inline XsGloveData(const XsGloveData& other)
-		: m_frameNumber(other.m_frameNumber)
-		, m_validSampleFlags(other.m_validSampleFlags)
-	{
-		for (int i = 0; i < XSFINGERSEGMENTCOUNT; ++i)
-			m_fingerData[i] = other.m_fingerData[i];
-	}
+    //! \brief Copy constructor
+    inline XsGloveData(const XsGloveData& other)
+        : m_frameNumber(other.m_frameNumber)
+        , m_validSampleFlags(other.m_validSampleFlags)
+    {
+        for (int i = 0; i < XSFINGERSEGMENTCOUNT; ++i)
+            m_fingerData[i] = other.m_fingerData[i];
+    }
 
-	//! \brief Returns the snapshot counter
-	inline uint32_t frameNumber() const
-	{
-		return m_frameNumber;
-	}
+    //! \brief Returns the snapshot counter
+    inline uint32_t frameNumber() const
+    {
+        return m_frameNumber;
+    }
 
-	//! \brief Returns the valid sample flags
-	inline uint16_t validSampleFlags() const
-	{
-		return m_validSampleFlags;
-	}
+    //! \brief Returns the valid sample flags
+    inline uint16_t validSampleFlags() const
+    {
+        return m_validSampleFlags;
+    }
 
 
-	//! \brief Returns the number of items in fingerData
-	inline static int fingerSegmentCount()
-	{
-		return XSFINGERSEGMENTCOUNT;
-	}
+    //! \brief Returns the number of items in fingerData
+    inline static int fingerSegmentCount()
+    {
+        return XSFINGERSEGMENTCOUNT;
+    }
 
-	//! \brief Returns the finger data
-	inline XsFingerData const& fingerData(int i) const
-	{
-		assert(i >= 0 && i < XSFINGERSEGMENTCOUNT);
-		return m_fingerData[i];
-	}
+    //! \brief Returns the finger data
+    inline XsFingerData const& fingerData(int i) const
+    {
+        assert(i >= 0 && i < XSFINGERSEGMENTCOUNT);
+        return m_fingerData[i];
+    }
 
-	/*! \brief Returns true if all fields of this and \a other are exactly identical */
-	inline bool operator == (const XsGloveData& other) const
-	{
-		if (m_frameNumber != other.m_frameNumber ||
-			m_validSampleFlags != other.m_validSampleFlags)
-			return false;
+    /*! \brief Returns true if all fields of this and \a other are exactly identical */
+    inline bool operator == (const XsGloveData& other) const
+    {
+        if (m_frameNumber != other.m_frameNumber ||
+            m_validSampleFlags != other.m_validSampleFlags)
+            return false;
 
-		for (int i = 0; i < XSFINGERSEGMENTCOUNT; ++i)
-		{
-			if (!(m_fingerData[i] == other.m_fingerData[i]))
-				return false;
-		}
-		return true;
-	}
+        for (int i = 0; i < XSFINGERSEGMENTCOUNT; ++i)
+        {
+            if (!(m_fingerData[i] == other.m_fingerData[i]))
+                return false;
+        }
+        return true;
+    }
 
-	/*! \brief Returns true if not all fields of this and \a other are exactly identical */
-	inline bool operator != (const XsGloveData& other) const
-	{
-		return !operator==(other);
-	}
+    /*! \brief Returns true if not all fields of this and \a other are exactly identical */
+    inline bool operator != (const XsGloveData& other) const
+    {
+        return !operator==(other);
+    }
 
-	//! \brief Assignment operator, copies contents of \a other into this
-	inline XsGloveData const& operator = (XsGloveData const& other)
-	{
-		XsGloveData_copy(this, &other);
-		return *this;
-	}
+    //! \brief Assignment operator, copies contents of \a other into this
+    inline XsGloveData const& operator = (XsGloveData const& other)
+    {
+        XsGloveData_copy(this, &other);
+        return *this;
+    }
 
-	/*! \brief Swap the contents of this with \a other */
-	inline void swap(XsGloveData& other)
-	{
-		XsGloveData_swap(this, &other);
-	}
+    /*! \brief Swap the contents of this with \a other */
+    inline void swap(XsGloveData& other)
+    {
+        XsGloveData_swap(this, &other);
+    }
 
-	/*! \brief Swap the contents of \a first with \a second */
-	friend void swap(XsGloveData& first, XsGloveData& second)
-	{
-		first.swap(second);
-	}
+    /*! \brief Swap the contents of \a first with \a second */
+    friend void swap(XsGloveData& first, XsGloveData& second)
+    {
+        first.swap(second);
+    }
 
 protected:
 #endif
-	XsFingerData m_fingerData[XSFINGERSEGMENTCOUNT];	//!< Data for each tracked finger segment
-	uint32_t m_frameNumber;		//!< The sequential frame number for the data
-	uint16_t m_validSampleFlags;	//!< Flags describing the general validity of the data
+    XsFingerData m_fingerData[XSFINGERSEGMENTCOUNT];    //!< Data for each tracked finger segment
+    uint32_t m_frameNumber;        //!< The sequential frame number for the data
+    uint16_t m_validSampleFlags;    //!< Flags describing the general validity of the data
 };
 
 typedef struct XsGloveData XsGloveData;

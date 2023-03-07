@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -41,7 +41,7 @@
 */
 Communicator* SerialPortCommunicator::construct()
 {
-	return new SerialPortCommunicator;
+    return new SerialPortCommunicator;
 }
 
 /*! Default constructor
@@ -55,18 +55,18 @@ SerialPortCommunicator::~SerialPortCommunicator()
 }
 
 /*! \brief Creates a stream interface
-	\param pi The port to use
-	\returns The shared pointer to a stream interface
+    \param pi The port to use
+    \returns The shared pointer to a stream interface
 */
 std::shared_ptr<StreamInterface> SerialPortCommunicator::createStreamInterface(const XsPortInfo& pi)
 {
-	assert(!pi.isUsb() && !pi.isNetwork());
-	std::shared_ptr<StreamInterface> stream(new SerialInterface());
+    assert(!pi.isUsb() && !pi.isNetwork());
+    std::shared_ptr<StreamInterface> stream(new SerialInterface());
 
-	SerialInterface::PortOptions options = SerialInterface::PO_XsensDefaults;
-	if (pi.deviceId() == XS_DID_ABMCLOCKMASTER)
-		options = SerialInterface::PO_RtsCtsFlowControl | SerialInterface::PO_OneStopBit;
-	setLastResult(stream->open(pi, 65536, 65536, options));
+    SerialInterface::PortOptions options = SerialInterface::PO_XsensDefaults;
+    if (pi.deviceId() == XS_DID_ABMCLOCKMASTER)
+        options = SerialInterface::PO_RtsCtsFlowControl | SerialInterface::PO_OneStopBit;
+    setLastResult(stream->open(pi, 65536, 65536, options));
 
-	return stream;
+    return stream;
 }

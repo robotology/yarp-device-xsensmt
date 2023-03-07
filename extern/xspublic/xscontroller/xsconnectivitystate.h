@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -34,24 +34,24 @@
 #define XSCONNECTIVITYSTATE_H
 
 #ifdef __cplusplus
-	#include <ostream>
+    #include <ostream>
 #endif
 
-/*!	\addtogroup enums Global enumerations
-	@{
+/*!    \addtogroup enums Global enumerations
+    @{
 */
 
 //AUTO namespace xscontroller {
 /*! \brief XsDevice connectivity state identifiers */
 enum XsConnectivityState
 {
-	XCS_Disconnected,		/*!< Device has disconnected, only limited informational functionality is available. */
-	XCS_Rejected,			/*!< Device has been rejected and is disconnected, only limited informational functionality is available. */
-	XCS_PluggedIn,			/*!< Device is connected through a cable. */
-	XCS_Wireless,			/*!< Device is connected wirelessly. */
-	XCS_WirelessOutOfRange,	/*!< Device was connected wirelessly and is currently out of range. */
-	XCS_File,				/*!< Device is reading from a file. */
-	XCS_Unknown,			/*!< Device is in an unknown state. */
+    XCS_Disconnected,        /*!< Device has disconnected, only limited informational functionality is available. */
+    XCS_Rejected,            /*!< Device has been rejected and is disconnected, only limited informational functionality is available. */
+    XCS_PluggedIn,            /*!< Device is connected through a cable. */
+    XCS_Wireless,            /*!< Device is connected wirelessly. */
+    XCS_WirelessOutOfRange,    /*!< Device was connected wirelessly and is currently out of range. */
+    XCS_File,                /*!< Device is reading from a file. */
+    XCS_Unknown,            /*!< Device is in an unknown state. */
 };
 
 /*! @} */
@@ -75,7 +75,7 @@ namespace std
 template<typename _CharT, typename _Traits>
 basic_ostream<_CharT, _Traits>& operator<<(basic_ostream<_CharT, _Traits>& o, XsConnectivityState const& xs)
 {
-	return (o << XsConnectivityState_toString(xs));
+    return (o << XsConnectivityState_toString(xs));
 }
 }
 #endif

@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -38,61 +38,61 @@
 using namespace xsens;
 
 /*! \class MtThread
-	\brief A class that implements thread for MT
+    \brief A class that implements thread for MT
 */
 
 /*! \brief Default constructor */
 MtThread::MtThread(DataParser& fetcher, SerialCommunicator& communicator)
-	: DataPoller(fetcher)
-	, m_doGotoConfig(false)
-	, m_communicator(&communicator)
-	, m_gotoConfigPlus(0)
+    : DataPoller(fetcher)
+    , m_doGotoConfig(false)
+    , m_communicator(&communicator)
+    , m_gotoConfigPlus(0)
 {
-	JLDEBUGG("Starting MtThread " << this << " with parser " << &fetcher);
+    JLDEBUGG("Starting MtThread " << this << " with parser " << &fetcher);
 
-	XsMessage gotoConfig(XMID_GotoConfig);
-	XsMessage largeGotoConfig(XMID_GotoConfig, 30);
-	m_gotoConfigPlus = new XsByteArray(largeGotoConfig.rawMessage());
-	for (int i = 0; i < 6; ++i)
-		m_gotoConfigPlus->append(gotoConfig.rawMessage());
+    XsMessage gotoConfig(XMID_GotoConfig);
+    XsMessage largeGotoConfig(XMID_GotoConfig, 30);
+    m_gotoConfigPlus = new XsByteArray(largeGotoConfig.rawMessage());
+    for (int i = 0; i < 6; ++i)
+        m_gotoConfigPlus->append(gotoConfig.rawMessage());
 }
 
 /*! \brief Destructor */
 MtThread::~MtThread(void)
 {
-	try
-	{
-		JLDEBUGG("Stopping MtThread " << this);
-		cleanup();
-		if (m_gotoConfigPlus)
-			delete m_gotoConfigPlus;
-	}
-	catch (...)
-	{
-	}
+    try
+    {
+        JLDEBUGG("Stopping MtThread " << this);
+        cleanup();
+        if (m_gotoConfigPlus)
+            delete m_gotoConfigPlus;
+    }
+    catch (...)
+    {
+    }
 }
 
 /*! \brief Set whether we should send gotoconfig here */
 void MtThread::setDoGotoConfig(bool doit)
 {
-	srand((unsigned int)XsTime_timeStampNow(0));
-	m_doGotoConfig = doit;
+    srand((unsigned int)XsTime_timeStampNow(0));
+    m_doGotoConfig = doit;
 }
 
 /*! \brief The inner thread function
-	\details This function handles port communication, delegating processing and calibration to its DataParser.
-	\returns A value from 0 to 3
+    \details This function handles port communication, delegating processing and calibration to its DataParser.
+    \returns A value from 0 to 3
 */
 int32_t MtThread::innerFunction(void)
 {
-	if (m_doGotoConfig)
-	{
-		JLDEBUGG("Sending gotoConfig");
+    if (m_doGotoConfig)
+    {
+        JLDEBUGG("Sending gotoConfig");
 
-		if (m_communicator->writeRawData(*m_gotoConfigPlus) != XRV_OK)
-			JLALERTG("Send gotoConfig failed");
-		XsTime_msleep((uint32_t)(((unsigned)rand()) / (RAND_MAX / 10) + 5));	// if we sent a goto config, wait a bit for the result
-	}
+        if (m_communicator->writeRawData(*m_gotoConfigPlus) != XRV_OK)
+            JLALERTG("Send gotoConfig failed");
+        XsTime_msleep((uint32_t)(((unsigned)rand()) / (RAND_MAX / 10) + 5));    // if we sent a goto config, wait a bit for the result
+    }
 
-	return DataPoller::innerFunction();
+    return DataPoller::innerFunction();
 }

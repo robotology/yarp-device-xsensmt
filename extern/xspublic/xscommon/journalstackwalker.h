@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -34,37 +34,37 @@
 #define JOURNALSTACKWALKER_H
 
 #ifdef _MSC_VER
-	#include "stackwalker.h"
+    #include "stackwalker.h"
 #else
-	#include "stackwalker_linux.h"
+    #include "stackwalker_linux.h"
 #endif
 #include "journaller.h"
 
 /*! \class JournalStackWalker
-	\brief A journaller class that is used for walking the stack
+    \brief A journaller class that is used for walking the stack
 */
 class JournalStackWalker : public StackWalker
 {
 public:
-	/*! \brief Constructor
-	*/
-	JournalStackWalker(Journaller* journal)
-		: StackWalker()
-		, m_journaller(journal)
-	{
-	}
+    /*! \brief Constructor
+    */
+    JournalStackWalker(Journaller* journal)
+        : StackWalker()
+        , m_journaller(journal)
+    {
+    }
 
-	/*! \brief Handles the output from stack
-		\param szText The string that contains stack output
-	*/
-	void OnOutput(LPCSTR szText) override
-	{
-		m_journaller->writeMessage(szText);
-		m_journaller->writeMessage("\n");
-	}
+    /*! \brief Handles the output from stack
+        \param szText The string that contains stack output
+    */
+    void OnOutput(LPCSTR szText) override
+    {
+        m_journaller->writeMessage(szText);
+        m_journaller->writeMessage("\n");
+    }
 
 protected:
-	Journaller* m_journaller; //!< A pointer to journaller object
+    Journaller* m_journaller; //!< A pointer to journaller object
 };
 
 #endif

@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -34,37 +34,37 @@
 #include <string.h>
 
 /*! \addtogroup cinterface C Interface
-	@{
+    @{
 */
 
 /*! \brief Convert the %XsDataFlags to a human readable string
-	\param f The flags to translate
-	\returns A pointer to a statically allocated memory buffer. Do not free this buffer.
-	\note This function is NOT reentrant, multiple simultaneous calls may cause crashes.
-	Also, later calls will invalidate the results of earlier calls.
+    \param f The flags to translate
+    \returns A pointer to a statically allocated memory buffer. Do not free this buffer.
+    \note This function is NOT reentrant, multiple simultaneous calls may cause crashes.
+    Also, later calls will invalidate the results of earlier calls.
 */
 const char* XsDataFlags_toString(XsDataFlags f)
 {
-	static char rv[4 * 20];
-	if (f == XSDF_None)
-		return "XSDF_None";
+    static char rv[4 * 20];
+    if (f == XSDF_None)
+        return "XSDF_None";
 
-	rv[0] = 0;
-	if (f & XSDF_Managed)
-		strcpy(rv, "XSDF_Managed");
-	if (f & XSDF_FixedSize)
-	{
-		if (rv[0])
-			strcat(rv, " | ");
-		strcat(rv, "XSDF_FixedSize");
-	}
-	if (f & XSDF_Empty)
-	{
-		if (rv[0])
-			strcat(rv, " | ");
-		strcat(rv, "XSDF_Empty");
-	}
-	return rv;
+    rv[0] = 0;
+    if (f & XSDF_Managed)
+        strcpy(rv, "XSDF_Managed");
+    if (f & XSDF_FixedSize)
+    {
+        if (rv[0])
+            strcat(rv, " | ");
+        strcat(rv, "XSDF_FixedSize");
+    }
+    if (f & XSDF_Empty)
+    {
+        if (rv[0])
+            strcat(rv, " | ");
+        strcat(rv, "XSDF_Empty");
+    }
+    return rv;
 }
 
 /*! @} */

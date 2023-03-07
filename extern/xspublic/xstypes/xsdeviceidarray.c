@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -34,49 +34,49 @@
 #include "xsdeviceid.h"
 
 /*! \struct XsDeviceIdArray
-	\brief A list of XsDeviceId values
-	\sa XsArray
+    \brief A list of XsDeviceId values
+    \sa XsArray
 */
 
 void initDeviceId(XsDeviceId* did)
 {
-	static const XsDeviceId cleared = XSDEVICEID_INITIALIZER;
-	*did = cleared;
+    static const XsDeviceId cleared = XSDEVICEID_INITIALIZER;
+    *did = cleared;
 }
 
 void initDeviceIdToValue(XsDeviceId* did, XsDeviceId const* src)
 {
-	memcpy(did, src, sizeof(XsDeviceId));
+    memcpy(did, src, sizeof(XsDeviceId));
 }
 
 int compareDeviceIds(XsDeviceId const* a, XsDeviceId const* b)
 {
-	int64_t diff = (int64_t)a->m_deviceId - (int64_t)b->m_deviceId;
-	if (diff < 0)
-		return -1;
-	else if (diff > 0)
-		return 1;
+    int64_t diff = (int64_t)a->m_deviceId - (int64_t)b->m_deviceId;
+    if (diff < 0)
+        return -1;
+    else if (diff > 0)
+        return 1;
 
-	return 0;
+    return 0;
 }
 
 //! \brief Descriptor for XsDeviceIdArray
 XsArrayDescriptor const g_xsDeviceIdArrayDescriptor =
 {
-	sizeof(XsDeviceId),
-	XSEXPCASTITEMSWAP XsDeviceId_swap,		// swap
-	XSEXPCASTITEMMAKE initDeviceId,			// construct
-	XSEXPCASTITEMCOPY initDeviceIdToValue,	// copy construct
-	0,										// destruct
-	XSEXPCASTITEMCOPY initDeviceIdToValue,	// copy
-	XSEXPCASTITEMCOMP compareDeviceIds,		// compare
-	XSEXPCASTRAWCOPY XsArray_rawCopy		// raw copy
+    sizeof(XsDeviceId),
+    XSEXPCASTITEMSWAP XsDeviceId_swap,        // swap
+    XSEXPCASTITEMMAKE initDeviceId,            // construct
+    XSEXPCASTITEMCOPY initDeviceIdToValue,    // copy construct
+    0,                                        // destruct
+    XSEXPCASTITEMCOPY initDeviceIdToValue,    // copy
+    XSEXPCASTITEMCOMP compareDeviceIds,        // compare
+    XSEXPCASTRAWCOPY XsArray_rawCopy        // raw copy
 };
 
 /*! \copydoc XsArray_constructDerived
-	\note Specialization for XsStringArray
+    \note Specialization for XsStringArray
 */
 void XsDeviceIdArray_construct(XsDeviceIdArray* thisPtr, XsSize count, XsDeviceId const* src)
 {
-	XsArray_construct(thisPtr, &g_xsDeviceIdArrayDescriptor, count, src);
+    XsArray_construct(thisPtr, &g_xsDeviceIdArrayDescriptor, count, src);
 }

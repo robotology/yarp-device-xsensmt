@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -44,7 +44,7 @@ static const CommunicatorFactory::CommunicatorTypeId SERIALPORT = 3;
 }
 
 /*! \class XdaCommunicatorFactory
-	\brief XDA communication factory
+    \brief XDA communication factory
 */
 
 /*! \brief Construct this factory */
@@ -55,47 +55,47 @@ XdaCommunicatorFactory::XdaCommunicatorFactory()
 /*! \copydoc CommunicatorFactory::filenameToCommunicatorId */
 XdaCommunicatorFactory::CommunicatorTypeId XdaCommunicatorFactory::filenameToCommunicatorId(const XsString&) const
 {
-	/*  Everything is expected to be an mtb file for now.
-	    It is very wel possible that we're going to have to check for
-	    other weird stuff as well, such as COM1 or /dev/ttyUSB0,
-	    which would state a case for just a string-based approach.
-	*/
-	return CommunicatorType::MTBFILE;
+    /*  Everything is expected to be an mtb file for now.
+        It is very wel possible that we're going to have to check for
+        other weird stuff as well, such as COM1 or /dev/ttyUSB0,
+        which would state a case for just a string-based approach.
+    */
+    return CommunicatorType::MTBFILE;
 }
 
 /*! \copydoc CommunicatorFactory::portInfoToCommunicatorId */
 XdaCommunicatorFactory::CommunicatorTypeId XdaCommunicatorFactory::portInfoToCommunicatorId(const XsPortInfo& portInfo) const
 {
-	for (auto it = constructors().begin(); it != constructors().end(); ++it)
-		if (it->second.second && it->second.second(portInfo))
-			return it->first;
+    for (auto it = constructors().begin(); it != constructors().end(); ++it)
+        if (it->second.second && it->second.second(portInfo))
+            return it->first;
 
-	return CommunicatorType::UNKNOWN;
+    return CommunicatorType::UNKNOWN;
 }
 
 namespace
 {
 /*! \returns True if a \a portInfo is USB port
-	\param portInfo The port info to check
+    \param portInfo The port info to check
 */
 bool isUsb(const XsPortInfo& portInfo)
 {
-	return portInfo.isUsb();
+    return portInfo.isUsb();
 }
 
 /*! \returns True if a \a portInfo is a serial port
-	\param portInfo The port info to check
+    \param portInfo The port info to check
 */
 bool isSerialPort(const XsPortInfo& portInfo)
 {
-	return !portInfo.isUsb() && !portInfo.isNetwork() && !portInfo.isBluetooth();
+    return !portInfo.isUsb() && !portInfo.isNetwork() && !portInfo.isBluetooth();
 }
 }
 
 /*! \brief Register the communicator types */
 void XdaCommunicatorFactory::registerCommunicatorTypes()
 {
-	(void)registerType(CommunicatorType::MTBFILE, &MtbFileCommunicator::construct, nullptr);
-	(void)registerType(CommunicatorType::SERIALPORT, &SerialPortCommunicator::construct, &isSerialPort);
-	(void)registerType(CommunicatorType::USB, &UsbCommunicator::construct, &isUsb);
+    (void)registerType(CommunicatorType::MTBFILE, &MtbFileCommunicator::construct, nullptr);
+    (void)registerType(CommunicatorType::SERIALPORT, &SerialPortCommunicator::construct, &isSerialPort);
+    (void)registerType(CommunicatorType::USB, &UsbCommunicator::construct, &isUsb);
 }

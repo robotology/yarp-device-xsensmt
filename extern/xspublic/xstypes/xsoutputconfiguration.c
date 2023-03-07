@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -34,15 +34,15 @@
 
 void XsOutputConfiguration_swap(struct XsOutputConfiguration* a, struct XsOutputConfiguration* b)
 {
-	{
-		XsDataIdentifier t = a->m_dataIdentifier;
-		a->m_dataIdentifier = b->m_dataIdentifier;
-		b->m_dataIdentifier = t;
-	}
+    {
+        XsDataIdentifier t = a->m_dataIdentifier;
+        a->m_dataIdentifier = b->m_dataIdentifier;
+        b->m_dataIdentifier = t;
+    }
 
-	{
-		uint16_t t = a->m_frequency;
-		a->m_frequency = b->m_frequency;
-		b->m_frequency = t;
-	}
+    {
+        uint16_t t = a->m_frequency;
+        a->m_frequency = b->m_frequency;
+        b->m_frequency = t;
+    }
 }

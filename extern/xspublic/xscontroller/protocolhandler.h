@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -38,20 +38,20 @@
 
 class ProtocolHandler : public virtual IProtocolHandler
 {
-	bool m_ignoreMaxMsgSize;
+    bool m_ignoreMaxMsgSize;
 public:
-	ProtocolHandler();
-	virtual ~ProtocolHandler();
+    ProtocolHandler();
+    virtual ~ProtocolHandler();
 
-	MessageLocation findMessage(XsProtocolType& type, const XsByteArray& raw) const override;
-	XsMessage convertToMessage(MessageLocation& location, const XsByteArray& raw) const override;
-	int minimumMessageSize() const override;
-	int maximumMessageSize() const override;
-	int type() const override;
-	static int composeMessage(XsByteArray& raw, const XsMessage& msg);
-	void ignoreMaximumMessageSize(bool ignore) override;
+    MessageLocation findMessage(XsProtocolType& type, const XsByteArray& raw) const override;
+    XsMessage convertToMessage(MessageLocation& location, const XsByteArray& raw) const override;
+    int minimumMessageSize() const override;
+    int maximumMessageSize() const override;
+    int type() const override;
+    static int composeMessage(XsByteArray& raw, const XsMessage& msg);
+    void ignoreMaximumMessageSize(bool ignore) override;
 
-	XSENS_DISABLE_COPY(ProtocolHandler);
+    XSENS_DISABLE_COPY(ProtocolHandler);
 };
 
 #endif

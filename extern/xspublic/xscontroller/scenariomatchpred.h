@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -41,56 +41,56 @@
 */
 inline bool scenarioTypeMatches(const XsFilterProfile& lhs, const XsFilterProfile& rhs)
 {
-	return lhs.type() == rhs.type();
+    return lhs.type() == rhs.type();
 }
 
 /*! \brief Returns true if \a lhs has the same type as \a rhs
 */
 inline bool operator ==(const XsFilterProfile& lhs, const XsFilterProfile& rhs)
 {
-	return scenarioTypeMatches(lhs, rhs);
+    return scenarioTypeMatches(lhs, rhs);
 }
 
 /*! \class ScenarioMatchPred
-	\brief The class that compares two scenarios for matching
+    \brief The class that compares two scenarios for matching
 */
 class ScenarioMatchPred
 {
 public:
 
-	/*! \brief Default constructor
-	*/
-	ScenarioMatchPred(const XsFilterProfile& scenario)
-		: m_scenarioType(scenario.type())
-	{
-	}
+    /*! \brief Default constructor
+    */
+    ScenarioMatchPred(const XsFilterProfile& scenario)
+        : m_scenarioType(scenario.type())
+    {
+    }
 
-	/*! \brief Explicit constructor
-	*/
-	explicit ScenarioMatchPred(uint32_t profileType)
-		: m_scenarioType(profileType)
-	{
+    /*! \brief Explicit constructor
+    */
+    explicit ScenarioMatchPred(uint32_t profileType)
+        : m_scenarioType(profileType)
+    {
 
-	}
+    }
 
-	/*! \param s : The filter profile to compare
-		\returns true if \a s matches
-	*/
-	bool operator()(const XsFilterProfile& s) const
-	{
-		return s.type() == m_scenarioType;
-	}
+    /*! \param s : The filter profile to compare
+        \returns true if \a s matches
+    */
+    bool operator()(const XsFilterProfile& s) const
+    {
+        return s.type() == m_scenarioType;
+    }
 
-	/*! \param s : The filter profile to compare
-		\returns true if \a s matches
-	*/
-	bool operator()(const XsFilterProfile* s) const
-	{
-		return s->type() == m_scenarioType;
-	}
+    /*! \param s : The filter profile to compare
+        \returns true if \a s matches
+    */
+    bool operator()(const XsFilterProfile* s) const
+    {
+        return s->type() == m_scenarioType;
+    }
 
 private:
-	uint32_t m_scenarioType;
+    uint32_t m_scenarioType;
 };
 
 #endif

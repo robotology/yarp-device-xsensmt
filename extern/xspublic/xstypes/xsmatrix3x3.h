@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -57,53 +57,53 @@ XSTYPES_DLL_API void XsMatrix3x3_copy(XsMatrix* copy, XsMatrix3x3 const* src);
 */
 struct XsMatrix3x3 : public XsMatrix
 {
-	XSCPPPROTECTED
+    XSCPPPROTECTED
 #endif
 #ifndef __cplusplus
-	struct XsMatrix3x3
-	{
-		struct XsMatrix m_matrix;	//!< The underlying XsMatrix
+    struct XsMatrix3x3
+    {
+        struct XsMatrix m_matrix;    //!< The underlying XsMatrix
 #endif
-		XsReal XSCCONST m_fixedData[9];			//!< Fixed storage for the elements of the matrix
+        XsReal XSCCONST m_fixedData[9];            //!< Fixed storage for the elements of the matrix
 
 #ifdef __cplusplus
-	public:
-		//! \brief Constructs an XsMatrix3x3
-		XsMatrix3x3() : XsMatrix(m_fixedData, 3, 3, 3, XSDF_FixedSize)
-		{
-		}
+    public:
+        //! \brief Constructs an XsMatrix3x3
+        XsMatrix3x3() : XsMatrix(m_fixedData, 3, 3, 3, XSDF_FixedSize)
+        {
+        }
 
-		//! \brief Constructs an XsMatrix3x3 from an \a other XsMatrix
-		XsMatrix3x3(const XsMatrix& other) : XsMatrix(other, m_fixedData, 3, 3, 3, XSDF_FixedSize)
-		{
-		}
+        //! \brief Constructs an XsMatrix3x3 from an \a other XsMatrix
+        XsMatrix3x3(const XsMatrix& other) : XsMatrix(other, m_fixedData, 3, 3, 3, XSDF_FixedSize)
+        {
+        }
 
-		//! \brief Constructs an XsMatrix3x3 from an \a other XsMatrix
-		XsMatrix3x3(const XsMatrix3x3& other) : XsMatrix(other, m_fixedData, 3, 3, 3, XSDF_FixedSize)
-		{
-		}
+        //! \brief Constructs an XsMatrix3x3 from an \a other XsMatrix
+        XsMatrix3x3(const XsMatrix3x3& other) : XsMatrix(other, m_fixedData, 3, 3, 3, XSDF_FixedSize)
+        {
+        }
 
-		//! \brief Constructs an XsMatrix3x3 from a set of values
-		XsMatrix3x3(XsReal r1c1, XsReal r1c2, XsReal r1c3,
-			XsReal r2c1, XsReal r2c2, XsReal r2c3,
-			XsReal r3c1, XsReal r3c2, XsReal r3c3) : XsMatrix(m_fixedData, 3, 3, 3, XSDF_FixedSize)
-		{
-			m_fixedData[0] = r1c1;
-			m_fixedData[1] = r1c2;
-			m_fixedData[2] = r1c3;
-			m_fixedData[3] = r2c1;
-			m_fixedData[4] = r2c2;
-			m_fixedData[5] = r2c3;
-			m_fixedData[6] = r3c1;
-			m_fixedData[7] = r3c2;
-			m_fixedData[8] = r3c3;
-		}
-		//	using XsMatrix::operator=;
-		//	using XsMatrix::operator[];
+        //! \brief Constructs an XsMatrix3x3 from a set of values
+        XsMatrix3x3(XsReal r1c1, XsReal r1c2, XsReal r1c3,
+            XsReal r2c1, XsReal r2c2, XsReal r2c3,
+            XsReal r3c1, XsReal r3c2, XsReal r3c3) : XsMatrix(m_fixedData, 3, 3, 3, XSDF_FixedSize)
+        {
+            m_fixedData[0] = r1c1;
+            m_fixedData[1] = r1c2;
+            m_fixedData[2] = r1c3;
+            m_fixedData[3] = r2c1;
+            m_fixedData[4] = r2c2;
+            m_fixedData[5] = r2c3;
+            m_fixedData[6] = r3c1;
+            m_fixedData[7] = r3c2;
+            m_fixedData[8] = r3c3;
+        }
+        //    using XsMatrix::operator=;
+        //    using XsMatrix::operator[];
 #endif
-	};
+    };
 #if 0
-}	// for Qt lupdate parser
+}    // for Qt lupdate parser
 #endif
 
 #endif

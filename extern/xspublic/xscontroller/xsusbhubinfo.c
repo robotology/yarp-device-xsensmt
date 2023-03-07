@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -35,33 +35,33 @@
 #include <stdlib.h>
 
 /*! \addtogroup cinterface C Interface
-	@{
+    @{
 */
 
 /*! \typedef XsHubIdentifier
-	On Windows: \code
-	typedef int XsHubIdentifier;
-	\endcode
+    On Windows: \code
+    typedef int XsHubIdentifier;
+    \endcode
 
 
-	On non-windows: \code
-	typedef const char* XsHubIdentifier;
-	\endcode
+    On non-windows: \code
+    typedef const char* XsHubIdentifier;
+    \endcode
 */
 
 /*! \brief Initialize the %XsUsbHubInfo with \a hub
 
-	\param[in] hub the hub identifier to initialize with
+    \param[in] hub the hub identifier to initialize with
 */
 void XsUsbHubInfo_construct(XsUsbHubInfo* thisPtr, XsHubIdentifier hub)
 {
 #ifdef _WIN32
-	thisPtr->m_hub = hub;
+    thisPtr->m_hub = hub;
 #else
-	if (hub)
-		thisPtr->m_hub = strdup(hub);
-	else
-		thisPtr->m_hub = 0;
+    if (hub)
+        thisPtr->m_hub = strdup(hub);
+    else
+        thisPtr->m_hub = 0;
 #endif
 }
 
@@ -70,73 +70,73 @@ void XsUsbHubInfo_construct(XsUsbHubInfo* thisPtr, XsHubIdentifier hub)
 void XsUsbHubInfo_destruct(XsUsbHubInfo* thisPtr)
 {
 #ifndef _WIN32
-	if (thisPtr->m_hub)
-		free((void*) thisPtr->m_hub);
+    if (thisPtr->m_hub)
+        free((void*) thisPtr->m_hub);
 #endif
-	thisPtr->m_hub = 0;
+    thisPtr->m_hub = 0;
 }
 
 /*! \brief Assign a new hub identifier to the %XsUsbHubInfo
-	\param[in] hub the hub identifier
+    \param[in] hub the hub identifier
 */
 void XsUsbHubInfo_assign(XsUsbHubInfo* thisPtr, XsHubIdentifier hub)
 {
-	XsUsbHubInfo_destruct(thisPtr);
-	XsUsbHubInfo_construct(thisPtr, hub);
+    XsUsbHubInfo_destruct(thisPtr);
+    XsUsbHubInfo_construct(thisPtr, hub);
 }
 
 /*! \brief Copy the contents of the %XsUsbHubInfo to \a copy
 */
 void XsUsbHubInfo_copy(XsUsbHubInfo* copy, XsUsbHubInfo const* src)
 {
-	if (copy != src)
-		XsUsbHubInfo_assign(copy, src->m_hub);
+    if (copy != src)
+        XsUsbHubInfo_assign(copy, src->m_hub);
 }
 
 /*! \brief Swap the two %XsUsbHubInfo items
 */
 void XsUsbHubInfo_swap(XsUsbHubInfo* thisPtr, XsUsbHubInfo* thatPtr)
 {
-	XsHubIdentifier tmp;
-	if (thisPtr == thatPtr)
-		return;
+    XsHubIdentifier tmp;
+    if (thisPtr == thatPtr)
+        return;
 
-	tmp = thisPtr->m_hub;
-	thisPtr->m_hub = thatPtr->m_hub;
-	thatPtr->m_hub = tmp;
+    tmp = thisPtr->m_hub;
+    thisPtr->m_hub = thatPtr->m_hub;
+    thatPtr->m_hub = tmp;
 }
 
 /*! \brief Returns true if the two hub info objects share the same device path
 
-	\param[in] left the left hand side to compare
-	\param[in] right the right hand side to compare
+    \param[in] left the left hand side to compare
+    \param[in] right the right hand side to compare
 
-	\returns non-zero if the two hubs share the same parent
+    \returns non-zero if the two hubs share the same parent
 */
 int XsUsbHubInfo_parentPathMatches(const XsUsbHubInfo* left, const XsUsbHubInfo* right)
 {
 #ifdef _WIN32
-	return left->m_hub == right->m_hub && left->m_hub != 0;
+    return left->m_hub == right->m_hub && left->m_hub != 0;
 #else
-	int dotPos, tmp;
-	XsHubIdentifier otherLastDot;
-	XsHubIdentifier thisLastDot;
+    int dotPos, tmp;
+    XsHubIdentifier otherLastDot;
+    XsHubIdentifier thisLastDot;
 
-	if (!right->m_hub || !left->m_hub)
-		return 0;
-	if (left == right)
-		return 1;
+    if (!right->m_hub || !left->m_hub)
+        return 0;
+    if (left == right)
+        return 1;
 
-	otherLastDot = strrchr(right->m_hub, '.');
-	thisLastDot = strrchr(left->m_hub, '.');
+    otherLastDot = strrchr(right->m_hub, '.');
+    thisLastDot = strrchr(left->m_hub, '.');
 
-	dotPos = (int)(otherLastDot - right->m_hub);
-	tmp = (int)(thisLastDot - left->m_hub);
+    dotPos = (int)(otherLastDot - right->m_hub);
+    tmp = (int)(thisLastDot - left->m_hub);
 
-	if (dotPos != tmp)
-		return 0;
+    if (dotPos != tmp)
+        return 0;
 
-	return !strncmp(right->m_hub, left->m_hub, dotPos);
+    return !strncmp(right->m_hub, left->m_hub, dotPos);
 #endif
 }
 

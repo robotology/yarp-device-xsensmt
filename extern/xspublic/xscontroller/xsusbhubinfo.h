@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -36,9 +36,9 @@
 #include "xscontrollerconfig.h"
 
 #ifdef _WIN32
-	typedef int XsHubIdentifier;
+    typedef int XsHubIdentifier;
 #else
-	typedef const char* XsHubIdentifier;
+    typedef const char* XsHubIdentifier;
 #endif
 
 struct XsUsbHubInfo;
@@ -62,80 +62,80 @@ int XDA_DLL_API  XsUsbHubInfo_parentPathMatches(const XsUsbHubInfo* thisPtr, con
 
 
 /*! \struct XsUsbHubInfo
-	\brief A structure that wraps USB hub information
+    \brief A structure that wraps USB hub information
 */
 struct XsUsbHubInfo
 {
 #ifdef __cplusplus
-	/*! \brief Default constructor
+    /*! \brief Default constructor
 
-		\param hubid an optional hub identifier to initialize with
-		\sa XsUsbHubInfo_construct
-	*/
-	explicit XsUsbHubInfo(XsHubIdentifier hubid = 0)
-		: m_hub(0)
-	{
-		if (hubid)
-			XsUsbHubInfo_construct(this, hubid);
-	}
+        \param hubid an optional hub identifier to initialize with
+        \sa XsUsbHubInfo_construct
+    */
+    explicit XsUsbHubInfo(XsHubIdentifier hubid = 0)
+        : m_hub(0)
+    {
+        if (hubid)
+            XsUsbHubInfo_construct(this, hubid);
+    }
 
-	/*! \brief Destructor \sa XsUsbHubInfo_destruct */
-	~XsUsbHubInfo()
-	{
-		XsUsbHubInfo_destruct(this);
-	}
+    /*! \brief Destructor \sa XsUsbHubInfo_destruct */
+    ~XsUsbHubInfo()
+    {
+        XsUsbHubInfo_destruct(this);
+    }
 
-	/*! \brief Copy constructor
-		\param other the object to copy
-		\sa XsUsbHubInfo_copy \sa XsUsbHubInfo_construct
-	*/
-	XsUsbHubInfo(const XsUsbHubInfo& other)
-		: m_hub(0)
-	{
-		if (other.m_hub)
-			XsUsbHubInfo_construct(this, other.m_hub);
-	}
+    /*! \brief Copy constructor
+        \param other the object to copy
+        \sa XsUsbHubInfo_copy \sa XsUsbHubInfo_construct
+    */
+    XsUsbHubInfo(const XsUsbHubInfo& other)
+        : m_hub(0)
+    {
+        if (other.m_hub)
+            XsUsbHubInfo_construct(this, other.m_hub);
+    }
 
-	/*! \brief Assigns \a other to this XsUsbHubInfo
-		\param other the object to copy
-		\returns a const reference to this info object
-		\sa XsUsbHubInfo_copy
-	*/
-	const XsUsbHubInfo& operator=(const XsUsbHubInfo& other)
-	{
-		if (this != &other)
-			XsUsbHubInfo_copy(this, &other);
-		return *this;
-	}
+    /*! \brief Assigns \a other to this XsUsbHubInfo
+        \param other the object to copy
+        \returns a const reference to this info object
+        \sa XsUsbHubInfo_copy
+    */
+    const XsUsbHubInfo& operator=(const XsUsbHubInfo& other)
+    {
+        if (this != &other)
+            XsUsbHubInfo_copy(this, &other);
+        return *this;
+    }
 
-	/*! \brief \copybrief XsUsbHubInfo_parentPathMatches
-		 \param other the object to compare to
-		 \returns true if the two objects share the same immediate parent hub, false otherwise
-		 \sa XsUsbHubInfo_parentPathMatches
-	*/
-	bool parentPathMatches(const XsUsbHubInfo& other) const
-	{
-		return 0 != XsUsbHubInfo_parentPathMatches(this, &other);
-	}
+    /*! \brief \copybrief XsUsbHubInfo_parentPathMatches
+         \param other the object to compare to
+         \returns true if the two objects share the same immediate parent hub, false otherwise
+         \sa XsUsbHubInfo_parentPathMatches
+    */
+    bool parentPathMatches(const XsUsbHubInfo& other) const
+    {
+        return 0 != XsUsbHubInfo_parentPathMatches(this, &other);
+    }
 
-	/*! \brief Returns true if a valid hub is set
-	*/
-	bool isValid() const
-	{
-		return m_hub != 0;
-	}
+    /*! \brief Returns true if a valid hub is set
+    */
+    bool isValid() const
+    {
+        return m_hub != 0;
+    }
 
-	/*! \brief Return the hub identifier
-	*/
-	inline XsHubIdentifier hub() const
-	{
-		return m_hub;
-	}
+    /*! \brief Return the hub identifier
+    */
+    inline XsHubIdentifier hub() const
+    {
+        return m_hub;
+    }
 
 private:
-	//! \protectedsection
+    //! \protectedsection
 #endif
-	XsHubIdentifier m_hub;		//!< The identifier of the USB hub
+    XsHubIdentifier m_hub;        //!< The identifier of the USB hub
 };
 typedef struct XsUsbHubInfo XsUsbHubInfo;
 

@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -47,37 +47,37 @@ namespace std
 template<typename _CharT, typename _Traits>
 basic_ostream<_CharT, _Traits>& operator<<(basic_ostream<_CharT, _Traits>& o, XsVector const& xv)
 {
-	o << "V<" << xv.size() << ">(";
-	for (XsSize i = 0; i < xv.size() - 1; i++)
-		o << xv[i] << ", ";
-	return (o << xv[xv.size() - 1] << ")");
+    o << "V<" << xv.size() << ">(";
+    for (XsSize i = 0; i < xv.size() - 1; i++)
+        o << xv[i] << ", ";
+    return (o << xv[xv.size() - 1] << ")");
 }
 
 /*! \brief Stream output operator for XsMatrix */
 template<typename _CharT, typename _Traits>
 basic_ostream<_CharT, _Traits>& operator<<(basic_ostream<_CharT, _Traits>& o, XsMatrix const& xm)
 {
-	o << "M<" << xm.rows() << "," << xm.cols() << ">(";
-	for (XsSize r = 0; r < xm.rows(); ++r)
-	{
-		for (XsSize c = 0; c < xm.cols() - 1; ++c)
-			o << xm[r][c] << ", ";
-		o << xm[r][xm.cols() - 1];
-		if (r < xm.rows() - 1)
-			o << "\n";
-	}
-	o << ")";
-	return o;
+    o << "M<" << xm.rows() << "," << xm.cols() << ">(";
+    for (XsSize r = 0; r < xm.rows(); ++r)
+    {
+        for (XsSize c = 0; c < xm.cols() - 1; ++c)
+            o << xm[r][c] << ", ";
+        o << xm[r][xm.cols() - 1];
+        if (r < xm.rows() - 1)
+            o << "\n";
+    }
+    o << ")";
+    return o;
 }
 
 /*! \brief Stream output operator for XsQuaternion */
 template<typename _CharT, typename _Traits>
 basic_ostream<_CharT, _Traits>& operator<<(basic_ostream<_CharT, _Traits>& o, XsQuaternion const& xq)
 {
-	o << "Q(";
-	for (int i = 0; i < 3; i++)
-		o << xq[i] << ", ";
-	return (o << xq[3] << ")");
+    o << "Q(";
+    for (int i = 0; i < 3; i++)
+        o << xq[i] << ", ";
+    return (o << xq[3] << ")");
 }
 }
 #endif
@@ -85,58 +85,58 @@ basic_ostream<_CharT, _Traits>& operator<<(basic_ostream<_CharT, _Traits>& o, Xs
 /*! \brief To XsString stream output operator for XsSize */
 inline XsString& operator<<(XsString& o, XsSize const& v)
 {
-	char buffer[32];	// 2e64 = 1.8e19 so this should be enough
-	sprintf(buffer, "%" PRINTF_SIZET_MODIFIER "u", v);
-	o << XsString(buffer);
-	return o;
+    char buffer[32];    // 2e64 = 1.8e19 so this should be enough
+    sprintf(buffer, "%" PRINTF_SIZET_MODIFIER "u", v);
+    o << XsString(buffer);
+    return o;
 }
 
 /*! \brief To XsString stream output operator for XsReal */
 inline XsString& operator<<(XsString& o, XsReal const& v)
 {
-	char buffer[64];
-	sprintf(buffer, "%g", v);
-	o << XsString(buffer);
-	return o;
+    char buffer[64];
+    sprintf(buffer, "%g", v);
+    o << XsString(buffer);
+    return o;
 }
 
 /*! \brief To XsString stream output operator for XsVector */
 inline XsString& operator<<(XsString& o, XsVector const& xv)
 {
-	o << "V<" << xv.size() << ">(";
-	for (XsSize i = 0; i < xv.size() - 1; i++)
-		o << xv[i] << ", ";
-	return (o << xv[xv.size() - 1] << ")");
+    o << "V<" << xv.size() << ">(";
+    for (XsSize i = 0; i < xv.size() - 1; i++)
+        o << xv[i] << ", ";
+    return (o << xv[xv.size() - 1] << ")");
 }
 
 /*! \brief To XsString stream output operator for XsMatrix */
 inline XsString& operator<<(XsString& o, XsMatrix const& xm)
 {
-	o << "M<" << xm.rows() << "," << xm.cols() << ">(";
-	for (XsSize r = 0; r < xm.rows(); ++r)
-	{
-		if (xm.cols())
-		{
-			if (r > 0)
-				o << "\t";
-			for (XsSize c = 0; c < xm.cols() - 1; ++c)
-				o << xm[r][c] << ", ";
-			o << xm[r][xm.cols() - 1];
-			if (r < xm.rows() - 1)
-				o << "\n";
-		}
-	}
-	o << ")";
-	return o;
+    o << "M<" << xm.rows() << "," << xm.cols() << ">(";
+    for (XsSize r = 0; r < xm.rows(); ++r)
+    {
+        if (xm.cols())
+        {
+            if (r > 0)
+                o << "\t";
+            for (XsSize c = 0; c < xm.cols() - 1; ++c)
+                o << xm[r][c] << ", ";
+            o << xm[r][xm.cols() - 1];
+            if (r < xm.rows() - 1)
+                o << "\n";
+        }
+    }
+    o << ")";
+    return o;
 }
 
 /*! \brief To XsString stream output operator for XsQuaternion */
 inline XsString& operator<<(XsString& o, XsQuaternion const& xq)
 {
-	o << "Q(";
-	for (int i = 0; i < 3; i++)
-		o << xq[i] << ", ";
-	return (o << xq[3] << ")");
+    o << "Q(";
+    for (int i = 0; i < 3; i++)
+        o << xq[i] << ", ";
+    return (o << xq[3] << ")");
 }
 
 #endif

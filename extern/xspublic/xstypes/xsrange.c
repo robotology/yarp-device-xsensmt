@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -33,56 +33,56 @@
 #include "xsrange.h"
 
 /*! \class XsRange
-	\brief A class whose objects can be used to store a range. It provides method to
-	check whether a value is inside the range.
+    \brief A class whose objects can be used to store a range. It provides method to
+    check whether a value is inside the range.
 */
 
 /*! \addtogroup cinterface C Interface
-	@{
+    @{
 */
 
 /*! \relates XsRange \brief Get the number of values in the range.
-	\note The range is *inclusive* [first, last] instead of [first, last>. So count [1, 2] = 2
-	\returns The number of values in the range (inclusive)
+    \note The range is *inclusive* [first, last] instead of [first, last>. So count [1, 2] = 2
+    \returns The number of values in the range (inclusive)
 */
 int XsRange_count(const XsRange* thisPtr)
 {
-	if (thisPtr->m_last < thisPtr->m_first)
-		return 0;
-	return 1 + thisPtr->m_last - thisPtr->m_first;
+    if (thisPtr->m_last < thisPtr->m_first)
+        return 0;
+    return 1 + thisPtr->m_last - thisPtr->m_first;
 }
 
 /*! \relates XsRange \brief Get the number of values in the range.
-	\note The range is *exclusive* [first, last> instead of [first, last]. So interval [1, 2] = 1
-	\returns The number of values in the range (exclusive)
+    \note The range is *exclusive* [first, last> instead of [first, last]. So interval [1, 2] = 1
+    \returns The number of values in the range (exclusive)
 */
 int XsRange_interval(const XsRange* thisPtr)
 {
-	if (thisPtr->m_last <= thisPtr->m_first)
-		return 0;
-	return thisPtr->m_last - thisPtr->m_first;
+    if (thisPtr->m_last <= thisPtr->m_first)
+        return 0;
+    return thisPtr->m_last - thisPtr->m_first;
 }
 
 /*! \relates XsRange \brief Test if the range contains the given value \a i. */
 int XsRange_contains(const XsRange* thisPtr, int i)
 {
-	return (i >= thisPtr->m_first && i <= thisPtr->m_last);
+    return (i >= thisPtr->m_first && i <= thisPtr->m_last);
 }
 
 /*! \relates XsRange \brief Set a new range. */
 void XsRange_setRange(XsRange* thisPtr, int f, int l)
 {
-	thisPtr->m_first = f;
-	thisPtr->m_last = l;
+    thisPtr->m_first = f;
+    thisPtr->m_last = l;
 }
 
-/*!	\relates XsRange \brief Test if the range is empty.
-	\details An empty range has a last element that is lower than its first element.
-	\returns true if the range is empty, false otherwise
+/*!    \relates XsRange \brief Test if the range is empty.
+    \details An empty range has a last element that is lower than its first element.
+    \returns true if the range is empty, false otherwise
 */
 int XsRange_empty(const XsRange* thisPtr)
 {
-	return thisPtr->m_last < thisPtr->m_first;
+    return thisPtr->m_last < thisPtr->m_first;
 }
 
 /*! @} */

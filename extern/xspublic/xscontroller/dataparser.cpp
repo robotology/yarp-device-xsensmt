@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -35,116 +35,116 @@
 #include <xstypes/xsmessage.h>
 
 
-/*!	\class DataParser
-	\brief A class for the data parsing on a separate thread
+/*!    \class DataParser
+    \brief A class for the data parsing on a separate thread
 */
 
 /*! \brief Default constructor
 */
 DataParser::DataParser()
 {
-	JLDEBUGG("Starting DataParser " << this);
-	startThread();
+    JLDEBUGG("Starting DataParser " << this);
+    startThread();
 }
 
 DataParser::~DataParser()
 {
-	try
-	{
-		JLDEBUGG("Stopping DataParser " << this);
-		terminate();
-	}
-	catch (...)
-	{
-	}
+    try
+    {
+        JLDEBUGG("Stopping DataParser " << this);
+        terminate();
+    }
+    catch (...)
+    {
+    }
 }
 
 /*! \brief Adds the raw data to an array
-	\param arr The reference to a byte array to which the data will be added
+    \param arr The reference to a byte array to which the data will be added
 */
 void DataParser::addRawData(const XsByteArray& arr)
 {
-	xsens::Lock locky(&m_incomingMutex);
-	m_incoming.push(arr);
-	locky.unlock();
-	m_newDataEvent.set();
+    xsens::Lock locky(&m_incomingMutex);
+    m_incoming.push(arr);
+    locky.unlock();
+    m_newDataEvent.set();
 }
 
 /*! \brief The inner thread function
 */
 int32_t DataParser::innerFunction()
 {
-	// wait for new data
-	if (!m_newDataEvent.wait())
-		return 1;	// no new data available (so we are keeping up easily), give other threads a little more breathing room
+    // wait for new data
+    if (!m_newDataEvent.wait())
+        return 1;    // no new data available (so we are keeping up easily), give other threads a little more breathing room
 
-	// get new data
-	XsByteArray raw;
-	xsens::Lock lockIncoming(&m_incomingMutex);
-	while (!m_incoming.empty() && !isTerminating())
-	{
-		raw.append(m_incoming.front());
-		m_incoming.pop();
-		lockIncoming.unlock();
+    // get new data
+    XsByteArray raw;
+    xsens::Lock lockIncoming(&m_incomingMutex);
+    while (!m_incoming.empty() && !isTerminating())
+    {
+        raw.append(m_incoming.front());
+        m_incoming.pop();
+        lockIncoming.unlock();
 
-		JLTRACEG("raw size: " << raw.size());
+        JLTRACEG("raw size: " << raw.size());
 
-		// process data
-		if (!raw.empty() && !isTerminating())
-		{
-			std::deque<XsMessage> msgs;
-			XsResultValue res = processBufferedData(raw, msgs);
-			JLTRACEG("Parse result " << res << ": " << msgs.size() << " messages");
+        // process data
+        if (!raw.empty() && !isTerminating())
+        {
+            std::deque<XsMessage> msgs;
+            XsResultValue res = processBufferedData(raw, msgs);
+            JLTRACEG("Parse result " << res << ": " << msgs.size() << " messages");
 
-			if (res != XRV_TIMEOUT && res != XRV_TIMEOUTNODATA && !isTerminating())
-			{
-				for (XsMessage const& msg : msgs)
-				{
-					handleMessage(msg);
-					if (isTerminating())
-						break;
-				}
-			}
-			raw.clear();
-		}
+            if (res != XRV_TIMEOUT && res != XRV_TIMEOUTNODATA && !isTerminating())
+            {
+                for (XsMessage const& msg : msgs)
+                {
+                    handleMessage(msg);
+                    if (isTerminating())
+                        break;
+                }
+            }
+            raw.clear();
+        }
 
-		lockIncoming.lock();
-	}
-	m_newDataEvent.reset();
-	return 0;	// we handled all our data, but more can be waiting
+        lockIncoming.lock();
+    }
+    m_newDataEvent.reset();
+    return 0;    // we handled all our data, but more can be waiting
 }
 
 /*! \brief Initializes the thread
 */
 void DataParser::initFunction()
 {
-	setPriority(XS_THREAD_PRIORITY_HIGH);
-	sprintf(m_parserType, "XDA %s %p", parserType(), this);
-	//JLDEBUGG("Thread " << this << " " << buffer);
-	xsNameThisThread(m_parserType);
+    setPriority(XS_THREAD_PRIORITY_HIGH);
+    sprintf(m_parserType, "XDA %s %p", parserType(), this);
+    //JLDEBUGG("Thread " << this << " " << buffer);
+    xsNameThisThread(m_parserType);
 }
 
 /*! \brief Clears the data queue
 */
 void DataParser::clear()
 {
-	xsens::Lock lockIncoming(&m_incomingMutex);
+    xsens::Lock lockIncoming(&m_incomingMutex);
 
-	while (!m_incoming.empty())
-		m_incoming.pop();
+    while (!m_incoming.empty())
+        m_incoming.pop();
 }
 
 void DataParser::signalStopThread(void)
 {
-	StandardThread::signalStopThread();
-	m_newDataEvent.terminate();
+    StandardThread::signalStopThread();
+    m_newDataEvent.terminate();
 }
 
 /*! \brief Terminates the thread
 */
 void DataParser::terminate()
 {
-	JLDEBUGG("Thread " << this << " type: " << m_parserType);
-	stopThread();
-	clear();
+    JLDEBUGG("Thread " << this << " type: " << m_parserType);
+    stopThread();
+    clear();
 }

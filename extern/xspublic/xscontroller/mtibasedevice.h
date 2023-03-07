@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -36,103 +36,103 @@
 #include "mtdevice.h"
 #include <xstypes/xssyncline.h>
 
-/*!	\class MtiBaseDevice
-	\brief The generic class for MTi devices
+/*!    \class MtiBaseDevice
+    \brief The generic class for MTi devices
 */
 class MtiBaseDevice : public MtDeviceEx
 {
 public:
-	/*! \brief Construct a device as a master
-		\param comm The communicator to use
-		\returns The constructed master device
-	*/
-	static XsDevice* constructAsMaster(Communicator* comm)
-	{
-		return new MtiBaseDevice(comm);
-	}
+    /*! \brief Construct a device as a master
+        \param comm The communicator to use
+        \returns The constructed master device
+    */
+    static XsDevice* constructAsMaster(Communicator* comm)
+    {
+        return new MtiBaseDevice(comm);
+    }
 
-	explicit MtiBaseDevice(Communicator* comm);
-	explicit MtiBaseDevice(XsDevice* master);
-	virtual ~MtiBaseDevice();
+    explicit MtiBaseDevice(Communicator* comm);
+    explicit MtiBaseDevice(XsDevice* master);
+    virtual ~MtiBaseDevice();
 
-	XsOutputConfigurationArray outputConfiguration() const;
+    XsOutputConfigurationArray outputConfiguration() const;
 
-	XsResultValue setOutputConfigurationInternal(XsOutputConfigurationArray& o) override;
+    XsResultValue setOutputConfigurationInternal(XsOutputConfigurationArray& o) override;
 
-	int getBaseFrequency(XsDataIdentifier dataType = XDI_None) const override;
-	std::vector<int> supportedUpdateRates(XsDataIdentifier dataType = XDI_None) const override;
+    int getBaseFrequency(XsDataIdentifier dataType = XDI_None) const override;
+    std::vector<int> supportedUpdateRates(XsDataIdentifier dataType = XDI_None) const override;
 
-	bool setAlignmentRotationMatrix(XsAlignmentFrame frame, const XsMatrix& matrix) override;
-	XsMatrix alignmentRotationMatrix(XsAlignmentFrame frame) const override;
-	bool setAlignmentRotationQuaternion(XsAlignmentFrame frame, const XsQuaternion& quat) override;
-	XsQuaternion alignmentRotationQuaternion(XsAlignmentFrame frame) const override;
+    bool setAlignmentRotationMatrix(XsAlignmentFrame frame, const XsMatrix& matrix) override;
+    XsMatrix alignmentRotationMatrix(XsAlignmentFrame frame) const override;
+    bool setAlignmentRotationQuaternion(XsAlignmentFrame frame, const XsQuaternion& quat) override;
+    XsQuaternion alignmentRotationQuaternion(XsAlignmentFrame frame) const override;
 
-	bool setHeadingOffset(double offset);
+    bool setHeadingOffset(double offset);
 
-	XsSyncSettingArray syncSettings() const override;
-	bool setSyncSettings(const XsSyncSettingArray& s) override;
+    XsSyncSettingArray syncSettings() const override;
+    bool setSyncSettings(const XsSyncSettingArray& s) override;
 
-	bool setNoRotation(uint16_t duration);
+    bool setNoRotation(uint16_t duration);
 
-	bool setInitialPositionLLA(const XsVector& lla);
-	XsTimeInfo utcTime() const;
-	bool setUtcTime(const XsTimeInfo& time);
+    bool setInitialPositionLLA(const XsVector& lla);
+    XsTimeInfo utcTime() const;
+    bool setUtcTime(const XsTimeInfo& time);
 
-	XsErrorMode errorMode() const override;
-	bool setErrorMode(XsErrorMode errorMode) override;
-	uint16_t rs485TransmissionDelay() const;
-	bool setRs485TransmissionDelay(uint16_t delay);
+    XsErrorMode errorMode() const override;
+    bool setErrorMode(XsErrorMode errorMode) override;
+    uint16_t rs485TransmissionDelay() const;
+    bool setRs485TransmissionDelay(uint16_t delay);
 
-	bool startRepresentativeMotion() override;
-	bool representativeMotionState() override;
-	XsIccRepMotionResult stopRepresentativeMotion() override;
-	bool storeIccResults() override;
+    bool startRepresentativeMotion() override;
+    bool representativeMotionState() override;
+    XsIccRepMotionResult stopRepresentativeMotion() override;
+    bool storeIccResults() override;
 
-	//! A struct for base frequency result
-	struct BaseFrequencyResult
-	{
-		int m_frequency; //!< A frequency value
-		bool m_divedable; //!< A divedable value
-	};
+    //! A struct for base frequency result
+    struct BaseFrequencyResult
+    {
+        int m_frequency; //!< A frequency value
+        bool m_divedable; //!< A divedable value
+    };
 
 protected:
-	virtual int calculateUpdateRate(XsDataIdentifier dataType) const;
+    virtual int calculateUpdateRate(XsDataIdentifier dataType) const;
 
-	virtual int calculateUpdateRateImp(XsDataIdentifier dataType, const XsOutputConfigurationArray& configurations) const;
+    virtual int calculateUpdateRateImp(XsDataIdentifier dataType, const XsOutputConfigurationArray& configurations) const;
 
-	virtual XsSyncLine syncSettingsLine(const uint8_t* buff, XsSize offset) const;
-	virtual uint8_t syncLine(const XsSyncSetting& setting) const;
-	virtual XsSyncSettingArray syncSettingsFromBuffer(const uint8_t* buffer) const;
+    virtual XsSyncLine syncSettingsLine(const uint8_t* buff, XsSize offset) const;
+    virtual uint8_t syncLine(const XsSyncSetting& setting) const;
+    virtual XsSyncSettingArray syncSettingsFromBuffer(const uint8_t* buffer) const;
 
-	bool resetRemovesPort() const override;
+    bool resetRemovesPort() const override;
 
-	/*! \brief An internal function that gets the base frequency
-		\param dataType The Data identifier to use
-		\returns The base frequency result
-	*/
-	virtual BaseFrequencyResult getBaseFrequencyInternal(XsDataIdentifier dataType = XDI_None) const
-	{
-		(void) dataType;
-		return BaseFrequencyResult();
-	};
+    /*! \brief An internal function that gets the base frequency
+        \param dataType The Data identifier to use
+        \returns The base frequency result
+    */
+    virtual BaseFrequencyResult getBaseFrequencyInternal(XsDataIdentifier dataType = XDI_None) const
+    {
+        (void) dataType;
+        return BaseFrequencyResult();
+    };
 
-	virtual bool hasIccSupport() const;
-	virtual bool deviceUsesOnBoardFiltering();
+    virtual bool hasIccSupport() const;
+    virtual bool deviceUsesOnBoardFiltering();
 
-	void fetchAvailableHardwareScenarios() override;
+    void fetchAvailableHardwareScenarios() override;
 };
 
 #ifndef XDA_PRIVATE_BUILD
 /*! \class MtiBaseDeviceEx
-	\brief The internal base class for MTi devices
+    \brief The internal base class for MTi devices
 */
 struct MtiBaseDeviceEx : public MtiBaseDevice
 {
-	//! \copybrief MtiBaseDevice::MtiBaseDevice
-	explicit MtiBaseDeviceEx(Communicator* comm) : MtiBaseDevice(comm) { };
+    //! \copybrief MtiBaseDevice::MtiBaseDevice
+    explicit MtiBaseDeviceEx(Communicator* comm) : MtiBaseDevice(comm) { };
 
-	//! \copybrief MtiBaseDevice::MtiBaseDevice
-	explicit MtiBaseDeviceEx(XsDevice* master) : MtiBaseDevice(master) { };
+    //! \copybrief MtiBaseDevice::MtiBaseDevice
+    explicit MtiBaseDeviceEx(XsDevice* master) : MtiBaseDevice(master) { };
 };
 #else
 #include "mtibasedeviceex.h"

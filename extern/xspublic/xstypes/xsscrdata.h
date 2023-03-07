@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -37,19 +37,19 @@
 #include "xsushortvector.h"
 
 #ifndef __cplusplus
-	#define XSSCRDATA_INITIALIZER {XSUSHORTVECTOR_INITIALIZER, XSUSHORTVECTOR_INITIALIZER, XSUSHORTVECTOR_INITIALIZER, {0, 0, 0, 0}}
+    #define XSSCRDATA_INITIALIZER {XSUSHORTVECTOR_INITIALIZER, XSUSHORTVECTOR_INITIALIZER, XSUSHORTVECTOR_INITIALIZER, {0, 0, 0, 0}}
 #endif
 
 /*! \brief Container for raw sensor measurement data
-	\details This structure contains raw measurement data from the sensors on the device.
-	This data is unscaled, the bias has not been subtracted and no error correction has been applied.
+    \details This structure contains raw measurement data from the sensors on the device.
+    This data is unscaled, the bias has not been subtracted and no error correction has been applied.
 */
 struct XsScrData
 {
-	XsUShortVector	m_acc;	//!< The raw accelerometer data
-	XsUShortVector	m_gyr;	//!< The raw gyroscope data
-	XsUShortVector	m_mag;	//!< The raw magnetometer data
-	uint16_t		m_temp;	//!< The temperature data
+    XsUShortVector    m_acc;    //!< The raw accelerometer data
+    XsUShortVector    m_gyr;    //!< The raw gyroscope data
+    XsUShortVector    m_mag;    //!< The raw magnetometer data
+    uint16_t        m_temp;    //!< The temperature data
 };
 typedef struct XsScrData XsScrData;
 

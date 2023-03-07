@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -34,39 +34,39 @@
 #include <string.h>
 
 /*! \class XsVector3
-	\brief A class that represents a fixed size (3) vector
+    \brief A class that represents a fixed size (3) vector
 */
 
 /*! \addtogroup cinterface C Interface
-	@{
+    @{
 */
 
 /*! \relates XsVector3 \brief Init the %XsVector3 and copy the data from \a src into the vector if \a src is not null */
 void XsVector3_construct(XsVector3* thisPtr, const XsReal* src)
 {
-	XsVector_ref(&thisPtr->m_vector, 3, (XsReal*) thisPtr->m_fixedData, XSDF_FixedSize);
-	if (src)
-		memcpy((XsReal*) thisPtr->m_fixedData, src, 3 * sizeof(XsReal));
+    XsVector_ref(&thisPtr->m_vector, 3, (XsReal*) thisPtr->m_fixedData, XSDF_FixedSize);
+    if (src)
+        memcpy((XsReal*) thisPtr->m_fixedData, src, 3 * sizeof(XsReal));
 }
 
 /*! \relates XsVector3 \brief Init the %XsVector3 and copy the data from \a src into the vector if \a src is not null */
 void XsVector3_assign(XsVector3* thisPtr, const XsReal* src)
 {
-	XsVector_assign(&thisPtr->m_vector, 3, src);
+    XsVector_assign(&thisPtr->m_vector, 3, src);
 }
 
 /*! \relates XsVector3 \brief Frees the XsVector3 */
 void XsVector3_destruct(XsVector3* thisPtr)
 {
-	// don't do anything, no memory needs to be freed
-	assert(thisPtr->m_vector.m_flags & XSDF_FixedSize);
-	(void)thisPtr;
+    // don't do anything, no memory needs to be freed
+    assert(thisPtr->m_vector.m_flags & XSDF_FixedSize);
+    (void)thisPtr;
 }
 
 /*! \relates XsVector3 \brief Copy the contents of the %XsVector3 to \a copy */
 void XsVector3_copy(XsVector* copy, XsVector3 const* src)
 {
-	XsVector_copy(copy, &src->m_vector);
+    XsVector_copy(copy, &src->m_vector);
 }
 
 /*! @} */

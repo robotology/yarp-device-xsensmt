@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -40,21 +40,21 @@
 
 enum XSNOCOMEXPORT XsCanBaudCode
 {
-	// Baudrate codes for SetBaudrate message
-	XCBC_1M			= 0x0C,
-	XCBC_800k		= 0x0B,
-	XCBC_500k		= 0x0A,
-	XCBC_250k		= 0x00,
-	XCBC_125k		= 0x01,
-	XCBC_100k		= 0x02,
-	XCBC_83k3		= 0x03,
-	XCBC_62k5		= 0x04,
-	XCBC_50k		= 0x05,
-	XCBC_33k3		= 0x06,
-	XCBC_20k		= 0x07,
-	XCBC_10k		= 0x08,
-	XCBC_5k			= 0x09,
-	XCBC_Invalid	= 0xFF
+    // Baudrate codes for SetBaudrate message
+    XCBC_1M            = 0x0C,
+    XCBC_800k        = 0x0B,
+    XCBC_500k        = 0x0A,
+    XCBC_250k        = 0x00,
+    XCBC_125k        = 0x01,
+    XCBC_100k        = 0x02,
+    XCBC_83k3        = 0x03,
+    XCBC_62k5        = 0x04,
+    XCBC_50k        = 0x05,
+    XCBC_33k3        = 0x06,
+    XCBC_20k        = 0x07,
+    XCBC_10k        = 0x08,
+    XCBC_5k            = 0x09,
+    XCBC_Invalid    = 0xFF
 };
 
 #endif

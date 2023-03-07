@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -47,139 +47,139 @@ struct XsCanOutputConfiguration;
 class MessageSerializer
 {
 public:
-	MessageSerializer(XsMessage& message, XsSize offset = 0);
-	virtual ~MessageSerializer();
+    MessageSerializer(XsMessage& message, XsSize offset = 0);
+    virtual ~MessageSerializer();
 
-	MessageSerializer& operator<<(XsDataIdentifier value);
-	MessageSerializer& operator<<(XsCanDataIdentifier value);
-	MessageSerializer& operator<<(XsCanFrameFormat value);
-	MessageSerializer& operator<<(const XsDeviceId& id);
-	MessageSerializer& operator<<(uint8_t value);
-	MessageSerializer& operator<<(uint16_t value);
-	MessageSerializer& operator<<(uint32_t value);
-	MessageSerializer& operator<<(uint64_t value);
+    MessageSerializer& operator<<(XsDataIdentifier value);
+    MessageSerializer& operator<<(XsCanDataIdentifier value);
+    MessageSerializer& operator<<(XsCanFrameFormat value);
+    MessageSerializer& operator<<(const XsDeviceId& id);
+    MessageSerializer& operator<<(uint8_t value);
+    MessageSerializer& operator<<(uint16_t value);
+    MessageSerializer& operator<<(uint32_t value);
+    MessageSerializer& operator<<(uint64_t value);
 
-	/*! \brief Output stream operator that adds a int64_t to the stream
-		\param value The value to add to the stream
-		\returns A reference to this object
-	*/
-	inline MessageSerializer& operator<<(int64_t value)
-	{
-		return (operator<<((uint64_t)value));
-	}
+    /*! \brief Output stream operator that adds a int64_t to the stream
+        \param value The value to add to the stream
+        \returns A reference to this object
+    */
+    inline MessageSerializer& operator<<(int64_t value)
+    {
+        return (operator<<((uint64_t)value));
+    }
 
-	/*! \brief Output stream operator that adds a int32_t to the stream
-		\param value The value to add to the stream
-		\returns A reference to this object
-	*/
-	inline MessageSerializer& operator<<(int32_t value)
-	{
-		return (operator<<((uint32_t)value));
-	}
+    /*! \brief Output stream operator that adds a int32_t to the stream
+        \param value The value to add to the stream
+        \returns A reference to this object
+    */
+    inline MessageSerializer& operator<<(int32_t value)
+    {
+        return (operator<<((uint32_t)value));
+    }
 
-	/*! \brief Output stream operator that adds a int16_t to the stream
-		\param value The value to add to the stream
-		\returns A reference to this object
-	*/
-	inline MessageSerializer& operator<<(int16_t value)
-	{
-		return (operator<<((uint16_t)value));
-	}
+    /*! \brief Output stream operator that adds a int16_t to the stream
+        \param value The value to add to the stream
+        \returns A reference to this object
+    */
+    inline MessageSerializer& operator<<(int16_t value)
+    {
+        return (operator<<((uint16_t)value));
+    }
 
-	/*! \brief Output stream operator that adds a int8_t to the stream
-		\param value The value to add to the stream
-		\returns A reference to this object
-	*/
-	inline MessageSerializer& operator<<(int8_t value)
-	{
-		return (operator<<((uint8_t)value));
-	}
+    /*! \brief Output stream operator that adds a int8_t to the stream
+        \param value The value to add to the stream
+        \returns A reference to this object
+    */
+    inline MessageSerializer& operator<<(int8_t value)
+    {
+        return (operator<<((uint8_t)value));
+    }
 
-	MessageSerializer& operator<<(const XsOutputConfigurationArray& config);
-	MessageSerializer& operator<<(const XsOutputConfiguration& cfg);
+    MessageSerializer& operator<<(const XsOutputConfigurationArray& config);
+    MessageSerializer& operator<<(const XsOutputConfiguration& cfg);
 
-	MessageSerializer& operator<<(const XsCanOutputConfigurationArray& config);
-	MessageSerializer& operator<<(const XsCanOutputConfiguration& cfg);
+    MessageSerializer& operator<<(const XsCanOutputConfigurationArray& config);
+    MessageSerializer& operator<<(const XsCanOutputConfiguration& cfg);
 
-	/*! \returns The current index */
-	inline XsSize index() const
-	{
-		return m_index;
-	}
+    /*! \returns The current index */
+    inline XsSize index() const
+    {
+        return m_index;
+    }
 
-	void append(const uint8_t* data, XsSize size);
-	void finalize();
+    void append(const uint8_t* data, XsSize size);
+    void finalize();
 private:
-	XsMessage& m_message;
-	XsSize m_index;
+    XsMessage& m_message;
+    XsSize m_index;
 };
 
 class MessageDeserializer
 {
 public:
-	MessageDeserializer(const XsMessage& message, XsSize offset = 0);
-	virtual ~MessageDeserializer();
+    MessageDeserializer(const XsMessage& message, XsSize offset = 0);
+    virtual ~MessageDeserializer();
 
-	MessageDeserializer& operator>>(XsDataIdentifier& value);
-	MessageDeserializer& operator>>(XsCanDataIdentifier& value);
-	MessageDeserializer& operator>>(XsCanFrameFormat& value);
-	MessageDeserializer& operator>>(XsDeviceId& id);
-	MessageDeserializer& operator>>(uint8_t& value);
-	MessageDeserializer& operator>>(int8_t& value);
-	MessageDeserializer& operator>>(uint16_t& value);
-	MessageDeserializer& operator>>(uint32_t& value);
-	MessageDeserializer& operator>>(uint64_t& value);
+    MessageDeserializer& operator>>(XsDataIdentifier& value);
+    MessageDeserializer& operator>>(XsCanDataIdentifier& value);
+    MessageDeserializer& operator>>(XsCanFrameFormat& value);
+    MessageDeserializer& operator>>(XsDeviceId& id);
+    MessageDeserializer& operator>>(uint8_t& value);
+    MessageDeserializer& operator>>(int8_t& value);
+    MessageDeserializer& operator>>(uint16_t& value);
+    MessageDeserializer& operator>>(uint32_t& value);
+    MessageDeserializer& operator>>(uint64_t& value);
 
-	/*! \brief Input stream operator that takes a int64_t from the stream
-		\param value Reference in which the read value is stored
-		\returns A reference to this object
-	*/
-	inline MessageDeserializer& operator>>(int64_t& value)
-	{
-		return (operator>>((uint64_t&)value));
-	}
+    /*! \brief Input stream operator that takes a int64_t from the stream
+        \param value Reference in which the read value is stored
+        \returns A reference to this object
+    */
+    inline MessageDeserializer& operator>>(int64_t& value)
+    {
+        return (operator>>((uint64_t&)value));
+    }
 
-	/*! \brief Input stream operator that takes a int32_t from the stream
-		\param value Reference in which the read value is stored
-		\returns A reference to this object
-	*/
-	inline MessageDeserializer& operator>>(int32_t& value)
-	{
-		return (operator>>((uint32_t&)value));
-	}
+    /*! \brief Input stream operator that takes a int32_t from the stream
+        \param value Reference in which the read value is stored
+        \returns A reference to this object
+    */
+    inline MessageDeserializer& operator>>(int32_t& value)
+    {
+        return (operator>>((uint32_t&)value));
+    }
 
-	/*! \brief Input stream operator that takes a int16_t from the stream
-		\param value Reference in which the read value is stored
-		\returns A reference to this object
-	*/
-	inline MessageDeserializer& operator>>(int16_t& value)
-	{
-		return (operator>>((uint16_t&)value));
-	}
+    /*! \brief Input stream operator that takes a int16_t from the stream
+        \param value Reference in which the read value is stored
+        \returns A reference to this object
+    */
+    inline MessageDeserializer& operator>>(int16_t& value)
+    {
+        return (operator>>((uint16_t&)value));
+    }
 
-	bool atEnd() const;
+    bool atEnd() const;
 
-	MessageDeserializer& operator>>(XsOutputConfigurationArray& config);
-	MessageDeserializer& operator>>(XsOutputConfiguration& cfg);
+    MessageDeserializer& operator>>(XsOutputConfigurationArray& config);
+    MessageDeserializer& operator>>(XsOutputConfiguration& cfg);
 
-	MessageDeserializer& operator>>(XsCanOutputConfigurationArray& config);
-	MessageDeserializer& operator>>(XsCanOutputConfiguration& cfg);
+    MessageDeserializer& operator>>(XsCanOutputConfigurationArray& config);
+    MessageDeserializer& operator>>(XsCanOutputConfiguration& cfg);
 
-	//! \returns The current message
-	const XsMessage& message() const
-	{
-		return m_message;
-	}
+    //! \returns The current message
+    const XsMessage& message() const
+    {
+        return m_message;
+    }
 
-	//! \returns The current index
-	inline XsSize index() const
-	{
-		return m_index;
-	}
+    //! \returns The current index
+    inline XsSize index() const
+    {
+        return m_index;
+    }
 
 private:
-	const XsMessage& m_message;
-	XsSize m_index;
+    const XsMessage& m_message;
+    XsSize m_index;
 };
 
 #endif

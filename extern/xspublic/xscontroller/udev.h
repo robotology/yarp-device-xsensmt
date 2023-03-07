@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -60,51 +60,51 @@ typedef const char* uDEV_device_get_sysattr_value(struct udev_device* udev_devic
 class Udev
 {
 public:
-	Udev(void);
-	~Udev(void);
+    Udev(void);
+    ~Udev(void);
 
-	uDEV_new unew;
-	uDEV_unref unref;
-	uDEV_device_unref device_unref;
-	uDEV_enumerate_new enumerate_new;
-	uDEV_enumerate_add_match_subsystem enumerate_add_match_subsystem;
-	uDEV_enumerate_scan_devices enumerate_scan_devices;
-	uDEV_enumerate_get_list_entry enumerate_get_list_entry;
-	uDEV_enumerate_unref enumerate_unref;
-	uDEV_list_entry_get_next list_entry_get_next;
-	uDEV_list_entry_get_name list_entry_get_name;
-	uDEV_device_new_from_syspath device_new_from_syspath;
-	uDEV_device_get_parent device_get_parent;
-	uDEV_device_get_devnode device_get_devnode;
-	uDEV_device_get_parent_with_subsystem_devtype device_get_parent_with_subsystem_devtype;
-	uDEV_device_get_sysattr_value device_get_sysattr_value;
+    uDEV_new unew;
+    uDEV_unref unref;
+    uDEV_device_unref device_unref;
+    uDEV_enumerate_new enumerate_new;
+    uDEV_enumerate_add_match_subsystem enumerate_add_match_subsystem;
+    uDEV_enumerate_scan_devices enumerate_scan_devices;
+    uDEV_enumerate_get_list_entry enumerate_get_list_entry;
+    uDEV_enumerate_unref enumerate_unref;
+    uDEV_list_entry_get_next list_entry_get_next;
+    uDEV_list_entry_get_name list_entry_get_name;
+    uDEV_device_new_from_syspath device_new_from_syspath;
+    uDEV_device_get_parent device_get_parent;
+    uDEV_device_get_devnode device_get_devnode;
+    uDEV_device_get_parent_with_subsystem_devtype device_get_parent_with_subsystem_devtype;
+    uDEV_device_get_sysattr_value device_get_sysattr_value;
 
 private:
 
-	struct UDEV_API
-	{
-		uDEV_new* unew;
-		uDEV_unref* unref;
-		uDEV_device_unref* device_unref;
-		uDEV_enumerate_new* enumerate_new;
-		uDEV_enumerate_add_match_subsystem* enumerate_add_match_subsystem;
-		uDEV_enumerate_scan_devices* enumerate_scan_devices;
-		uDEV_enumerate_get_list_entry* enumerate_get_list_entry;
-		uDEV_enumerate_unref* enumerate_unref;
-		uDEV_list_entry_get_next* list_entry_get_next;
-		uDEV_list_entry_get_name* list_entry_get_name;
-		uDEV_device_new_from_syspath* device_new_from_syspath;
-		uDEV_device_get_parent* device_get_parent;
-		uDEV_device_get_devnode* device_get_devnode;
-		uDEV_device_get_parent_with_subsystem_devtype* device_get_parent_with_subsystem_devtype;
-		uDEV_device_get_sysattr_value* device_get_sysattr_value;
-	} m_uDev;
+    struct UDEV_API
+    {
+        uDEV_new* unew;
+        uDEV_unref* unref;
+        uDEV_device_unref* device_unref;
+        uDEV_enumerate_new* enumerate_new;
+        uDEV_enumerate_add_match_subsystem* enumerate_add_match_subsystem;
+        uDEV_enumerate_scan_devices* enumerate_scan_devices;
+        uDEV_enumerate_get_list_entry* enumerate_get_list_entry;
+        uDEV_enumerate_unref* enumerate_unref;
+        uDEV_list_entry_get_next* list_entry_get_next;
+        uDEV_list_entry_get_name* list_entry_get_name;
+        uDEV_device_new_from_syspath* device_new_from_syspath;
+        uDEV_device_get_parent* device_get_parent;
+        uDEV_device_get_devnode* device_get_devnode;
+        uDEV_device_get_parent_with_subsystem_devtype* device_get_parent_with_subsystem_devtype;
+        uDEV_device_get_sysattr_value* device_get_sysattr_value;
+    } m_uDev;
 
-	XsLibraryLoader* m_libraryLoader;
+    XsLibraryLoader* m_libraryLoader;
 
-	void initLibrary();
-	Udev(Udev const&) = delete;
-	Udev const& operator = (Udev const&) = delete;
+    void initLibrary();
+    Udev(Udev const&) = delete;
+    Udev const& operator = (Udev const&) = delete;
 };
 #endif
 

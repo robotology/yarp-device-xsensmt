@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -56,79 +56,79 @@ XSTYPES_DLL_API void XsSdiData_destruct(struct XsSdiData* thisPtr);
 struct XsSdiData
 {
 #ifdef __cplusplus
-	//! \brief Construct an empty object
-	inline XsSdiData()
-	{
-	}
+    //! \brief Construct an empty object
+    inline XsSdiData()
+    {
+    }
 
-	//! \brief Construct an initialized object
-	inline XsSdiData(const XsQuaternion& dq, const XsVector& dv)
-		: m_orientationIncrement(dq)
-		, m_velocityIncrement(dv)
-	{
-	}
+    //! \brief Construct an initialized object
+    inline XsSdiData(const XsQuaternion& dq, const XsVector& dv)
+        : m_orientationIncrement(dq)
+        , m_velocityIncrement(dv)
+    {
+    }
 
-	//! \brief Copy constructor
-	inline XsSdiData(const XsSdiData& other)
-		: m_orientationIncrement(other.m_orientationIncrement)
-		, m_velocityIncrement(other.m_velocityIncrement)
-	{
-	}
+    //! \brief Copy constructor
+    inline XsSdiData(const XsSdiData& other)
+        : m_orientationIncrement(other.m_orientationIncrement)
+        , m_velocityIncrement(other.m_velocityIncrement)
+    {
+    }
 
-	//! \brief Assignment operator
-	inline const XsSdiData& operator=(const XsSdiData& other)
-	{
-		if (this != &other)
-		{
-			m_orientationIncrement = other.m_orientationIncrement;
-			m_velocityIncrement = other.m_velocityIncrement;
-		}
-		return *this;
-	}
+    //! \brief Assignment operator
+    inline const XsSdiData& operator=(const XsSdiData& other)
+    {
+        if (this != &other)
+        {
+            m_orientationIncrement = other.m_orientationIncrement;
+            m_velocityIncrement = other.m_velocityIncrement;
+        }
+        return *this;
+    }
 
-	//! \brief Clear the object so it contains unity data
-	inline void zero()
-	{
-		m_orientationIncrement = XsQuaternion::identity();
-		m_velocityIncrement.zero();
-	}
+    //! \brief Clear the object so it contains unity data
+    inline void zero()
+    {
+        m_orientationIncrement = XsQuaternion::identity();
+        m_velocityIncrement.zero();
+    }
 
-	//! \brief Returns the contained orientation increment
-	inline const XsQuaternion& orientationIncrement() const
-	{
-		return m_orientationIncrement;
-	}
+    //! \brief Returns the contained orientation increment
+    inline const XsQuaternion& orientationIncrement() const
+    {
+        return m_orientationIncrement;
+    }
 
-	//! \brief Update the contained orientation increment
-	inline void setOrientationIncrement(const XsQuaternion& dq)
-	{
-		m_orientationIncrement = dq;
-	}
+    //! \brief Update the contained orientation increment
+    inline void setOrientationIncrement(const XsQuaternion& dq)
+    {
+        m_orientationIncrement = dq;
+    }
 
-	//! \brief Returns the contained velocity increment
-	inline const XsVector3& velocityIncrement() const
-	{
-		return m_velocityIncrement;
-	}
+    //! \brief Returns the contained velocity increment
+    inline const XsVector3& velocityIncrement() const
+    {
+        return m_velocityIncrement;
+    }
 
-	//! \brief Update the contained velocity increment
-	inline void setVelocityIncrement(const XsVector& dv)
-	{
-		m_velocityIncrement = dv;
-	}
+    //! \brief Update the contained velocity increment
+    inline void setVelocityIncrement(const XsVector& dv)
+    {
+        m_velocityIncrement = dv;
+    }
 
-	/*! \brief Returns true if all fields of this and \a other are exactly identical */
-	inline bool operator == (const XsSdiData& other) const
-	{
-		return	m_orientationIncrement == other.m_orientationIncrement &&
-			m_velocityIncrement == other.m_velocityIncrement;
-	}
+    /*! \brief Returns true if all fields of this and \a other are exactly identical */
+    inline bool operator == (const XsSdiData& other) const
+    {
+        return    m_orientationIncrement == other.m_orientationIncrement &&
+            m_velocityIncrement == other.m_velocityIncrement;
+    }
 
 private:
 #endif
 
-	XsQuaternion m_orientationIncrement;	//!< The orientation increment
-	XsVector3    m_velocityIncrement;		//!< The velocity increment
+    XsQuaternion m_orientationIncrement;    //!< The orientation increment
+    XsVector3    m_velocityIncrement;        //!< The velocity increment
 };
 
 typedef struct XsSdiData XsSdiData;

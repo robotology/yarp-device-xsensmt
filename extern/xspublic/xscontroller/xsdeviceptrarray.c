@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -33,63 +33,63 @@
 #include "xsdeviceptrarray.h"
 
 /*! \struct XsDevicePtrArray
-	\brief A list of XsDevicePtr values
-	\sa XsArray
+    \brief A list of XsDevicePtr values
+    \sa XsArray
 */
 
 /*! \copydoc XsArrayDescriptor::itemSwap
-	\note Specialization for XsDevicePtr
+    \note Specialization for XsDevicePtr
 */
 void swapDevicePtr(XsDevicePtr* a, XsDevicePtr* b)
 {
-	XsDevicePtr tmp = *a;
-	*a = *b;
-	*b = tmp;
+    XsDevicePtr tmp = *a;
+    *a = *b;
+    *b = tmp;
 }
 
 /*! \copydoc XsArrayDescriptor::itemCopy
-	\note Specialization for XsDevicePtr
+    \note Specialization for XsDevicePtr
 */
 void copyDevicePtr(XsDevicePtr* to, XsDevicePtr const* from)
 {
-	*to = *from;
+    *to = *from;
 }
 
 /*! \copydoc XsArrayDescriptor::itemCompare
-	\note Specialization for XsDevicePtr
+    \note Specialization for XsDevicePtr
 */
 int compareDevicePtr(XsDevicePtr const* a, XsDevicePtr const* b)
 {
-	if (*a < *b)
-		return -1;
-	if (*a > *b)
-		return 1;
-	return 0;
+    if (*a < *b)
+        return -1;
+    if (*a > *b)
+        return 1;
+    return 0;
 }
 
 //! \brief zero the pointer value
 void zeroDevicePtr(XsDevicePtr* a)
 {
-	*a = 0;
+    *a = 0;
 }
 
 //! \brief Descriptor for XsDevicePtrArray
 XsArrayDescriptor const g_xsDevicePtrArrayDescriptor =
 {
-	sizeof(XsDevicePtr),
-	XSEXPCASTITEMSWAP swapDevicePtr,			// swap
-	XSEXPCASTITEMMAKE zeroDevicePtr,			// construct
-	(XsArrayItemCopyFunc) copyDevicePtr,		// copy construct
-	XSEXPCASTITEMMAKE zeroDevicePtr,			// destruct
-	(XsArrayItemCopyFunc) copyDevicePtr,		// copy
-	(XsArrayItemCompareFunc) compareDevicePtr,	// compare
-	XSEXPCASTRAWCOPY XsArray_rawCopy
+    sizeof(XsDevicePtr),
+    XSEXPCASTITEMSWAP swapDevicePtr,            // swap
+    XSEXPCASTITEMMAKE zeroDevicePtr,            // construct
+    (XsArrayItemCopyFunc) copyDevicePtr,        // copy construct
+    XSEXPCASTITEMMAKE zeroDevicePtr,            // destruct
+    (XsArrayItemCopyFunc) copyDevicePtr,        // copy
+    (XsArrayItemCompareFunc) compareDevicePtr,    // compare
+    XSEXPCASTRAWCOPY XsArray_rawCopy
 };
 
 /*! \copydoc XsArray_constructDerived
-	\note Specialization for XsDevicePtrArray
+    \note Specialization for XsDevicePtrArray
 */
 void XsDevicePtrArray_construct(XsDevicePtrArray* thisPtr, XsSize count, XsDevicePtr const* src)
 {
-	XsArray_construct(thisPtr, &g_xsDevicePtrArrayDescriptor, count, src);
+    XsArray_construct(thisPtr, &g_xsDevicePtrArrayDescriptor, count, src);
 }

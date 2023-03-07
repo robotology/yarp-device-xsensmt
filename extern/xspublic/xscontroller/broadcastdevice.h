@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -39,57 +39,57 @@ struct XsControl;
 class BroadcastDevice : public XsDevice
 {
 public:
-	explicit BroadcastDevice(XsControl* control);
-	~BroadcastDevice() override;
+    explicit BroadcastDevice(XsControl* control);
+    ~BroadcastDevice() override;
 
-	std::vector<XsDevice*> children() const;
+    std::vector<XsDevice*> children() const;
 
-	bool initialize() override;
+    bool initialize() override;
 
-	std::vector<int> supportedUpdateRates(XsDataIdentifier dataType) const override;
-	XsString productCode() const override;
-	XsVersion hardwareVersion() const override;
+    std::vector<int> supportedUpdateRates(XsDataIdentifier dataType) const override;
+    XsString productCode() const override;
+    XsVersion hardwareVersion() const override;
 
-	bool startRecording() override;
-	bool stopRecording() override;
+    bool startRecording() override;
+    bool stopRecording() override;
 
-	bool isMeasuring() const override;
-	bool isRecording() const override;
-	bool isReadingFromFile() const override final;
+    bool isMeasuring() const override;
+    bool isRecording() const override;
+    bool isReadingFromFile() const override final;
 
-	bool setSerialBaudRate(XsBaudRate baudrate) override;
-	bool setSyncSettings(const XsSyncSettingArray& s) override;
-	bool gotoMeasurement() override;
-	bool gotoConfig() override;
-	bool resetOrientation(XsResetMethod resetMethod) override;
-	bool restoreFactoryDefaults() override;
-	bool reset(bool skipDeviceIdCheck = false) override;
-	bool loadLogFile() override;
-	bool closeLogFile() override;
-	//bool gotoOperational() override;
-	bool abortFlushing() override;
-	bool resetLogFileReadPosition() override;
-	bool updateCachedDeviceInformation() override;
-	bool setHeadingOffset(double offset) override;
-	bool setLocationId(int id) override;
-	bool setObjectAlignment(const XsMatrix& matrix) override;
-	bool setGravityMagnitude(double mag) override;
-	bool setXdaFilterProfile(int profileType) override;
-	bool setXdaFilterProfile(XsString const& profileType) override;
-	bool setOnboardFilterProfile(int profileType) override;
-	bool setOnboardFilterProfile(XsString const& profileType) override;
-	bool setNoRotation(uint16_t duration) override;
-	bool setInitialPositionLLA(const XsVector& lla) override;
-	bool storeFilterState() override;
-	bool requestBatteryLevel() override;
-	XsTimeStamp batteryLevelTime() override;
-	bool setTransportMode(bool transportModeEnabled) override;
-	void setOptions(XsOption enable, XsOption disable) override;
-	void flushInputBuffers() override;
+    bool setSerialBaudRate(XsBaudRate baudrate) override;
+    bool setSyncSettings(const XsSyncSettingArray& s) override;
+    bool gotoMeasurement() override;
+    bool gotoConfig() override;
+    bool resetOrientation(XsResetMethod resetMethod) override;
+    bool restoreFactoryDefaults() override;
+    bool reset(bool skipDeviceIdCheck = false) override;
+    bool loadLogFile() override;
+    bool closeLogFile() override;
+    //bool gotoOperational() override;
+    bool abortFlushing() override;
+    bool resetLogFileReadPosition() override;
+    bool updateCachedDeviceInformation() override;
+    bool setHeadingOffset(double offset) override;
+    bool setLocationId(int id) override;
+    bool setObjectAlignment(const XsMatrix& matrix) override;
+    bool setGravityMagnitude(double mag) override;
+    bool setXdaFilterProfile(int profileType) override;
+    bool setXdaFilterProfile(XsString const& profileType) override;
+    bool setOnboardFilterProfile(int profileType) override;
+    bool setOnboardFilterProfile(XsString const& profileType) override;
+    bool setNoRotation(uint16_t duration) override;
+    bool setInitialPositionLLA(const XsVector& lla) override;
+    bool storeFilterState() override;
+    bool requestBatteryLevel() override;
+    XsTimeStamp batteryLevelTime() override;
+    bool setTransportMode(bool transportModeEnabled) override;
+    void setOptions(XsOption enable, XsOption disable) override;
+    void flushInputBuffers() override;
 
 private:
-	friend class BroadcastForwardFunc;
-	XsControl* m_control;
+    friend class BroadcastForwardFunc;
+    XsControl* m_control;
 };
 
 #endif

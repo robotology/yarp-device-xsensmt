@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -41,42 +41,42 @@ class CallbackManagerXda;
 class ProxyCommunicator : public SerialCommunicator
 {
 public:
-	ProxyCommunicator(int channelId, uint32_t channelLatency);
-	~ProxyCommunicator() override;
+    ProxyCommunicator(int channelId, uint32_t channelLatency);
+    ~ProxyCommunicator() override;
 
-	XsResultValue readDataToBuffer(XsByteArray& raw) override;
-	XsResultValue processBufferedData(const XsByteArray& rawIn, std::deque<XsMessage>& messages) override;
-	void handleMessage(const XsMessage& message) override;
+    XsResultValue readDataToBuffer(XsByteArray& raw) override;
+    XsResultValue processBufferedData(const XsByteArray& rawIn, std::deque<XsMessage>& messages) override;
+    void handleMessage(const XsMessage& message) override;
 
-	void flushPort() override;
-	void closePort() override;
-	bool isPortOpen() const override;
-	bool openPort(const XsPortInfo& portInfo, OpenPortStage stage = OPS_Full, bool detectRs485 = false) override;
-	bool reopenPort(OpenPortStage stage = OPS_Full, bool skipDeviceIdCheck = false) override;
-	bool isDockedAt(Communicator* other) const override;
-	bool allowReprocessing() const override
-	{
-		return false;
-	}
+    void flushPort() override;
+    void closePort() override;
+    bool isPortOpen() const override;
+    bool openPort(const XsPortInfo& portInfo, OpenPortStage stage = OPS_Full, bool detectRs485 = false) override;
+    bool reopenPort(OpenPortStage stage = OPS_Full, bool skipDeviceIdCheck = false) override;
+    bool isDockedAt(Communicator* other) const override;
+    bool allowReprocessing() const override
+    {
+        return false;
+    }
 
-	void handleReceivedData(const XsByteArray& data);
+    void handleReceivedData(const XsByteArray& data);
 
-	bool doTransaction(const XsMessage& msg, XsMessage& rcv, uint32_t timeout) override;
+    bool doTransaction(const XsMessage& msg, XsMessage& rcv, uint32_t timeout) override;
 
-	static XsPortInfo createPortInfo(int channelId);
+    static XsPortInfo createPortInfo(int channelId);
 protected:
-	XsResultValue writeRawData(const XsByteArray& data) override;
-	std::shared_ptr<StreamInterface> createStreamInterface(const XsPortInfo& pi) override
-	{
-		(void)pi;
-		return std::shared_ptr<StreamInterface>();
-	}
+    XsResultValue writeRawData(const XsByteArray& data) override;
+    std::shared_ptr<StreamInterface> createStreamInterface(const XsPortInfo& pi) override
+    {
+        (void)pi;
+        return std::shared_ptr<StreamInterface>();
+    }
 
-	uint32_t defaultInterfaceTimeout() const override;
+    uint32_t defaultInterfaceTimeout() const override;
 
 private:
-	int m_channelId;
-	uint32_t m_channelLatency;
+    int m_channelId;
+    uint32_t m_channelLatency;
 };
 
 #endif

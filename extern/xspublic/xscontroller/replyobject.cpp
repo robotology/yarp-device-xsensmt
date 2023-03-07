@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -39,55 +39,55 @@ using namespace xsens;
 
 /*! \brief Default constructor */
 ReplyObject::ReplyObject()
-	: m_mutex(new Mutex)
-	, m_waitCondition(new WaitCondition(*m_mutex))
-	, m_delivered(false)
+    : m_mutex(new Mutex)
+    , m_waitCondition(new WaitCondition(*m_mutex))
+    , m_delivered(false)
 {
 }
 
 ReplyObject::~ReplyObject()
 {
-	try
-	{
-		delete m_waitCondition;
-		delete m_mutex;
-	}
-	catch (...)
-	{
-	}
+    try
+    {
+        delete m_waitCondition;
+        delete m_mutex;
+    }
+    catch (...)
+    {
+    }
 }
 
 /*! \brief Sets a message as reply message and trigger the semaphore which will unblock any waiting message() calls
 */
 void ReplyObject::setMessage(const XsMessage& msg)
 {
-	xsens::Lock locker(m_mutex);
+    xsens::Lock locker(m_mutex);
 
-	m_message = msg;
-	m_delivered = true;
-	m_waitCondition->signal();
+    m_message = msg;
+    m_delivered = true;
+    m_waitCondition->signal();
 }
 
 /*! \brief Blocks until a message has been set by setMessage() then returns that message
 */
 XsMessage ReplyObject::message(uint32_t timeout)
 {
-	xsens::Lock locker(m_mutex);
+    xsens::Lock locker(m_mutex);
 
-	if (!m_delivered)
-		m_waitCondition->wait(timeout);
-	if (m_delivered)
-		return m_message;
-	else
-		return XsMessage();
+    if (!m_delivered)
+        m_waitCondition->wait(timeout);
+    if (m_delivered)
+        return m_message;
+    else
+        return XsMessage();
 }
 
 /*! \brief MidReplyObject constructor
-	\param[in] messageId the id of the message to wait for
+    \param[in] messageId the id of the message to wait for
 */
 MidReplyObject::MidReplyObject(uint8_t messageId)
-	: ReplyObject()
-	, m_messageId(messageId)
+    : ReplyObject()
+    , m_messageId(messageId)
 {
 }
 
@@ -101,96 +101,96 @@ MidReplyObject::~MidReplyObject()
 */
 uint8_t MidReplyObject::msgId() const
 {
-	return m_messageId;
+    return m_messageId;
 }
 
 /*! \returns True when a message is a valid reply message for this reply object
-	\param[in] msg the message to check
+    \param[in] msg the message to check
 */
 bool MidReplyObject::isReplyFor(XsMessage const& msg)
 {
-	if (m_messageId == msg.getMessageId())
-		return true;
+    if (m_messageId == msg.getMessageId())
+        return true;
 
-	if (msg.getMessageId() == XMID_Error)
-	{
-		assert(msg.getDataSize());
-		return (static_cast<XsResultValue>(msg.getDataByte()) != XRV_DATAOVERFLOW);
-	}
-	return false;
+    if (msg.getMessageId() == XMID_Error)
+    {
+        assert(msg.getDataSize());
+        return (static_cast<XsResultValue>(msg.getDataByte()) != XRV_DATAOVERFLOW);
+    }
+    return false;
 }
 
 /*! \brief MidAndDataReplyObject constructor
-	\param[in] messageId the message id of the message to wait for
-	\param[in] offset the offset in the data part of the message
-	\param[in] size the size of the data in the data part of the message
-	\param[in] data pointer to data to wait for (this object does not take ownership of the data)
+    \param[in] messageId the message id of the message to wait for
+    \param[in] offset the offset in the data part of the message
+    \param[in] size the size of the data in the data part of the message
+    \param[in] data pointer to data to wait for (this object does not take ownership of the data)
 */
 MidAndDataReplyObject::MidAndDataReplyObject(uint8_t messageId, XsSize offset, XsSize size, uint8_t const* data)
-	: ReplyObject()
-	, m_messageId(messageId)
-	, m_dataOffset(offset)
-	, m_dataSize(size)
-	, m_data(0)
+    : ReplyObject()
+    , m_messageId(messageId)
+    , m_dataOffset(offset)
+    , m_dataSize(size)
+    , m_data(0)
 {
-	assert(m_dataSize > 0);
-	setData(data);
+    assert(m_dataSize > 0);
+    setData(data);
 }
 
 /*! \brief MidAndDataReplyObject destructor
 */
 MidAndDataReplyObject::~MidAndDataReplyObject()
 {
-	try
-	{
-		freeData();
-	}
-	catch (...)
-	{
-		assert(false);
-	}
+    try
+    {
+        freeData();
+    }
+    catch (...)
+    {
+        assert(false);
+    }
 }
 
 /*! \returns the message ID that this reply object is waiting for
 */
 uint8_t MidAndDataReplyObject::msgId() const
 {
-	return m_messageId;
+    return m_messageId;
 }
 
 /*! \returns true when a message is a valid reply message for this reply object
-	\param[in] msg the message to check
+    \param[in] msg the message to check
 */
 bool MidAndDataReplyObject::isReplyFor(XsMessage const& msg)
 {
-	if (msg.getMessageId() == XMID_Error)
-		return true;
-	if (m_messageId != msg.getMessageId())
-		return false;
-	return memcmp(msg.getDataBuffer(m_dataOffset), m_data, m_dataSize) == 0;
+    if (msg.getMessageId() == XMID_Error)
+        return true;
+    if (m_messageId != msg.getMessageId())
+        return false;
+    return memcmp(msg.getDataBuffer(m_dataOffset), m_data, m_dataSize) == 0;
 }
 
 /*! \brief Frees allocated data (if any)
 */
 void MidAndDataReplyObject::freeData()
 {
-	if (m_data != 0)
-	{
-		free(m_data);
-		m_data = 0;
-	}
+    if (m_data != 0)
+    {
+        free(m_data);
+        m_data = 0;
+    }
 }
 
 /*! \brief Copies data from 'data' into this object. This is the data to wait for.
-	\param[in] data the data to copy into this object and wait for
+    \param[in] data the data to copy into this object and wait for
 */
 void MidAndDataReplyObject::setData(uint8_t const* data)
 {
-	freeData();
-	if (data != 0)
-	{
-		m_data = reinterpret_cast<uint8_t*>(malloc(m_dataSize));
-		if (m_data != 0)
-			memcpy(m_data, data, m_dataSize);
-	}
+    freeData();
+    if (data != 0)
+    {
+        m_data = reinterpret_cast<uint8_t*>(malloc(m_dataSize));
+        if (m_data != 0)
+            memcpy(m_data, data, m_dataSize);
+    }
 }

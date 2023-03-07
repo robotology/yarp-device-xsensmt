@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -37,30 +37,30 @@
 #include <xstypes/xsresultvalue.h>
 
 /*! \brief A stream interface
-	\details This class provides an interface for dealing with streaming I/O devices, such as a COM
-	port or a USB port.
+    \details This class provides an interface for dealing with streaming I/O devices, such as a COM
+    port or a USB port.
 */
 class StreamInterface : public IoInterface
 {
 public:
-	/*! \brief Destroy the stream interface
-	*/
-	~StreamInterface();
+    /*! \brief Destroy the stream interface
+    */
+    ~StreamInterface();
 
-	/*! \brief Set the read/write timeout to \a ms
-		A timeout of 0 means non-blocking operation of writeData() and readData().
-	*/
-	XsResultValue setTimeout(uint32_t ms) override = 0;
+    /*! \brief Set the read/write timeout to \a ms
+        A timeout of 0 means non-blocking operation of writeData() and readData().
+    */
+    XsResultValue setTimeout(uint32_t ms) override = 0;
 
-	/*! \brief The timeout used for read/write operations
-	*/
-	virtual uint32_t getTimeout() const = 0;
+    /*! \brief The timeout used for read/write operations
+    */
+    virtual uint32_t getTimeout() const = 0;
 
-	XSENS_DISABLE_COPY(StreamInterface);
+    XSENS_DISABLE_COPY(StreamInterface);
 protected:
-	/*! \brief Create a stream interface
-	*/
-	inline StreamInterface() {}
+    /*! \brief Create a stream interface
+    */
+    inline StreamInterface() {}
 };
 
 #endif

@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -50,42 +50,42 @@ class ProtocolManager : public IProtocolManager
 {
 public:
 
-	//! \brief A typedef for a value type
-	typedef std::shared_ptr<IProtocolHandler> value_type;
+    //! \brief A typedef for a value type
+    typedef std::shared_ptr<IProtocolHandler> value_type;
 
-	//! \brief A typedef for a container type
-	typedef std::list<value_type> container_type;
+    //! \brief A typedef for a container type
+    typedef std::list<value_type> container_type;
 
-	//! \brief A typedef for a const iterator
-	typedef container_type::const_iterator const_iterator;
+    //! \brief A typedef for a const iterator
+    typedef container_type::const_iterator const_iterator;
 
-	explicit ProtocolManager(Communicator const&);
-	virtual ~ProtocolManager() throw();
+    explicit ProtocolManager(Communicator const&);
+    virtual ~ProtocolManager() throw();
 
-	int likelyMinimumMessageSize() const;
+    int likelyMinimumMessageSize() const;
 
-	const_iterator begin() const;
-	const_iterator end() const;
-	MessageLocation findMessage(XsProtocolType& type, const XsByteArray& raw) override;
-	XsMessage convertToMessage(XsProtocolType& type, MessageLocation& location, const XsByteArray& raw) override;
-	bool validateMessage(XsMessage const& message) const override;
+    const_iterator begin() const;
+    const_iterator end() const;
+    MessageLocation findMessage(XsProtocolType& type, const XsByteArray& raw) override;
+    XsMessage convertToMessage(XsProtocolType& type, MessageLocation& location, const XsByteArray& raw) override;
+    bool validateMessage(XsMessage const& message) const override;
 
-	/*! \brief Adds the protocol handler
-		\param[in] handler The protocol handler to add
-		\returns The value type
-	*/
-	virtual value_type add(IProtocolHandler* handler);
-	virtual value_type find(XsProtocolType type);
-	virtual bool remove(XsProtocolType type);
-	virtual bool hasProtocol(XsProtocolType type) const;
-	virtual void clear();
+    /*! \brief Adds the protocol handler
+        \param[in] handler The protocol handler to add
+        \returns The value type
+    */
+    virtual value_type add(IProtocolHandler* handler);
+    virtual value_type find(XsProtocolType type);
+    virtual bool remove(XsProtocolType type);
+    virtual bool hasProtocol(XsProtocolType type) const;
+    virtual void clear();
 
 private:
-	Communicator const& m_communicator;
+    Communicator const& m_communicator;
 
-	// mutable because the order of elements is optimized during findMessage to speedup future searches
-	// but the findMessage method is conceptually const
-	container_type m_protocolHandlers;
+    // mutable because the order of elements is optimized during findMessage to speedup future searches
+    // but the findMessage method is conceptually const
+    container_type m_protocolHandlers;
 };
 
 #endif

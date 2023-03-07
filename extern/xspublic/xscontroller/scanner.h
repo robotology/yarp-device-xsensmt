@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -45,39 +45,39 @@
 struct XsIntArray;
 
 #ifdef _WIN32
-	#include <setupapi.h>
+    #include <setupapi.h>
 #endif
 
 class Scanner
 {
 public:
-	virtual ~Scanner();
+    virtual ~Scanner();
 
-	class Accessor
-	{
-	public:
-		Scanner& scanner() const;
-	};
+    class Accessor
+    {
+    public:
+        Scanner& scanner() const;
+    };
 
-	XsResultValue fetchBasicInfo(XsPortInfo& portInfo, uint32_t singleScanTimeout, bool detectRs485);
-	bool xsScanPort(XsPortInfo& portInfo, XsBaudRate baud, uint32_t singleScanTimeout, bool detectRs485);
-	virtual bool xsScanPorts(XsPortInfoArray& ports, XsBaudRate baudrate, uint32_t singleScanTimeout, bool ignoreNonXsensDevices, bool detectRs485);
-	bool xsFilterResponsiveDevices(XsPortInfoArray& ports, XsBaudRate baudrate, uint32_t singleScanTimeout, bool detectRs485);
+    XsResultValue fetchBasicInfo(XsPortInfo& portInfo, uint32_t singleScanTimeout, bool detectRs485);
+    bool xsScanPort(XsPortInfo& portInfo, XsBaudRate baud, uint32_t singleScanTimeout, bool detectRs485);
+    virtual bool xsScanPorts(XsPortInfoArray& ports, XsBaudRate baudrate, uint32_t singleScanTimeout, bool ignoreNonXsensDevices, bool detectRs485);
+    bool xsFilterResponsiveDevices(XsPortInfoArray& ports, XsBaudRate baudrate, uint32_t singleScanTimeout, bool detectRs485);
 
 #ifdef _WIN32
-	static std::string getDevicePath(HDEVINFO hDevInfo, SP_DEVINFO_DATA* DeviceInfoData);
-	int xsScanGetHubNumber(HDEVINFO hDevInfo, SP_DEVINFO_DATA* deviceInfoData);
-	XsPortInfo xsScanPortByHubId(const char* id);
-	bool xsScanXsensUsbHubs(XsIntArray& hubs, XsPortInfoArray& ports);
+    static std::string getDevicePath(HDEVINFO hDevInfo, SP_DEVINFO_DATA* DeviceInfoData);
+    int xsScanGetHubNumber(HDEVINFO hDevInfo, SP_DEVINFO_DATA* deviceInfoData);
+    XsPortInfo xsScanPortByHubId(const char* id);
+    bool xsScanXsensUsbHubs(XsIntArray& hubs, XsPortInfoArray& ports);
 #endif
-	static bool isXsensUsbDevice(uint16_t vid, uint16_t pid);
-	bool xsEnumerateSerialPorts(XsPortInfoArray& ports, bool ignoreNonXsensDevices);
-	virtual bool xsEnumerateNetworkDevices(XsPortInfoArray& ports);
-	virtual bool xsEnumerateBluetoothDevices(XsPortInfoArray& ports);
+    static bool isXsensUsbDevice(uint16_t vid, uint16_t pid);
+    bool xsEnumerateSerialPorts(XsPortInfoArray& ports, bool ignoreNonXsensDevices);
+    virtual bool xsEnumerateNetworkDevices(XsPortInfoArray& ports);
+    virtual bool xsEnumerateBluetoothDevices(XsPortInfoArray& ports);
 
-	XsUsbHubInfo xsScanUsbHub(const XsPortInfo& portInfo);
+    XsUsbHubInfo xsScanUsbHub(const XsPortInfo& portInfo);
 
-	static void setScanLogCallback(XsScanLogCallbackFunc cb);
+    static void setScanLogCallback(XsScanLogCallbackFunc cb);
 };
 
 namespace XsScannerNamespace
@@ -89,18 +89,18 @@ extern XsScanLogCallbackFunc gScanLogCallback;
 
 #if 1
 #define LOGXSSCAN(msg)\
-	do {\
-		JLDEBUGG(msg); \
-		if (XsScannerNamespace::gScanLogCallback) \
-		{ \
-			std::ostringstream os; \
-			os << msg; \
-			const XsString cbVal(os.str()); \
-			XsScannerNamespace::gScanLogCallback(&cbVal); \
-		} \
-	} while(0)
+    do {\
+        JLDEBUGG(msg); \
+        if (XsScannerNamespace::gScanLogCallback) \
+        { \
+            std::ostringstream os; \
+            os << msg; \
+            const XsString cbVal(os.str()); \
+            XsScannerNamespace::gScanLogCallback(&cbVal); \
+        } \
+    } while(0)
 #else
-#define LOGXSSCAN(msg)	((void)0)
+#define LOGXSSCAN(msg)    ((void)0)
 #endif
 
 #endif

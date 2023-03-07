@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -33,63 +33,63 @@
 #include "xsdatapacketptrarray.h"
 
 /*! \struct XsDataPacketPtrArray
-	\brief A list of XsDataPacketPtr values
-	\sa XsArray
+    \brief A list of XsDataPacketPtr values
+    \sa XsArray
 */
 
 /*! \copydoc XsArrayDescriptor::itemSwap
-	\note Specialization for XsDataPacketPtr
+    \note Specialization for XsDataPacketPtr
 */
 void swapDataPacketPtr(XsDataPacketPtr* a, XsDataPacketPtr* b)
 {
-	XsDataPacketPtr tmp = *a;
-	*a = *b;
-	*b = tmp;
+    XsDataPacketPtr tmp = *a;
+    *a = *b;
+    *b = tmp;
 }
 
 /*! \copydoc XsArrayDescriptor::itemCopy
-	\note Specialization for XsDataPacketPtr
+    \note Specialization for XsDataPacketPtr
 */
 void copyDataPacketPtr(XsDataPacketPtr* to, XsDataPacketPtr const* from)
 {
-	*to = *from;
+    *to = *from;
 }
 
 /*! \copydoc XsArrayDescriptor::itemCompare
-	\note Specialization for XsDataPacketPtr
+    \note Specialization for XsDataPacketPtr
 */
 int compareDataPacketPtr(XsDataPacketPtr const* a, XsDataPacketPtr const* b)
 {
-	if (*a < *b)
-		return -1;
-	if (*a > *b)
-		return 1;
-	return 0;
+    if (*a < *b)
+        return -1;
+    if (*a > *b)
+        return 1;
+    return 0;
 }
 
 //! \brief zero the pointer value
 void zeroDataPacketPtr(XsDataPacketPtr* a)
 {
-	*a = 0;
+    *a = 0;
 }
 
 //! \brief Descriptor for XsDataPacketPtrArray
 XsArrayDescriptor const g_xsDataPacketPtrArrayDescriptor =
 {
-	sizeof(XsDataPacketPtr),
-	XSEXPCASTITEMSWAP swapDataPacketPtr,			// swap
-	XSEXPCASTITEMMAKE zeroDataPacketPtr,			// construct
-	(XsArrayItemCopyFunc) copyDataPacketPtr,		// copy construct
-	XSEXPCASTITEMMAKE zeroDataPacketPtr,			// destruct
-	(XsArrayItemCopyFunc) copyDataPacketPtr,		// copy
-	(XsArrayItemCompareFunc) compareDataPacketPtr,	// compare
-	XSEXPCASTRAWCOPY XsArray_rawCopy
+    sizeof(XsDataPacketPtr),
+    XSEXPCASTITEMSWAP swapDataPacketPtr,            // swap
+    XSEXPCASTITEMMAKE zeroDataPacketPtr,            // construct
+    (XsArrayItemCopyFunc) copyDataPacketPtr,        // copy construct
+    XSEXPCASTITEMMAKE zeroDataPacketPtr,            // destruct
+    (XsArrayItemCopyFunc) copyDataPacketPtr,        // copy
+    (XsArrayItemCompareFunc) compareDataPacketPtr,    // compare
+    XSEXPCASTRAWCOPY XsArray_rawCopy
 };
 
 /*! \copydoc XsArray_constructDerived
-	\note Specialization for XsDataPacketPtrArray
+    \note Specialization for XsDataPacketPtrArray
 */
 void XsDataPacketPtrArray_construct(XsDataPacketPtrArray* thisPtr, XsSize count, XsDataPacketPtr const* src)
 {
-	XsArray_construct(thisPtr, &g_xsDataPacketPtrArrayDescriptor, count, src);
+    XsArray_construct(thisPtr, &g_xsDataPacketPtrArrayDescriptor, count, src);
 }

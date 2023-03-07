@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -43,7 +43,7 @@ extern "C" {
 extern XsArrayDescriptor const XSTYPES_DLL_API g_xsSyncSettingArrayDescriptor;
 
 #ifndef __cplusplus
-#define XSSYNCSETTINGSARRAY_INITIALIZER	XSARRAY_INITIALIZER(&g_xsSyncSettingArrayDescriptor)
+#define XSSYNCSETTINGSARRAY_INITIALIZER    XSARRAY_INITIALIZER(&g_xsSyncSettingArrayDescriptor)
 
 struct XsSyncSetting;
 XSARRAY_STRUCT(XsSyncSettingArray, struct XsSyncSetting);
@@ -57,39 +57,39 @@ XSTYPES_DLL_API void XsSyncSettingArray_construct(XsSyncSettingArray* thisPtr, X
 
 struct XsSyncSettingArray : public XsArrayImpl<XsSyncSetting, g_xsSyncSettingArrayDescriptor, XsSyncSettingArray>
 {
-	//! \brief Constructs an XsSyncSettingArray
-	inline explicit XsSyncSettingArray(XsSize sz = 0, XsSyncSetting const* src = 0)
-		: ArrayImpl(sz, src)
-	{
-	}
+    //! \brief Constructs an XsSyncSettingArray
+    inline explicit XsSyncSettingArray(XsSize sz = 0, XsSyncSetting const* src = 0)
+        : ArrayImpl(sz, src)
+    {
+    }
 
-	//! \brief Constructs an XsSyncSettingArray as a copy of \a other
-	inline XsSyncSettingArray(XsSyncSettingArray const& other)
-		: ArrayImpl(other)
-	{
-	}
+    //! \brief Constructs an XsSyncSettingArray as a copy of \a other
+    inline XsSyncSettingArray(XsSyncSettingArray const& other)
+        : ArrayImpl(other)
+    {
+    }
 
-	//! \brief Constructs an XsSyncSettingArray that references the data supplied in \a ref
-	inline explicit XsSyncSettingArray(XsSyncSetting* ref, XsSize sz, XsDataFlags flags /* = XSDF_None */)
-		: ArrayImpl(ref, sz, flags)
-	{
-	}
+    //! \brief Constructs an XsSyncSettingArray that references the data supplied in \a ref
+    inline explicit XsSyncSettingArray(XsSyncSetting* ref, XsSize sz, XsDataFlags flags /* = XSDF_None */)
+        : ArrayImpl(ref, sz, flags)
+    {
+    }
 
 #ifndef SWIG
-	/*! \brief Swap the contents the \a first and \a second array */
-	friend void swap(XsSyncSettingArray& first, XsSyncSettingArray& second)
-	{
-		first.swap(second);
-	}
+    /*! \brief Swap the contents the \a first and \a second array */
+    friend void swap(XsSyncSettingArray& first, XsSyncSettingArray& second)
+    {
+        first.swap(second);
+    }
 #endif
 
 #ifndef XSENS_NOITERATOR
-	//! \brief Constructs an XsSyncSettingArray with the array bound by the supplied iterators \a beginIt and \a endIt
-	template <typename Iterator>
-	inline XsSyncSettingArray(Iterator beginIt, Iterator endIt)
-		: ArrayImpl(beginIt, endIt)
-	{
-	}
+    //! \brief Constructs an XsSyncSettingArray with the array bound by the supplied iterators \a beginIt and \a endIt
+    template <typename Iterator>
+    inline XsSyncSettingArray(Iterator beginIt, Iterator endIt)
+        : ArrayImpl(beginIt, endIt)
+    {
+    }
 #endif
 };
 #endif

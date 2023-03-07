@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -47,12 +47,12 @@ typedef BOOL __stdcall WinUSB_Free(WINUSB_INTERFACE_HANDLE InterfaceHandle);
 typedef BOOL __stdcall WinUSB_GetAssociatedInterface(WINUSB_INTERFACE_HANDLE InterfaceHandle, UCHAR AssociatedInterfaceIndex, WINUSB_INTERFACE_HANDLE* AssociatedInterfaceHandle);
 typedef BOOL __stdcall WinUSB_GetDescriptor(WINUSB_INTERFACE_HANDLE InterfaceHandle, UCHAR DescriptorType, UCHAR Index, USHORT LanguageID, PUCHAR Buffer, ULONG BufferLength, PULONG LengthTransferred);
 typedef BOOL __stdcall WinUSB_QueryInterfaceSettings(WINUSB_INTERFACE_HANDLE InterfaceHandle, UCHAR AltSettingIndex, PUSB_INTERFACE_DESCRIPTOR UsbAltInterfaceDescriptor);
-typedef BOOL __stdcall WinUSB_QueryDeviceInformation(WINUSB_INTERFACE_HANDLE InterfaceHandle, ULONG InformationType,	PULONG BufferLength, PVOID Buffer);
+typedef BOOL __stdcall WinUSB_QueryDeviceInformation(WINUSB_INTERFACE_HANDLE InterfaceHandle, ULONG InformationType,    PULONG BufferLength, PVOID Buffer);
 typedef BOOL __stdcall WinUSB_SetCurrentAlternateSetting(WINUSB_INTERFACE_HANDLE InterfaceHandle, UCHAR AltSettingNumber);
 typedef BOOL __stdcall WinUSB_GetCurrentAlternateSetting(WINUSB_INTERFACE_HANDLE InterfaceHandle, PUCHAR AltSettingNumber);
 typedef BOOL __stdcall WinUSB_QueryPipe(WINUSB_INTERFACE_HANDLE InterfaceHandle, UCHAR AltSettingNumber, UCHAR PipeIndex, PWINUSB_PIPE_INFORMATION PipeInformation);
-typedef BOOL __stdcall WinUSB_SetPipePolicy(WINUSB_INTERFACE_HANDLE InterfaceHandle,	UCHAR PipeID, ULONG PolicyType,	ULONG ValueLength, PVOID Value);
-typedef BOOL __stdcall WinUSB_GetPipePolicy(WINUSB_INTERFACE_HANDLE InterfaceHandle,	UCHAR PipeID, ULONG PolicyType, PULONG ValueLength,	PVOID Value);
+typedef BOOL __stdcall WinUSB_SetPipePolicy(WINUSB_INTERFACE_HANDLE InterfaceHandle,    UCHAR PipeID, ULONG PolicyType,    ULONG ValueLength, PVOID Value);
+typedef BOOL __stdcall WinUSB_GetPipePolicy(WINUSB_INTERFACE_HANDLE InterfaceHandle,    UCHAR PipeID, ULONG PolicyType, PULONG ValueLength,    PVOID Value);
 typedef BOOL __stdcall WinUSB_ReadPipe(WINUSB_INTERFACE_HANDLE InterfaceHandle, UCHAR PipeID, PUCHAR Buffer, ULONG BufferLength, PULONG LengthTransferred, LPOVERLAPPED Overlapped);
 typedef BOOL __stdcall WinUSB_WritePipe(WINUSB_INTERFACE_HANDLE InterfaceHandle, UCHAR PipeID, PUCHAR Buffer, ULONG BufferLength, PULONG LengthTransferred, LPOVERLAPPED Overlapped);
 typedef BOOL __stdcall WinUSB_ControlTransfer(WINUSB_INTERFACE_HANDLE InterfaceHandle, WINUSB_SETUP_PACKET SetupPacket, PUCHAR Buffer, ULONG BufferLength, PULONG LengthTransferred, LPOVERLAPPED Overlapped);
@@ -66,63 +66,63 @@ typedef BOOL __stdcall WinUSB_GetOverlappedResult(WINUSB_INTERFACE_HANDLE Interf
 class XsWinUsb
 {
 public:
-	XsWinUsb(void);
-	~XsWinUsb(void);
+    XsWinUsb(void);
+    ~XsWinUsb(void);
 
-	WinUSB_Initialize Initialize;
-	WinUSB_Free Free;
-	WinUSB_GetAssociatedInterface GetAssociatedInterface;
-	WinUSB_GetDescriptor GetDescriptor;
-	WinUSB_QueryInterfaceSettings QueryInterfaceSettings;
-	WinUSB_QueryDeviceInformation QueryDeviceInformation;
-	WinUSB_SetCurrentAlternateSetting SetCurrentAlternateSetting;
-	WinUSB_GetCurrentAlternateSetting GetCurrentAlternateSetting;
-	WinUSB_QueryPipe QueryPipe;
-	WinUSB_SetPipePolicy SetPipePolicy;
-	WinUSB_GetPipePolicy GetPipePolicy;
-	WinUSB_ReadPipe ReadPipe;
-	WinUSB_WritePipe WritePipe;
-	WinUSB_ControlTransfer ControlTransfer;
-	WinUSB_ResetPipe ResetPipe;
-	WinUSB_AbortPipe AbortPipe;
-	WinUSB_FlushPipe FlushPipe;
-	WinUSB_SetPowerPolicy SetPowerPolicy;
-	WinUSB_GetPowerPolicy GetPowerPolicy;
-	WinUSB_GetOverlappedResult GetOverlappedResult;
+    WinUSB_Initialize Initialize;
+    WinUSB_Free Free;
+    WinUSB_GetAssociatedInterface GetAssociatedInterface;
+    WinUSB_GetDescriptor GetDescriptor;
+    WinUSB_QueryInterfaceSettings QueryInterfaceSettings;
+    WinUSB_QueryDeviceInformation QueryDeviceInformation;
+    WinUSB_SetCurrentAlternateSetting SetCurrentAlternateSetting;
+    WinUSB_GetCurrentAlternateSetting GetCurrentAlternateSetting;
+    WinUSB_QueryPipe QueryPipe;
+    WinUSB_SetPipePolicy SetPipePolicy;
+    WinUSB_GetPipePolicy GetPipePolicy;
+    WinUSB_ReadPipe ReadPipe;
+    WinUSB_WritePipe WritePipe;
+    WinUSB_ControlTransfer ControlTransfer;
+    WinUSB_ResetPipe ResetPipe;
+    WinUSB_AbortPipe AbortPipe;
+    WinUSB_FlushPipe FlushPipe;
+    WinUSB_SetPowerPolicy SetPowerPolicy;
+    WinUSB_GetPowerPolicy GetPowerPolicy;
+    WinUSB_GetOverlappedResult GetOverlappedResult;
 
 private:
 
-	typedef struct _WINUSB_API
-	{
-		WinUSB_Initialize(* Initialize);
-		WinUSB_Free(* Free);
-		WinUSB_GetAssociatedInterface(*GetAssociatedInterface);
-		WinUSB_GetDescriptor(* GetDescriptor);
-		WinUSB_QueryInterfaceSettings(* QueryInterfaceSettings);
-		WinUSB_QueryDeviceInformation(* QueryDeviceInformation);
-		WinUSB_SetCurrentAlternateSetting(* SetCurrentAlternateSetting);
-		WinUSB_GetCurrentAlternateSetting(* GetCurrentAlternateSetting);
-		WinUSB_QueryPipe(* QueryPipe);
-		WinUSB_SetPipePolicy(* SetPipePolicy);
-		WinUSB_GetPipePolicy(* GetPipePolicy);
-		WinUSB_ReadPipe(* ReadPipe);
-		WinUSB_WritePipe(* WritePipe);
-		WinUSB_ControlTransfer(* ControlTransfer);
-		WinUSB_ResetPipe(* ResetPipe);
-		WinUSB_AbortPipe(* AbortPipe);
-		WinUSB_FlushPipe(* FlushPipe);
-		WinUSB_SetPowerPolicy(* SetPowerPolicy);
-		WinUSB_GetPowerPolicy(* GetPowerPolicy);
-		WinUSB_GetOverlappedResult(*GetOverlappedResult);
-	} WINUSB_API;
+    typedef struct _WINUSB_API
+    {
+        WinUSB_Initialize(* Initialize);
+        WinUSB_Free(* Free);
+        WinUSB_GetAssociatedInterface(*GetAssociatedInterface);
+        WinUSB_GetDescriptor(* GetDescriptor);
+        WinUSB_QueryInterfaceSettings(* QueryInterfaceSettings);
+        WinUSB_QueryDeviceInformation(* QueryDeviceInformation);
+        WinUSB_SetCurrentAlternateSetting(* SetCurrentAlternateSetting);
+        WinUSB_GetCurrentAlternateSetting(* GetCurrentAlternateSetting);
+        WinUSB_QueryPipe(* QueryPipe);
+        WinUSB_SetPipePolicy(* SetPipePolicy);
+        WinUSB_GetPipePolicy(* GetPipePolicy);
+        WinUSB_ReadPipe(* ReadPipe);
+        WinUSB_WritePipe(* WritePipe);
+        WinUSB_ControlTransfer(* ControlTransfer);
+        WinUSB_ResetPipe(* ResetPipe);
+        WinUSB_AbortPipe(* AbortPipe);
+        WinUSB_FlushPipe(* FlushPipe);
+        WinUSB_SetPowerPolicy(* SetPowerPolicy);
+        WinUSB_GetPowerPolicy(* GetPowerPolicy);
+        WinUSB_GetOverlappedResult(*GetOverlappedResult);
+    } WINUSB_API;
 
-	WINUSB_API m_winUsb;
-	XsLibraryLoader* m_libraryLoader;
+    WINUSB_API m_winUsb;
+    XsLibraryLoader* m_libraryLoader;
 
-	void initLibrary();
+    void initLibrary();
 
-	XsWinUsb(XsWinUsb const&) = delete;
-	XsWinUsb const& operator=(XsWinUsb const&) = delete;
+    XsWinUsb(XsWinUsb const&) = delete;
+    XsWinUsb const& operator=(XsWinUsb const&) = delete;
 };
 
 #endif // USE_WINUSB

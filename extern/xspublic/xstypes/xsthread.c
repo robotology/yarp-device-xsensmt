@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -39,40 +39,40 @@
 // Copied from windows API
 struct THREADNAME_INFO
 {
-	DWORD dwType;		// Must be 0x1000.
-	LPCSTR szName;		// Pointer to name (in user addr space).
-	DWORD dwThreadID;	// XsThread ID (-1=caller thread).
-	DWORD dwFlags;		// Reserved for future use, must be zero.
+    DWORD dwType;        // Must be 0x1000.
+    LPCSTR szName;        // Pointer to name (in user addr space).
+    DWORD dwThreadID;    // XsThread ID (-1=caller thread).
+    DWORD dwFlags;        // Reserved for future use, must be zero.
 };
 #pragma pack(pop)
 typedef struct THREADNAME_INFO THREADNAME_INFO;
 
 /*! \addtogroup cinterface C Interface
-	@{
+    @{
 */
 
 /*! \brief Set the name of the current thread to \a threadName
-	\details Set the name of the current thread
-	\param threadName Pointer to the name to assign to the thread
+    \details Set the name of the current thread
+    \param threadName Pointer to the name to assign to the thread
 */
 void XSTYPES_DLL_API xsNameThisThread(const char* threadName)
 {
-	DWORD dwThreadID = GetCurrentThreadId();
+    DWORD dwThreadID = GetCurrentThreadId();
 
-	//Sleep(10);
-	THREADNAME_INFO info;
-	info.dwType = 0x1000;
-	info.szName = threadName;
-	info.dwThreadID = dwThreadID;
-	info.dwFlags = 0;
+    //Sleep(10);
+    THREADNAME_INFO info;
+    info.dwType = 0x1000;
+    info.szName = threadName;
+    info.dwThreadID = dwThreadID;
+    info.dwFlags = 0;
 
-	__try
-	{
-		RaiseException(MS_VC_EXCEPTION, 0, sizeof(info) / sizeof(ULONG_PTR), (ULONG_PTR*)&info);
-	}
-	__except (EXCEPTION_EXECUTE_HANDLER)
-	{
-	}
+    __try
+    {
+        RaiseException(MS_VC_EXCEPTION, 0, sizeof(info) / sizeof(ULONG_PTR), (ULONG_PTR*)&info);
+    }
+    __except (EXCEPTION_EXECUTE_HANDLER)
+    {
+    }
 }
 
 /*! @} */
@@ -82,8 +82,8 @@ void XSTYPES_DLL_API xsNameThisThread(const char* threadName)
 #ifdef __APPLE__
 inline static int pthread_setname_np2(pthread_t __target_thread, const char* __name)
 {
-	(void) __target_thread;
-	return pthread_setname_np(__name);
+    (void) __target_thread;
+    return pthread_setname_np(__name);
 }
 #else
 /* Set thread name visible in the kernel and its interfaces.  */
@@ -91,43 +91,43 @@ extern int pthread_setname_np(pthread_t __target_thread, const char* __name);
 
 inline static int pthread_setname_np2(pthread_t __target_thread, const char* __name)
 {
-	return pthread_setname_np(__target_thread, __name);
+    return pthread_setname_np(__target_thread, __name);
 }
 
 #endif
 
 /*! \addtogroup cinterface C Interface
-	@{
+    @{
 */
 
 /*! \brief Set the name of the current thread to \a threadName
-	\details Set the name of the current thread
-	\param threadName The new name of the thread, ignored if empty or null
-	\note If threadName is longer than 15 characters, it will be compressed
+    \details Set the name of the current thread
+    \param threadName The new name of the thread, ignored if empty or null
+    \note If threadName is longer than 15 characters, it will be compressed
 */
 void XSTYPES_DLL_API xsNameThisThread(const char* threadName)
 {
-	if (!threadName || !threadName[0])
-		return;
-	if (pthread_setname_np2(xsGetCurrentThreadId(), threadName) == ERANGE)
-	{
-		char dup[16];
-		strncpy(dup, threadName, 11);
-		strncpy(dup + 11, threadName + strlen(threadName) - 4, 4);
-		dup[15] = 0;
-		pthread_setname_np2(xsGetCurrentThreadId(), dup);
-	}
+    if (!threadName || !threadName[0])
+        return;
+    if (pthread_setname_np2(xsGetCurrentThreadId(), threadName) == ERANGE)
+    {
+        char dup[16];
+        strncpy(dup, threadName, 11);
+        strncpy(dup + 11, threadName + strlen(threadName) - 4, 4);
+        dup[15] = 0;
+        pthread_setname_np2(xsGetCurrentThreadId(), dup);
+    }
 }
 
 /*! @} */
 
 pthread_t XSTYPES_DLL_API xsStartThread(void* (func)(void*), void* param, void* pid)
 {
-	(void)pid;
-	pthread_t thread;
-	if (pthread_create(&thread, NULL, func, param))
-		return XSENS_INVALID_THREAD;
-	return thread;
+    (void)pid;
+    pthread_t thread;
+    if (pthread_create(&thread, NULL, func, param))
+        return XSENS_INVALID_THREAD;
+    return thread;
 }
 
 #endif

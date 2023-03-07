@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -33,58 +33,58 @@
 #include "xsbytearray.h"
 
 /*! \struct XsByteArray
-	\brief A list of uint8_t values
-	\sa XsArray
+    \brief A list of uint8_t values
+    \sa XsArray
 */
 
 /*! \copydoc XsArrayDescriptor::itemSwap
-	\note Specialization for uint8_t
+    \note Specialization for uint8_t
 */
 static void swapUint8(uint8_t* a, uint8_t* b)
 {
-	uint8_t tmp = *a;
-	*a = *b;
-	*b = tmp;
+    uint8_t tmp = *a;
+    *a = *b;
+    *b = tmp;
 }
 
 /*! \copydoc XsArrayDescriptor::itemCopy
-	\note Specialization for uint8_t
+    \note Specialization for uint8_t
 */
 static void copyUint8(uint8_t* to, uint8_t const* from)
 {
-	*to = *from;
+    *to = *from;
 }
 
 /*! \copydoc XsArrayDescriptor::itemCompare
-	\note Specialization for uint8_t
+    \note Specialization for uint8_t
 */
 static int compareUint8(uint8_t const* a, uint8_t const* b)
 {
-	if (*a < *b)
-		return -1;
-	if (*a > *b)
-		return 1;
-	return 0;
+    if (*a < *b)
+        return -1;
+    if (*a > *b)
+        return 1;
+    return 0;
 }
 
 //! \brief Descriptor for XsByteArray
 XsArrayDescriptor const g_xsByteArrayDescriptor =
 {
-	sizeof(uint8_t),
-	XSEXPCASTITEMSWAP swapUint8,	// swap
-	0,								// construct
-	XSEXPCASTITEMCOPY copyUint8,	// copy construct
-	0,								// destruct
-	XSEXPCASTITEMCOPY copyUint8,	// copy
-	XSEXPCASTITEMCOMP compareUint8,	// compare
-	XSEXPCASTRAWCOPY XsArray_rawCopy	// raw copy
+    sizeof(uint8_t),
+    XSEXPCASTITEMSWAP swapUint8,    // swap
+    0,                                // construct
+    XSEXPCASTITEMCOPY copyUint8,    // copy construct
+    0,                                // destruct
+    XSEXPCASTITEMCOPY copyUint8,    // copy
+    XSEXPCASTITEMCOMP compareUint8,    // compare
+    XSEXPCASTRAWCOPY XsArray_rawCopy    // raw copy
 };
 
 /*! \copydoc XsArray_constructDerived
-	\note Specialization for XsByteArray
-	\relates XsByteArray
+    \note Specialization for XsByteArray
+    \relates XsByteArray
 */
 void XsByteArray_construct(XsByteArray* thisPtr, XsSize count, uint8_t const* src)
 {
-	XsArray_construct(thisPtr, &g_xsByteArrayDescriptor, count, src);
+    XsArray_construct(thisPtr, &g_xsByteArrayDescriptor, count, src);
 }

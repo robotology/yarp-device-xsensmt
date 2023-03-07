@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -34,37 +34,37 @@
 #include "xscontrollerconfig.h"
 
 JLENUMEXPANDER(XsDeviceState,
-	JLENUMCASE(XDS_Initial)
-	JLENUMCASE(XDS_Config)
-	JLENUMCASE(XDS_Measurement)
-	JLENUMCASE(XDS_WaitingForRecordingStart)
-	JLENUMCASE(XDS_Recording)
-	JLENUMCASE(XDS_FlushingData)
-	JLENUMCASE(XDS_Destructing)
+    JLENUMCASE(XDS_Initial)
+    JLENUMCASE(XDS_Config)
+    JLENUMCASE(XDS_Measurement)
+    JLENUMCASE(XDS_WaitingForRecordingStart)
+    JLENUMCASE(XDS_Recording)
+    JLENUMCASE(XDS_FlushingData)
+    JLENUMCASE(XDS_Destructing)
 )
 
 JLENUMEXPANDER(XsOperationalMode,
-	JLENUMCASE(XOP_Unknown)
-	JLENUMCASE(XOP_LiveStream)
-	JLENUMCASE(XOP_Obr)
-	JLENUMCASE(XOP_Robr)
+    JLENUMCASE(XOP_Unknown)
+    JLENUMCASE(XOP_LiveStream)
+    JLENUMCASE(XOP_Obr)
+    JLENUMCASE(XOP_Robr)
 )
 
 JLENUMEXPANDER(XsConnectivityState,
-	JLENUMCASE(XCS_Disconnected)
-	JLENUMCASE(XCS_Rejected)
-	JLENUMCASE(XCS_PluggedIn)
-	JLENUMCASE(XCS_Wireless)
-	JLENUMCASE(XCS_WirelessOutOfRange)
-	JLENUMCASE(XCS_File)
-	JLENUMCASE(XCS_Unknown)
+    JLENUMCASE(XCS_Disconnected)
+    JLENUMCASE(XCS_Rejected)
+    JLENUMCASE(XCS_PluggedIn)
+    JLENUMCASE(XCS_Wireless)
+    JLENUMCASE(XCS_WirelessOutOfRange)
+    JLENUMCASE(XCS_File)
+    JLENUMCASE(XCS_Unknown)
 )
 
 static void forceEnumExpanderInclusion()
 {
-	volatile bool blah = false;
-	JLWRITEG("blah" << XDS_Initial << blah);
-	JLWRITEG("blah" << XOP_Unknown << blah);
-	JLWRITEG("blah" << XCS_File << blah);
-	(void)blah;
+    volatile bool blah = false;
+    JLWRITEG("blah" << XDS_Initial << blah);
+    JLWRITEG("blah" << XOP_Unknown << blah);
+    JLWRITEG("blah" << XCS_File << blah);
+    (void)blah;
 }

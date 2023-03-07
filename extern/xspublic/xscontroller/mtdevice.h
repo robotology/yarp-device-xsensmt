@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -46,123 +46,123 @@ class Emts5Public;
 }
 
 /*! \class MtDevice
-	\brief MT device base class
+    \brief MT device base class
 */
 
 class MtDevice : public XsDeviceEx
 {
 public:
-	virtual ~MtDevice();
+    virtual ~MtDevice();
 
-	bool initialize() override;
+    bool initialize() override;
 
-	bool isMotionTracker() const override;
-	int updateRateForDataIdentifier(XsDataIdentifier dataType) const override;
-	virtual int getBaseFrequency(XsDataIdentifier dataType = XDI_None) const;
+    bool isMotionTracker() const override;
+    int updateRateForDataIdentifier(XsDataIdentifier dataType) const override;
+    virtual int getBaseFrequency(XsDataIdentifier dataType = XDI_None) const;
 
-	uint16_t stringOutputType() const override;
-	uint16_t stringSamplePeriod() const override;
-	uint16_t stringSkipFactor() const override;
+    uint16_t stringOutputType() const override;
+    uint16_t stringSamplePeriod() const override;
+    uint16_t stringSkipFactor() const override;
 
-	XsDeviceOptionFlag deviceOptionFlags() const override;
+    XsDeviceOptionFlag deviceOptionFlags() const override;
 
-	XsUbloxGnssPlatform ubloxGnssPlatform() const override;
-	bool setUbloxGnssPlatform(XsUbloxGnssPlatform ubloxGnssPlatform) override;
+    XsUbloxGnssPlatform ubloxGnssPlatform() const override;
+    bool setUbloxGnssPlatform(XsUbloxGnssPlatform ubloxGnssPlatform) override;
 
-	XsIntArray gnssReceiverSettings() const override;
-	bool setGnssReceiverSettings(const XsIntArray& gnssReceiverSettings) override;
+    XsIntArray gnssReceiverSettings() const override;
+    bool setGnssReceiverSettings(const XsIntArray& gnssReceiverSettings) override;
 
-	XsOutputConfigurationArray outputConfiguration() const override;
+    XsOutputConfigurationArray outputConfiguration() const override;
 
-	double headingOffset() const;
+    double headingOffset() const;
 
-	virtual bool canDoOrientationResetInFirmware(XsResetMethod method);
-	virtual bool scheduleOrientationReset(XsResetMethod method);
-	virtual bool storeAlignmentMatrix();
+    virtual bool canDoOrientationResetInFirmware(XsResetMethod method);
+    virtual bool scheduleOrientationReset(XsResetMethod method);
+    virtual bool storeAlignmentMatrix();
 
-	virtual bool setLocationId(int id);
-	int locationId() const;
+    virtual bool setLocationId(int id);
+    int locationId() const;
 
-	XsString productCode() const;
+    XsString productCode() const;
 
-	XsBaudRate serialBaudRate() const override;
+    XsBaudRate serialBaudRate() const override;
 
-	bool reinitialize();
+    bool reinitialize();
 
-	XsFilterProfile onboardFilterProfile() const override;
-	bool setOnboardFilterProfile(int profileType) override;
-	bool setOnboardFilterProfile(XsString const& profileType) override;
+    XsFilterProfile onboardFilterProfile() const override;
+    bool setOnboardFilterProfile(int profileType) override;
+    bool setOnboardFilterProfile(XsString const& profileType) override;
 
-	XsVersion hardwareVersion() const;
+    XsVersion hardwareVersion() const;
 
-	XsFilterProfileArray availableOnboardFilterProfiles() const override;
+    XsFilterProfileArray availableOnboardFilterProfiles() const override;
 
-	bool resetLogFileReadPosition() override;
+    bool resetLogFileReadPosition() override;
 
-	bool restoreFactoryDefaults();
+    bool restoreFactoryDefaults();
 
-	double accelerometerRange() const;
-	double gyroscopeRange() const;
+    double accelerometerRange() const;
+    double gyroscopeRange() const;
 
-	void writeDeviceSettingsToFile() override;
+    void writeDeviceSettingsToFile() override;
 
-	bool setNoRotation(uint16_t duration);
+    bool setNoRotation(uint16_t duration);
 
-	XsVector initialPositionLLA() const override;
-	bool setInitialPositionLLA(const XsVector& lla) override;
+    XsVector initialPositionLLA() const override;
+    bool setInitialPositionLLA(const XsVector& lla) override;
 
-	XsErrorMode errorMode() const;
-	bool setErrorMode(XsErrorMode errorMode);
+    XsErrorMode errorMode() const;
+    bool setErrorMode(XsErrorMode errorMode);
 
-	uint16_t rs485TransmissionDelay() const;
-	bool setRs485TransmissionDelay(uint16_t delay);
+    uint16_t rs485TransmissionDelay() const;
+    bool setRs485TransmissionDelay(uint16_t delay);
 
-	XsSelfTestResult runSelfTest();
+    XsSelfTestResult runSelfTest();
 
-	bool requestData();
-	bool storeFilterState() override;
+    bool requestData();
+    bool storeFilterState() override;
 
-	static int calcFrequency(int baseFrequency, uint16_t skipFactor);
+    static int calcFrequency(int baseFrequency, uint16_t skipFactor);
 
-	bool messageLooksSane(const XsMessage& msg) const override;
-	uint32_t supportedStatusFlags() const override;
+    bool messageLooksSane(const XsMessage& msg) const override;
+    uint32_t supportedStatusFlags() const override;
 
 protected:
-	explicit MtDevice(XsDeviceId const& id);
-	explicit MtDevice(Communicator* comm);
-	explicit MtDevice(XsDevice*, const XsDeviceId&);
+    explicit MtDevice(XsDeviceId const& id);
+    explicit MtDevice(Communicator* comm);
+    explicit MtDevice(XsDevice*, const XsDeviceId&);
 
-	virtual void updateFilterProfiles();
+    virtual void updateFilterProfiles();
 
-	XsFilterProfileArray readFilterProfilesFromDevice() const;
-	virtual void fetchAvailableHardwareScenarios();
+    XsFilterProfileArray readFilterProfilesFromDevice() const;
+    virtual void fetchAvailableHardwareScenarios();
 
-	static XsString stripProductCode(const XsString& code);
+    static XsString stripProductCode(const XsString& code);
 
-	uint32_t syncTicksToUs(uint32_t ticks) const;
-	uint32_t usToSyncTicks(uint32_t us) const;
+    uint32_t syncTicksToUs(uint32_t ticks) const;
+    uint32_t usToSyncTicks(uint32_t us) const;
 
-	//! A vector of hardware filter profiles
-	XsFilterProfileArray m_hardwareFilterProfiles;
+    //! A vector of hardware filter profiles
+    XsFilterProfileArray m_hardwareFilterProfiles;
 
-	//! \brief A hardware filter profile
-	XsFilterProfile m_hardwareFilterProfile;
+    //! \brief A hardware filter profile
+    XsFilterProfile m_hardwareFilterProfile;
 };
 
 #ifndef XDA_PRIVATE_BUILD
 
 /*! \class MtDeviceEx
-	\brief An abstract struct of MT device
+    \brief An abstract struct of MT device
 */
 struct MtDeviceEx : public MtDevice
 {
 protected:
 
-	//!	Construct a device using \a comm for communication
-	explicit MtDeviceEx(Communicator* comm) : MtDevice(comm) {}
+    //!    Construct a device using \a comm for communication
+    explicit MtDeviceEx(Communicator* comm) : MtDevice(comm) {}
 
-	//! Construct a device with device id \a childDeviceId for master \a master
-	explicit MtDeviceEx(XsDevice* master, const XsDeviceId& childDeviceId) : MtDevice(master, childDeviceId) {}
+    //! Construct a device with device id \a childDeviceId for master \a master
+    explicit MtDeviceEx(XsDevice* master, const XsDeviceId& childDeviceId) : MtDevice(master, childDeviceId) {}
 };
 #else
 #include "mtdeviceex.h"

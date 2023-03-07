@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -42,11 +42,11 @@
 extern "C" {
 #endif
 
-#define XSDEVICEID_PRODUCT_CODE_LEN		24
-#define XSDEVICEID_PRODUCT_CODE_INIT	"\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"
+#define XSDEVICEID_PRODUCT_CODE_LEN        24
+#define XSDEVICEID_PRODUCT_CODE_INIT    "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"
 
 #ifndef __cplusplus
-#define XSDEVICEID_INITIALIZER	{ 0, XSDEVICEID_PRODUCT_CODE_INIT, 0, 0, 0 }
+#define XSDEVICEID_INITIALIZER    { 0, XSDEVICEID_PRODUCT_CODE_INIT, 0, 0, 0 }
 #endif
 
 struct XsDeviceId;
@@ -160,721 +160,721 @@ XSTYPES_DLL_API int XsDeviceId_isMtMk5_710(struct XsDeviceId const* thisPtr);
 struct XsDeviceId
 {
 #ifdef __cplusplus
-	/*! \brief Constructor that creates an XsDeviceId from the supplied \a productcode, \a hardwareVersion, \a productVariant, \a serialNumber and optional \a subDevice */
-	inline XsDeviceId(const char* productCode, uint16_t hardwareVersion, uint32_t productVariant, uint64_t serialNumber, uint16_t subDevice = 0)
-		: m_deviceId(serialNumber)
-		, m_productVariant(productVariant)
-		, m_hardwareVersion(hardwareVersion)
-		, m_subDevice(subDevice)
-	{
-		memset(m_productCode, 0, sizeof(m_productCode));
-		if (productCode)
-		{
-			XSENS_MSC_WARNING_SUPPRESS(4996)
-			std::strncpy(m_productCode, productCode, XSDEVICEID_PRODUCT_CODE_LEN);
-		}
-	}
+    /*! \brief Constructor that creates an XsDeviceId from the supplied \a productcode, \a hardwareVersion, \a productVariant, \a serialNumber and optional \a subDevice */
+    inline XsDeviceId(const char* productCode, uint16_t hardwareVersion, uint32_t productVariant, uint64_t serialNumber, uint16_t subDevice = 0)
+        : m_deviceId(serialNumber)
+        , m_productVariant(productVariant)
+        , m_hardwareVersion(hardwareVersion)
+        , m_subDevice(subDevice)
+    {
+        memset(m_productCode, 0, sizeof(m_productCode));
+        if (productCode)
+        {
+            XSENS_MSC_WARNING_SUPPRESS(4996)
+            std::strncpy(m_productCode, productCode, XSDEVICEID_PRODUCT_CODE_LEN);
+        }
+    }
 
-	/*! \brief Constructor that creates an XsDeviceId from the supplied \a deviceId */
-	inline XsDeviceId(uint64_t serialNumber = 0)
-		: m_deviceId(serialNumber)
-		, m_productVariant(0)
-		, m_hardwareVersion(0)
-		, m_subDevice(0)
-	{
-		memset(m_productCode, 0, sizeof(m_productCode));
-	}
+    /*! \brief Constructor that creates an XsDeviceId from the supplied \a deviceId */
+    inline XsDeviceId(uint64_t serialNumber = 0)
+        : m_deviceId(serialNumber)
+        , m_productVariant(0)
+        , m_hardwareVersion(0)
+        , m_subDevice(0)
+    {
+        memset(m_productCode, 0, sizeof(m_productCode));
+    }
 
-	/*! \brief Constructor that creates a sub-device XsDeviceId from the supplied \a parent ID and \a subDevice */
-	inline explicit XsDeviceId(XsDeviceId const& parent, uint16_t subDevice)
-	{
-		memcpy(static_cast<void*>(this), static_cast<void const*>(&parent), sizeof(XsDeviceId));
-		m_subDevice = subDevice;
-	}
+    /*! \brief Constructor that creates a sub-device XsDeviceId from the supplied \a parent ID and \a subDevice */
+    inline explicit XsDeviceId(XsDeviceId const& parent, uint16_t subDevice)
+    {
+        memcpy(static_cast<void*>(this), static_cast<void const*>(&parent), sizeof(XsDeviceId));
+        m_subDevice = subDevice;
+    }
 
-	/*! \brief Constructor that creates an XsDeviceId from the supplied XsDeviceId \a other */
-	inline XsDeviceId(const XsDeviceId& other)
-	{
-		memcpy(static_cast<void*>(this), static_cast<void const*>(&other), sizeof(XsDeviceId));
-	}
-	/*! \brief Assign the \a other deviceId to this XsDeviceId */
-	inline const XsDeviceId& operator=(const XsDeviceId& other)
-	{
-		if (this != &other)
-			memcpy(static_cast<void*>(this), static_cast<void const*>(&other), sizeof(XsDeviceId));
-		return *this;
-	}
+    /*! \brief Constructor that creates an XsDeviceId from the supplied XsDeviceId \a other */
+    inline XsDeviceId(const XsDeviceId& other)
+    {
+        memcpy(static_cast<void*>(this), static_cast<void const*>(&other), sizeof(XsDeviceId));
+    }
+    /*! \brief Assign the \a other deviceId to this XsDeviceId */
+    inline const XsDeviceId& operator=(const XsDeviceId& other)
+    {
+        if (this != &other)
+            memcpy(static_cast<void*>(this), static_cast<void const*>(&other), sizeof(XsDeviceId));
+        return *this;
+    }
 
-	/*! \brief \copybrief XsDeviceId_legacyBit(const struct XsDeviceId*) */
-	static inline uint64_t legacyBit()
-	{
-		return XsDeviceId_legacyBit(nullptr);
-	}
-	/*! \brief \copybrief XsDeviceId_isLegacyDeviceId(const struct XsDeviceId*) */
-	inline bool isLegacyDeviceId() const
-	{
-		return 0 != XsDeviceId_isLegacyDeviceId(this);
-	}
-	/*! \brief Returns the device serial number as an unsigned integer */
-	inline uint64_t toInt() const
-	{
-		return m_deviceId;
-	}
-	/*! \brief Returns the product code */
-	inline XsString productCode() const
-	{
-		XsString tmp(m_productCode);
-		return tmp;
-	}
-	/*! \brief Returns the product variant */
-	inline uint32_t productVariant() const
-	{
-		return m_productVariant;
-	}
-	/*! \brief Returns the product variant */
-	inline uint16_t hardwareVersion() const
-	{
-		return m_hardwareVersion;
-	}
-	/*! \brief Returns the sub device value
-		\details This value can be ignored for most device types, except for combined products such as the Xsens Glove
-		\return The sub device index: 0 = the whole device, 1+ = a sub-device
-	*/
-	inline uint16_t subDevice() const
-	{
-		return m_subDevice;
-	}
-	/*! \brief Returns the 32-bit device serial number, which may be 0 if the device has a 64-bit serial number */
-	inline uint32_t legacyDeviceId() const
-	{
-		return static_cast<uint32_t>(m_deviceId);
-	}
-	/*! \brief \copybrief XsDeviceId_isMtiX(const struct XsDeviceId*) */
-	inline bool isMtiX() const
-	{
-		return 0 != XsDeviceId_isMtiX(this);
-	}
-	/*! \brief \copybrief XsDeviceId_isMtiX0(const struct XsDeviceId*) */
-	inline bool isMtiX0() const
-	{
-		return 0 != XsDeviceId_isMtiX0(this);
-	}
-	/*! \brief \copybrief XsDeviceId_isMtiX00(const struct XsDeviceId*) */
-	inline bool isMtiX00() const
-	{
-		return 0 != XsDeviceId_isMtiX00(this);
-	}
-	/*! \brief \copybrief XsDeviceId_isMtigX00(const struct XsDeviceId*) */
-	inline bool isMtigX00() const
-	{
-		return 0 != XsDeviceId_isMtigX00(this);
-	}
-	/*! \brief \copybrief XsDeviceId_isMtigX10(const struct XsDeviceId*) */
-	inline bool isMtigX10() const
-	{
-		return 0 != XsDeviceId_isMtigX10(this);
-	}
-	/*! \brief \copybrief XsDeviceId_isMti3X0(const struct XsDeviceId*) */
-	inline bool isMti3X0() const
-	{
-		return 0 != XsDeviceId_isMti3X0(this);
-	}
-	/*! \brief \copybrief XsDeviceId_isMti6X0(const struct XsDeviceId*) */
-	inline bool isMti6X0() const
-	{
-		return 0 != XsDeviceId_isMti6X0(this);
-	}
-	/*! \brief \copybrief XsDeviceId_isMti8X0(const struct XsDeviceId*) */
-	inline bool isMti8X0() const
-	{
-		return 0 != XsDeviceId_isMti8X0(this);
-	}
-	/*! \brief \copybrief XsDeviceId_isGlove(const struct XsDeviceId*) */
-	inline bool isGlove() const
-	{
-		return 0 != XsDeviceId_isGlove(this);
-	}
-	/*! \brief \copybrief XsDeviceId_side(const struct XsDeviceId*) */
-	inline XsHandId side() const
-	{
-		return XsDeviceId_side(this);
-	}
-	/*! \brief \copybrief XsDeviceId_isDot(const struct XsDeviceId*) */
-	inline bool isDot() const
-	{
-		return 0 != XsDeviceId_isDot(this);
-	}
-	/*! \brief \copybrief XsDeviceId_isRugged(const struct XsDeviceId*) */
-	inline bool isRugged() const
-	{
-		return 0 != XsDeviceId_isRugged(this);
-	}
-	/*! \brief \copybrief XsDeviceId_isMtw(const struct XsDeviceId*) */
-	inline bool isMtw() const
-	{
-		return 0 != XsDeviceId_isMtw(this);
-	}
-	/*! \brief \copybrief XsDeviceId_isMtw2(const struct XsDeviceId*) */
-	inline bool isMtw2() const
-	{
-		return 0 != XsDeviceId_isMtw2(this);
-	}
-	/*! \brief \copybrief XsDeviceId_isMtx(const struct XsDeviceId*) */
-	inline bool isMtx() const
-	{
-		return 0 != XsDeviceId_isMtx(this);
-	}
-	/*! \brief \copybrief XsDeviceId_isMtx2(const struct XsDeviceId*) */
-	inline bool isMtx2() const
-	{
-		return 0 != XsDeviceId_isMtx2(this);
-	}
-	/*! \brief \copybrief XsDeviceId_isBodyPack(const struct XsDeviceId*) */
-	inline bool isBodyPack() const
-	{
-		return 0 != XsDeviceId_isBodyPack(this);
-	}
-	/*! \brief \copybrief XsDeviceId_isBodyPackV1(const struct XsDeviceId*) */
-	inline bool isBodyPackV1() const
-	{
-		return 0 != XsDeviceId_isBodyPackV1(this);
-	}
-	/*! \brief \copybrief XsDeviceId_isBodyPackV2(const struct XsDeviceId*) */
-	inline bool isBodyPackV2() const
-	{
-		return 0 != XsDeviceId_isBodyPackV2(this);
-	}
-	/*! \brief \copybrief XsDeviceId_isWirelessMaster(const struct XsDeviceId*) */
-	inline bool isWirelessMaster() const
-	{
-		return 0 != XsDeviceId_isWirelessMaster(this);
-	}
-	/*! \brief \copybrief XsDeviceId_isAwindaX(const struct XsDeviceId*) */
-	inline bool isAwindaX() const
-	{
-		return 0 != XsDeviceId_isAwindaX(this);
-	}
-	/*! \brief \copybrief XsDeviceId_isAwindaXStation(const struct XsDeviceId*) */
-	inline bool isAwindaXStation() const
-	{
-		return 0 != XsDeviceId_isAwindaXStation(this);
-	}
-	/*! \brief \copybrief XsDeviceId_isAwindaXDongle(const struct XsDeviceId*) */
-	inline bool isAwindaXDongle() const
-	{
-		return 0 != XsDeviceId_isAwindaXDongle(this);
-	}
-	/*! \brief \copybrief XsDeviceId_isAwindaXOem(const struct XsDeviceId*) */
-	inline bool isAwindaXOem() const
-	{
-		return 0 != XsDeviceId_isAwindaXOem(this);
-	}
-	/*! \brief \copybrief XsDeviceId_isAwinda2(const struct XsDeviceId*) */
-	inline bool isAwinda2() const
-	{
-		return 0 != XsDeviceId_isAwinda2(this);
-	}
-	/*! \brief \copybrief XsDeviceId_isAwinda2Station(const struct XsDeviceId*) */
-	inline bool isAwinda2Station() const
-	{
-		return 0 != XsDeviceId_isAwinda2Station(this);
-	}
-	/*! \brief \copybrief XsDeviceId_isAwinda2Dongle(const struct XsDeviceId*) */
-	inline bool isAwinda2Dongle() const
-	{
-		return 0 != XsDeviceId_isAwinda2Dongle(this);
-	}
-	/*! \brief \copybrief XsDeviceId_isAwinda2Oem(const struct XsDeviceId*) */
-	inline bool isAwinda2Oem() const
-	{
-		return 0 != XsDeviceId_isAwinda2Oem(this);
-	}
-	/*! \brief \copybrief XsDeviceId_isSyncStationX(const struct XsDeviceId*) */
-	inline bool isSyncStationX() const
-	{
-		return 0 != XsDeviceId_isSyncStationX(this);
-	}
-	/*! \brief \copybrief XsDeviceId_isSyncStation2(const struct XsDeviceId*) */
-	inline bool isSyncStation2() const
-	{
-		return 0 != XsDeviceId_isSyncStation2(this);
-	}
-	/*! \brief \copybrief XsDeviceId_isHilDevice(const struct XsDeviceId*) */
-	inline bool isHilDevice() const
-	{
-		return 0 != XsDeviceId_isHilDevice(this);
-	}
-	/*! \brief \copybrief XsDeviceId_isImu(const struct XsDeviceId*) */
-	inline bool isImu() const
-	{
-		return 0 != XsDeviceId_isImu(this);
-	}
-	/*! \brief \copybrief XsDeviceId_isVru(const struct XsDeviceId*) */
-	inline bool isVru() const
-	{
-		return 0 != XsDeviceId_isVru(this);
-	}
-	/*! \brief \copybrief XsDeviceId_isAhrs(const struct XsDeviceId*) */
-	inline bool isAhrs() const
-	{
-		return 0 != XsDeviceId_isAhrs(this);
-	}
-	/*! \brief \copybrief XsDeviceId_isGnss(const struct XsDeviceId*) */
-	inline bool isGnss() const
-	{
-		return 0 != XsDeviceId_isGnss(this);
-	}
-	/*! \brief \copybrief XsDeviceId_isRtk(const struct XsDeviceId*) */
-	inline bool isRtk() const
-	{
-		return 0 != XsDeviceId_isRtk(this);
-	}
-	/*! \brief \copybrief XsDeviceId_hasInternalGnss(const struct XsDeviceId*) */
-	inline bool hasInternalGnss() const
-	{
-		return 0 != XsDeviceId_hasInternalGnss(this);
-	}
-	/*! \brief \copybrief XsDeviceId_isContainerDevice(const struct XsDeviceId*) */
-	inline bool isContainerDevice() const
-	{
-		return 0 != XsDeviceId_isContainerDevice(this);
-	}
-	/*! \brief \copybrief XsDeviceId_isMt(const struct XsDeviceId*) */
-	inline bool isMt() const
-	{
-		return 0 != XsDeviceId_isMt(this);
-	}
-	/*! \brief \copybrief XsDeviceId_isMti(const struct XsDeviceId*) */
-	inline bool isMti() const
-	{
-		return 0 != XsDeviceId_isMti(this);
-	}
-	/*! \brief \copybrief XsDeviceId_isMtig(const struct XsDeviceId*) */
-	inline bool isMtig() const
-	{
-		return 0 != XsDeviceId_isMtig(this);
-	}
-	/*! \brief \copybrief XsDeviceId_isMtMark4(const struct XsDeviceId*) */
-	inline bool isMtMark4() const
-	{
-		return 0 != XsDeviceId_isMtMark4(this);
-	}
-	/*! \brief \copybrief XsDeviceId_isMtMark5(const struct XsDeviceId*) */
-	inline bool isMtMark5() const
-	{
-		return 0 != XsDeviceId_isMtMark5(this);
-	}
-	/*! \brief \copybrief XsDeviceId_toString(const XsDeviceId* thisPtr, XsString* str) */
-	inline XsString toString() const
-	{
-		XsString tmp;
-		XsDeviceId_toString(this, &tmp);
-		return tmp;
-	}
-	/*! \copydoc XsDeviceId_fromString(XsDeviceId* thisPtr, const XsString* str) */
-	inline void fromString(const XsString& str)
-	{
-		XsDeviceId_fromString(this, &str);
-	}
+    /*! \brief \copybrief XsDeviceId_legacyBit(const struct XsDeviceId*) */
+    static inline uint64_t legacyBit()
+    {
+        return XsDeviceId_legacyBit(nullptr);
+    }
+    /*! \brief \copybrief XsDeviceId_isLegacyDeviceId(const struct XsDeviceId*) */
+    inline bool isLegacyDeviceId() const
+    {
+        return 0 != XsDeviceId_isLegacyDeviceId(this);
+    }
+    /*! \brief Returns the device serial number as an unsigned integer */
+    inline uint64_t toInt() const
+    {
+        return m_deviceId;
+    }
+    /*! \brief Returns the product code */
+    inline XsString productCode() const
+    {
+        XsString tmp(m_productCode);
+        return tmp;
+    }
+    /*! \brief Returns the product variant */
+    inline uint32_t productVariant() const
+    {
+        return m_productVariant;
+    }
+    /*! \brief Returns the product variant */
+    inline uint16_t hardwareVersion() const
+    {
+        return m_hardwareVersion;
+    }
+    /*! \brief Returns the sub device value
+        \details This value can be ignored for most device types, except for combined products such as the Xsens Glove
+        \return The sub device index: 0 = the whole device, 1+ = a sub-device
+    */
+    inline uint16_t subDevice() const
+    {
+        return m_subDevice;
+    }
+    /*! \brief Returns the 32-bit device serial number, which may be 0 if the device has a 64-bit serial number */
+    inline uint32_t legacyDeviceId() const
+    {
+        return static_cast<uint32_t>(m_deviceId);
+    }
+    /*! \brief \copybrief XsDeviceId_isMtiX(const struct XsDeviceId*) */
+    inline bool isMtiX() const
+    {
+        return 0 != XsDeviceId_isMtiX(this);
+    }
+    /*! \brief \copybrief XsDeviceId_isMtiX0(const struct XsDeviceId*) */
+    inline bool isMtiX0() const
+    {
+        return 0 != XsDeviceId_isMtiX0(this);
+    }
+    /*! \brief \copybrief XsDeviceId_isMtiX00(const struct XsDeviceId*) */
+    inline bool isMtiX00() const
+    {
+        return 0 != XsDeviceId_isMtiX00(this);
+    }
+    /*! \brief \copybrief XsDeviceId_isMtigX00(const struct XsDeviceId*) */
+    inline bool isMtigX00() const
+    {
+        return 0 != XsDeviceId_isMtigX00(this);
+    }
+    /*! \brief \copybrief XsDeviceId_isMtigX10(const struct XsDeviceId*) */
+    inline bool isMtigX10() const
+    {
+        return 0 != XsDeviceId_isMtigX10(this);
+    }
+    /*! \brief \copybrief XsDeviceId_isMti3X0(const struct XsDeviceId*) */
+    inline bool isMti3X0() const
+    {
+        return 0 != XsDeviceId_isMti3X0(this);
+    }
+    /*! \brief \copybrief XsDeviceId_isMti6X0(const struct XsDeviceId*) */
+    inline bool isMti6X0() const
+    {
+        return 0 != XsDeviceId_isMti6X0(this);
+    }
+    /*! \brief \copybrief XsDeviceId_isMti8X0(const struct XsDeviceId*) */
+    inline bool isMti8X0() const
+    {
+        return 0 != XsDeviceId_isMti8X0(this);
+    }
+    /*! \brief \copybrief XsDeviceId_isGlove(const struct XsDeviceId*) */
+    inline bool isGlove() const
+    {
+        return 0 != XsDeviceId_isGlove(this);
+    }
+    /*! \brief \copybrief XsDeviceId_side(const struct XsDeviceId*) */
+    inline XsHandId side() const
+    {
+        return XsDeviceId_side(this);
+    }
+    /*! \brief \copybrief XsDeviceId_isDot(const struct XsDeviceId*) */
+    inline bool isDot() const
+    {
+        return 0 != XsDeviceId_isDot(this);
+    }
+    /*! \brief \copybrief XsDeviceId_isRugged(const struct XsDeviceId*) */
+    inline bool isRugged() const
+    {
+        return 0 != XsDeviceId_isRugged(this);
+    }
+    /*! \brief \copybrief XsDeviceId_isMtw(const struct XsDeviceId*) */
+    inline bool isMtw() const
+    {
+        return 0 != XsDeviceId_isMtw(this);
+    }
+    /*! \brief \copybrief XsDeviceId_isMtw2(const struct XsDeviceId*) */
+    inline bool isMtw2() const
+    {
+        return 0 != XsDeviceId_isMtw2(this);
+    }
+    /*! \brief \copybrief XsDeviceId_isMtx(const struct XsDeviceId*) */
+    inline bool isMtx() const
+    {
+        return 0 != XsDeviceId_isMtx(this);
+    }
+    /*! \brief \copybrief XsDeviceId_isMtx2(const struct XsDeviceId*) */
+    inline bool isMtx2() const
+    {
+        return 0 != XsDeviceId_isMtx2(this);
+    }
+    /*! \brief \copybrief XsDeviceId_isBodyPack(const struct XsDeviceId*) */
+    inline bool isBodyPack() const
+    {
+        return 0 != XsDeviceId_isBodyPack(this);
+    }
+    /*! \brief \copybrief XsDeviceId_isBodyPackV1(const struct XsDeviceId*) */
+    inline bool isBodyPackV1() const
+    {
+        return 0 != XsDeviceId_isBodyPackV1(this);
+    }
+    /*! \brief \copybrief XsDeviceId_isBodyPackV2(const struct XsDeviceId*) */
+    inline bool isBodyPackV2() const
+    {
+        return 0 != XsDeviceId_isBodyPackV2(this);
+    }
+    /*! \brief \copybrief XsDeviceId_isWirelessMaster(const struct XsDeviceId*) */
+    inline bool isWirelessMaster() const
+    {
+        return 0 != XsDeviceId_isWirelessMaster(this);
+    }
+    /*! \brief \copybrief XsDeviceId_isAwindaX(const struct XsDeviceId*) */
+    inline bool isAwindaX() const
+    {
+        return 0 != XsDeviceId_isAwindaX(this);
+    }
+    /*! \brief \copybrief XsDeviceId_isAwindaXStation(const struct XsDeviceId*) */
+    inline bool isAwindaXStation() const
+    {
+        return 0 != XsDeviceId_isAwindaXStation(this);
+    }
+    /*! \brief \copybrief XsDeviceId_isAwindaXDongle(const struct XsDeviceId*) */
+    inline bool isAwindaXDongle() const
+    {
+        return 0 != XsDeviceId_isAwindaXDongle(this);
+    }
+    /*! \brief \copybrief XsDeviceId_isAwindaXOem(const struct XsDeviceId*) */
+    inline bool isAwindaXOem() const
+    {
+        return 0 != XsDeviceId_isAwindaXOem(this);
+    }
+    /*! \brief \copybrief XsDeviceId_isAwinda2(const struct XsDeviceId*) */
+    inline bool isAwinda2() const
+    {
+        return 0 != XsDeviceId_isAwinda2(this);
+    }
+    /*! \brief \copybrief XsDeviceId_isAwinda2Station(const struct XsDeviceId*) */
+    inline bool isAwinda2Station() const
+    {
+        return 0 != XsDeviceId_isAwinda2Station(this);
+    }
+    /*! \brief \copybrief XsDeviceId_isAwinda2Dongle(const struct XsDeviceId*) */
+    inline bool isAwinda2Dongle() const
+    {
+        return 0 != XsDeviceId_isAwinda2Dongle(this);
+    }
+    /*! \brief \copybrief XsDeviceId_isAwinda2Oem(const struct XsDeviceId*) */
+    inline bool isAwinda2Oem() const
+    {
+        return 0 != XsDeviceId_isAwinda2Oem(this);
+    }
+    /*! \brief \copybrief XsDeviceId_isSyncStationX(const struct XsDeviceId*) */
+    inline bool isSyncStationX() const
+    {
+        return 0 != XsDeviceId_isSyncStationX(this);
+    }
+    /*! \brief \copybrief XsDeviceId_isSyncStation2(const struct XsDeviceId*) */
+    inline bool isSyncStation2() const
+    {
+        return 0 != XsDeviceId_isSyncStation2(this);
+    }
+    /*! \brief \copybrief XsDeviceId_isHilDevice(const struct XsDeviceId*) */
+    inline bool isHilDevice() const
+    {
+        return 0 != XsDeviceId_isHilDevice(this);
+    }
+    /*! \brief \copybrief XsDeviceId_isImu(const struct XsDeviceId*) */
+    inline bool isImu() const
+    {
+        return 0 != XsDeviceId_isImu(this);
+    }
+    /*! \brief \copybrief XsDeviceId_isVru(const struct XsDeviceId*) */
+    inline bool isVru() const
+    {
+        return 0 != XsDeviceId_isVru(this);
+    }
+    /*! \brief \copybrief XsDeviceId_isAhrs(const struct XsDeviceId*) */
+    inline bool isAhrs() const
+    {
+        return 0 != XsDeviceId_isAhrs(this);
+    }
+    /*! \brief \copybrief XsDeviceId_isGnss(const struct XsDeviceId*) */
+    inline bool isGnss() const
+    {
+        return 0 != XsDeviceId_isGnss(this);
+    }
+    /*! \brief \copybrief XsDeviceId_isRtk(const struct XsDeviceId*) */
+    inline bool isRtk() const
+    {
+        return 0 != XsDeviceId_isRtk(this);
+    }
+    /*! \brief \copybrief XsDeviceId_hasInternalGnss(const struct XsDeviceId*) */
+    inline bool hasInternalGnss() const
+    {
+        return 0 != XsDeviceId_hasInternalGnss(this);
+    }
+    /*! \brief \copybrief XsDeviceId_isContainerDevice(const struct XsDeviceId*) */
+    inline bool isContainerDevice() const
+    {
+        return 0 != XsDeviceId_isContainerDevice(this);
+    }
+    /*! \brief \copybrief XsDeviceId_isMt(const struct XsDeviceId*) */
+    inline bool isMt() const
+    {
+        return 0 != XsDeviceId_isMt(this);
+    }
+    /*! \brief \copybrief XsDeviceId_isMti(const struct XsDeviceId*) */
+    inline bool isMti() const
+    {
+        return 0 != XsDeviceId_isMti(this);
+    }
+    /*! \brief \copybrief XsDeviceId_isMtig(const struct XsDeviceId*) */
+    inline bool isMtig() const
+    {
+        return 0 != XsDeviceId_isMtig(this);
+    }
+    /*! \brief \copybrief XsDeviceId_isMtMark4(const struct XsDeviceId*) */
+    inline bool isMtMark4() const
+    {
+        return 0 != XsDeviceId_isMtMark4(this);
+    }
+    /*! \brief \copybrief XsDeviceId_isMtMark5(const struct XsDeviceId*) */
+    inline bool isMtMark5() const
+    {
+        return 0 != XsDeviceId_isMtMark5(this);
+    }
+    /*! \brief \copybrief XsDeviceId_toString(const XsDeviceId* thisPtr, XsString* str) */
+    inline XsString toString() const
+    {
+        XsString tmp;
+        XsDeviceId_toString(this, &tmp);
+        return tmp;
+    }
+    /*! \copydoc XsDeviceId_fromString(XsDeviceId* thisPtr, const XsString* str) */
+    inline void fromString(const XsString& str)
+    {
+        XsDeviceId_fromString(this, &str);
+    }
 
-	/*! \copybrief XsDeviceId_toDeviceTypeString(const XsDeviceId* thisPtr, XsString* str, int makeType)
-		\param makeType Boolean whether the deviceid is made a devicetype or is printed fully in the output string
-		\return The string with the device type or device id information in string format
-	*/
-	inline XsString toDeviceTypeString(bool makeType = true) const
-	{
-		XsString tmp;
-		XsDeviceId_toDeviceTypeString(this, &tmp, makeType ? 1 : 0);
-		return tmp;
-	}
+    /*! \copybrief XsDeviceId_toDeviceTypeString(const XsDeviceId* thisPtr, XsString* str, int makeType)
+        \param makeType Boolean whether the deviceid is made a devicetype or is printed fully in the output string
+        \return The string with the device type or device id information in string format
+    */
+    inline XsString toDeviceTypeString(bool makeType = true) const
+    {
+        XsString tmp;
+        XsDeviceId_toDeviceTypeString(this, &tmp, makeType ? 1 : 0);
+        return tmp;
+    }
 
-	/*! \copydoc XsDeviceId_fromDeviceTypeString(XsDeviceId* thisPtr, const XsString* str)
-	*/
-	inline void fromDeviceTypeString(const XsString& str)
-	{
-		XsDeviceId_fromDeviceTypeString(this, &str);
-	}
+    /*! \copydoc XsDeviceId_fromDeviceTypeString(XsDeviceId* thisPtr, const XsString* str)
+    */
+    inline void fromDeviceTypeString(const XsString& str)
+    {
+        XsDeviceId_fromDeviceTypeString(this, &str);
+    }
 
-	/*! \brief \copybrief XsDeviceId_isValid(const struct XsDeviceId*) */
-	inline bool isValid() const
-	{
-		return 0 != XsDeviceId_isValid(this);
-	}
-	/*! \copydoc XsDeviceId_contains(XsDeviceId const*, XsDeviceId const*) */
-	inline bool contains(const XsDeviceId& other) const
-	{
-		return 0 != XsDeviceId_contains(this, &other);
-	}
-	/*! \brief Returns true if the ID is just a device type, not an actual device ID */
-	inline bool isType() const
-	{
-		return 0 != XsDeviceId_isType(this);
-	}
-	/*! \brief Returns the name of the type of device identified by this id */
-	inline XsString typeName() const
-	{
-		XsString rv;
-		XsDeviceId_typeName(this, &rv);
-		return rv;
-	}
-	/*! \brief Returns the type of device identified by this id */
-	inline XsDeviceId type() const
-	{
-		XsDeviceId xtype;
-		XsDeviceId_type(this, &xtype);
-		return xtype;
-	}
-	/*! \brief Returns the (detailed) device type of this id
-		\param detailed Boolean whether detailed information is returned
-		\return The requested device type
-	*/
-	inline XsDeviceId deviceType(bool detailed = true) const
-	{
-		XsDeviceId xtype;
-		XsDeviceId_deviceType(this, detailed ? 1 : 0, &xtype);
-		return xtype;
-	}
-	/*! \brief Returns the detailed device type mask of this id
-		\param detailed Boolean whether detailed information is returned
-		\return The requested device type mask
-	*/
-	inline XsDeviceId deviceTypeMask(bool detailed = true) const
-	{
-		XsDeviceId xtype;
-		XsDeviceId_deviceTypeMask(this, detailed ? 1 : 0, &xtype);
-		return xtype;
-	}
+    /*! \brief \copybrief XsDeviceId_isValid(const struct XsDeviceId*) */
+    inline bool isValid() const
+    {
+        return 0 != XsDeviceId_isValid(this);
+    }
+    /*! \copydoc XsDeviceId_contains(XsDeviceId const*, XsDeviceId const*) */
+    inline bool contains(const XsDeviceId& other) const
+    {
+        return 0 != XsDeviceId_contains(this, &other);
+    }
+    /*! \brief Returns true if the ID is just a device type, not an actual device ID */
+    inline bool isType() const
+    {
+        return 0 != XsDeviceId_isType(this);
+    }
+    /*! \brief Returns the name of the type of device identified by this id */
+    inline XsString typeName() const
+    {
+        XsString rv;
+        XsDeviceId_typeName(this, &rv);
+        return rv;
+    }
+    /*! \brief Returns the type of device identified by this id */
+    inline XsDeviceId type() const
+    {
+        XsDeviceId xtype;
+        XsDeviceId_type(this, &xtype);
+        return xtype;
+    }
+    /*! \brief Returns the (detailed) device type of this id
+        \param detailed Boolean whether detailed information is returned
+        \return The requested device type
+    */
+    inline XsDeviceId deviceType(bool detailed = true) const
+    {
+        XsDeviceId xtype;
+        XsDeviceId_deviceType(this, detailed ? 1 : 0, &xtype);
+        return xtype;
+    }
+    /*! \brief Returns the detailed device type mask of this id
+        \param detailed Boolean whether detailed information is returned
+        \return The requested device type mask
+    */
+    inline XsDeviceId deviceTypeMask(bool detailed = true) const
+    {
+        XsDeviceId xtype;
+        XsDeviceId_deviceTypeMask(this, detailed ? 1 : 0, &xtype);
+        return xtype;
+    }
 
-	/*! \brief Returns true if the \a other deviceId matches this deviceId */
-	inline bool operator==(const XsDeviceId& other) const
-	{
-		if (isLegacyDeviceId() || other.isLegacyDeviceId())
-			return toInt() == other.toInt();	// there are no legacy devices with a sub-device
-		else
-		{
-			return (toInt() == other.toInt() &&
-					m_productVariant == other.m_productVariant &&
-					m_hardwareVersion == other.m_hardwareVersion &&
-					m_subDevice == other.m_subDevice &&
-					(strcmp(m_productCode, other.m_productCode) == 0)
-				);
-		}
-	}
-	/*! \brief Returns true if the \a other deviceId does not match this deviceId */
-	inline bool operator!=(const XsDeviceId& other) const
-	{
-		return !(*this == other);
-	}
-	/*! \brief Returns true if this deviceId is less than the \a other deviceId */
-	inline bool operator<(const XsDeviceId& other) const
-	{
-		if (isLegacyDeviceId() || other.isLegacyDeviceId())
-			return toInt() < other.toInt();
-		else
-		{
-			int pdiff = strcmp(m_productCode, other.m_productCode);
-			if (pdiff < 0)
-				return true;
-			else if (pdiff > 0)
-				return false;
-			else
-			{
-				if (m_hardwareVersion < other.m_hardwareVersion)
-					return true;
-				else if (m_hardwareVersion > other.m_hardwareVersion)
-					return false;
-				else
-				{
-					if (m_productVariant < other.m_productVariant)
-						return true;
-					else if (m_productVariant > other.m_productVariant)
-						return false;
-					else
-					{
-						if (toInt() < other.toInt())
-							return true;
-						else if (toInt() > other.toInt())
-							return false;
-						else
-							return m_subDevice < other.m_subDevice;
-					}
-				}
-			}
-		}
-	}
-	/*! \brief Returns true if this deviceId is less or equal to the \a other deviceId */
-	inline bool operator<=(const XsDeviceId& other) const
-	{
-		if (isLegacyDeviceId())
-			return toInt() <= other.toInt();
-		else
-		{
-			int pdiff = strcmp(m_productCode, other.m_productCode);
-			if (pdiff > 0)
-				return false;
-			else
-			{
-				if (m_hardwareVersion > other.m_hardwareVersion)
-					return false;
-				else
-				{
-					if (m_productVariant > other.m_productVariant)
-						return false;
-					else
-					{
-						if (toInt() < other.toInt())
-							return true;
-						else if (toInt() > other.toInt())
-							return false;
-						else
-							return m_subDevice <= other.m_subDevice;
-					}
-				}
-			}
-		}
-	}
-	/*! \brief Returns true if this deviceId is larger than the \a other deviceId */
-	inline bool operator>(const XsDeviceId& other) const
-	{
-		if (isLegacyDeviceId())
-			return toInt() > other.toInt();
-		else
-		{
-			int pdiff = strcmp(m_productCode, other.m_productCode);
-			if (pdiff > 0)
-				return true;
-			else if (pdiff < 0)
-				return false;
-			else
-			{
-				if (m_hardwareVersion > other.m_hardwareVersion)
-					return true;
-				else if (m_hardwareVersion < other.m_hardwareVersion)
-					return false;
-				else
-				{
-					if (m_productVariant > other.m_productVariant)
-						return true;
-					else if (m_productVariant < other.m_productVariant)
-						return false;
-					else
-					{
-						if (toInt() > other.toInt())
-							return true;
-						else if (toInt() < other.toInt())
-							return false;
-						else
-							return m_subDevice > other.m_subDevice;
-					}
-				}
-			}
-		}
-	}
-	/*! \brief Returns true if this deviceId is larger or equal to the \a other deviceId */
-	inline bool operator>=(const XsDeviceId& other) const
-	{
-		if (isLegacyDeviceId())
-			return toInt() >= other.toInt();
-		else
-		{
-			int pdiff = strcmp(m_productCode, other.m_productCode);
-			if (pdiff < 0)
-				return false;
-			else
-			{
-				if (m_hardwareVersion < other.m_hardwareVersion)
-					return false;
-				else
-				{
-					if (m_productVariant < other.m_productVariant)
-						return false;
-					else
-					{
-						if (toInt() > other.toInt())
-							return true;
-						else if (toInt() < other.toInt())
-							return false;
-						else
-							return m_subDevice >= other.m_subDevice;
-					}
-				}
-			}
-		}
-	}
+    /*! \brief Returns true if the \a other deviceId matches this deviceId */
+    inline bool operator==(const XsDeviceId& other) const
+    {
+        if (isLegacyDeviceId() || other.isLegacyDeviceId())
+            return toInt() == other.toInt();    // there are no legacy devices with a sub-device
+        else
+        {
+            return (toInt() == other.toInt() &&
+                    m_productVariant == other.m_productVariant &&
+                    m_hardwareVersion == other.m_hardwareVersion &&
+                    m_subDevice == other.m_subDevice &&
+                    (strcmp(m_productCode, other.m_productCode) == 0)
+                );
+        }
+    }
+    /*! \brief Returns true if the \a other deviceId does not match this deviceId */
+    inline bool operator!=(const XsDeviceId& other) const
+    {
+        return !(*this == other);
+    }
+    /*! \brief Returns true if this deviceId is less than the \a other deviceId */
+    inline bool operator<(const XsDeviceId& other) const
+    {
+        if (isLegacyDeviceId() || other.isLegacyDeviceId())
+            return toInt() < other.toInt();
+        else
+        {
+            int pdiff = strcmp(m_productCode, other.m_productCode);
+            if (pdiff < 0)
+                return true;
+            else if (pdiff > 0)
+                return false;
+            else
+            {
+                if (m_hardwareVersion < other.m_hardwareVersion)
+                    return true;
+                else if (m_hardwareVersion > other.m_hardwareVersion)
+                    return false;
+                else
+                {
+                    if (m_productVariant < other.m_productVariant)
+                        return true;
+                    else if (m_productVariant > other.m_productVariant)
+                        return false;
+                    else
+                    {
+                        if (toInt() < other.toInt())
+                            return true;
+                        else if (toInt() > other.toInt())
+                            return false;
+                        else
+                            return m_subDevice < other.m_subDevice;
+                    }
+                }
+            }
+        }
+    }
+    /*! \brief Returns true if this deviceId is less or equal to the \a other deviceId */
+    inline bool operator<=(const XsDeviceId& other) const
+    {
+        if (isLegacyDeviceId())
+            return toInt() <= other.toInt();
+        else
+        {
+            int pdiff = strcmp(m_productCode, other.m_productCode);
+            if (pdiff > 0)
+                return false;
+            else
+            {
+                if (m_hardwareVersion > other.m_hardwareVersion)
+                    return false;
+                else
+                {
+                    if (m_productVariant > other.m_productVariant)
+                        return false;
+                    else
+                    {
+                        if (toInt() < other.toInt())
+                            return true;
+                        else if (toInt() > other.toInt())
+                            return false;
+                        else
+                            return m_subDevice <= other.m_subDevice;
+                    }
+                }
+            }
+        }
+    }
+    /*! \brief Returns true if this deviceId is larger than the \a other deviceId */
+    inline bool operator>(const XsDeviceId& other) const
+    {
+        if (isLegacyDeviceId())
+            return toInt() > other.toInt();
+        else
+        {
+            int pdiff = strcmp(m_productCode, other.m_productCode);
+            if (pdiff > 0)
+                return true;
+            else if (pdiff < 0)
+                return false;
+            else
+            {
+                if (m_hardwareVersion > other.m_hardwareVersion)
+                    return true;
+                else if (m_hardwareVersion < other.m_hardwareVersion)
+                    return false;
+                else
+                {
+                    if (m_productVariant > other.m_productVariant)
+                        return true;
+                    else if (m_productVariant < other.m_productVariant)
+                        return false;
+                    else
+                    {
+                        if (toInt() > other.toInt())
+                            return true;
+                        else if (toInt() < other.toInt())
+                            return false;
+                        else
+                            return m_subDevice > other.m_subDevice;
+                    }
+                }
+            }
+        }
+    }
+    /*! \brief Returns true if this deviceId is larger or equal to the \a other deviceId */
+    inline bool operator>=(const XsDeviceId& other) const
+    {
+        if (isLegacyDeviceId())
+            return toInt() >= other.toInt();
+        else
+        {
+            int pdiff = strcmp(m_productCode, other.m_productCode);
+            if (pdiff < 0)
+                return false;
+            else
+            {
+                if (m_hardwareVersion < other.m_hardwareVersion)
+                    return false;
+                else
+                {
+                    if (m_productVariant < other.m_productVariant)
+                        return false;
+                    else
+                    {
+                        if (toInt() > other.toInt())
+                            return true;
+                        else if (toInt() < other.toInt())
+                            return false;
+                        else
+                            return m_subDevice >= other.m_subDevice;
+                    }
+                }
+            }
+        }
+    }
 
 
-	//============================================================================================================
-	//============================================================================================================
-	//==== Deprecated methods follow                                                                         =====
-	//============================================================================================================
-	//============================================================================================================
-	XSDEPRECATED_START
+    //============================================================================================================
+    //============================================================================================================
+    //==== Deprecated methods follow                                                                         =====
+    //============================================================================================================
+    //============================================================================================================
+    XSDEPRECATED_START
 
-	/*! \brief \copybrief XsDeviceId_isMtMk4(const struct XsDeviceId*) */
-	XSDEPRECATED inline bool isMtMk4() const
-	{
-		return 0 != XsDeviceId_isMtMk4(this);
-	}
-	/*! \brief \copybrief XsDeviceId_isMtMk4_X(const struct XsDeviceId*) */
-	XSDEPRECATED inline bool isMtMk4_X() const
-	{
-		return 0 != XsDeviceId_isMtMk4_X(this);
-	}
-	/*! \brief \copybrief XsDeviceId_isMtMk4_1(const struct XsDeviceId*) */
-	XSDEPRECATED inline bool isMtMk4_1() const
-	{
-		return 0 != XsDeviceId_isMtMk4_1(this);
-	}
-	/*! \brief \copybrief XsDeviceId_isMtMk4_2(const struct XsDeviceId*) */
-	XSDEPRECATED inline bool isMtMk4_2() const
-	{
-		return 0 != XsDeviceId_isMtMk4_2(this);
-	}
-	/*! \brief \copybrief XsDeviceId_isMtMk4_3(const struct XsDeviceId*) */
-	XSDEPRECATED inline bool isMtMk4_3() const
-	{
-		return 0 != XsDeviceId_isMtMk4_3(this);
-	}
-	/*! \brief \copybrief XsDeviceId_isMtMk4_7(const struct XsDeviceId*) */
-	XSDEPRECATED inline bool isMtMk4_7() const
-	{
-		return 0 != XsDeviceId_isMtMk4_7(this);
-	}
-	/*! \brief \copybrief XsDeviceId_isMtMk4_X0(const struct XsDeviceId*) */
-	XSDEPRECATED inline bool isMtMk4_X0() const
-	{
-		return 0 != XsDeviceId_isMtMk4_X0(this);
-	}
-	/*! \brief \copybrief XsDeviceId_isMtMk4_10(const struct XsDeviceId*) */
-	XSDEPRECATED inline bool isMtMk4_10() const
-	{
-		return 0 != XsDeviceId_isMtMk4_10(this);
-	}
-	/*! \brief \copybrief XsDeviceId_isMtMk4_20(const struct XsDeviceId*) */
-	XSDEPRECATED inline bool isMtMk4_20() const
-	{
-		return 0 != XsDeviceId_isMtMk4_20(this);
-	}
-	/*! \brief \copybrief XsDeviceId_isMtMk4_30(const struct XsDeviceId*) */
-	XSDEPRECATED inline bool isMtMk4_30() const
-	{
-		return 0 != XsDeviceId_isMtMk4_30(this);
-	}
-	/*! \brief \copybrief XsDeviceId_isMtMk4_X00(const struct XsDeviceId*) */
-	XSDEPRECATED inline bool isMtMk4_X00() const
-	{
-		return 0 != XsDeviceId_isMtMk4_X00(this);
-	}
-	/*! \brief \copybrief XsDeviceId_isMtMk4_100(const struct XsDeviceId*) */
-	XSDEPRECATED inline bool isMtMk4_100() const
-	{
-		return 0 != XsDeviceId_isMtMk4_100(this);
-	}
-	/*! \brief \copybrief XsDeviceId_isMtMk4_200(const struct XsDeviceId*) */
-	XSDEPRECATED inline bool isMtMk4_200() const
-	{
-		return 0 != XsDeviceId_isMtMk4_200(this);
-	}
-	/*! \brief \copybrief XsDeviceId_isMtMk4_300(const struct XsDeviceId*) */
-	XSDEPRECATED inline bool isMtMk4_300() const
-	{
-		return 0 != XsDeviceId_isMtMk4_300(this);
-	}
-	/*! \brief \copybrief XsDeviceId_isMtMk4_400(const struct XsDeviceId*) */
-	XSDEPRECATED inline bool isMtMk4_400() const
-	{
-		return 0 != XsDeviceId_isMtMk4_400(this);
-	}
-	/*! \brief \copybrief XsDeviceId_isMtMk4_500(const struct XsDeviceId*) */
-	XSDEPRECATED inline bool isMtMk4_500() const
-	{
-		return 0 != XsDeviceId_isMtMk4_500(this);
-	}
-	/*! \brief \copybrief XsDeviceId_isMtMk4_600(const struct XsDeviceId*) */
-	XSDEPRECATED inline bool isMtMk4_600() const
-	{
-		return 0 != XsDeviceId_isMtMk4_600(this);
-	}
-	/*! \brief \copybrief XsDeviceId_isMtMk4_700(const struct XsDeviceId*) */
-	XSDEPRECATED inline bool isMtMk4_700() const
-	{
-		return 0 != XsDeviceId_isMtMk4_700(this);
-	}
-	/*! \brief \copybrief XsDeviceId_isMtMk4_710(const struct XsDeviceId*) */
-	XSDEPRECATED inline bool isMtMk4_710() const
-	{
-		return 0 != XsDeviceId_isMtMk4_710(this);
-	}
-	/*! \brief \copybrief XsDeviceId_isMtMk4_800(const struct XsDeviceId*) */
-	XSDEPRECATED inline bool isMtMk4_800() const
-	{
-		return 0 != XsDeviceId_isMtMk4_800(this);
-	}
-	/*! \brief \copybrief XsDeviceId_isMtMk4_900(const struct XsDeviceId*) */
-	XSDEPRECATED inline bool isMtMk4_900() const
-	{
-		return 0 != XsDeviceId_isMtMk4_900(this);
-	}
-	/*! \brief \copybrief XsDeviceId_isMtMk5(const struct XsDeviceId*) */
-	XSDEPRECATED inline bool isMtMk5() const
-	{
-		return 0 != XsDeviceId_isMtMk5(this);
-	}
-	/*! \brief \copybrief XsDeviceId_isMtMk5_X0(const struct XsDeviceId*) */
-	XSDEPRECATED inline bool isMtMk5_X0() const
-	{
-		return 0 != XsDeviceId_isMtMk5_X0(this);
-	}
-	/*! \brief \copybrief XsDeviceId_isMtMk5_10(const struct XsDeviceId*) */
-	XSDEPRECATED inline bool isMtMk5_10() const
-	{
-		return 0 != XsDeviceId_isMtMk5_10(this);
-	}
-	/*! \brief \copybrief XsDeviceId_isMtMk5_20(const struct XsDeviceId*) */
-	XSDEPRECATED inline bool isMtMk5_20() const
-	{
-		return 0 != XsDeviceId_isMtMk5_20(this);
-	}
-	/*! \brief \copybrief XsDeviceId_isMtMk5_30(const struct XsDeviceId*) */
-	XSDEPRECATED inline bool isMtMk5_30() const
-	{
-		return 0 != XsDeviceId_isMtMk5_30(this);
-	}
-	/*! \brief \copybrief XsDeviceId_isMtMk5_X00(const struct XsDeviceId*) */
-	XSDEPRECATED inline bool isMtMk5_X00() const
-	{
-		return 0 != XsDeviceId_isMtMk5_X00(this);
-	}
-	/*! \brief \copybrief XsDeviceId_isMtMk5_100(const struct XsDeviceId*) */
-	XSDEPRECATED inline bool isMtMk5_100() const
-	{
-		return 0 != XsDeviceId_isMtMk5_100(this);
-	}
-	/*! \brief \copybrief XsDeviceId_isMtMk5_200(const struct XsDeviceId*) */
-	XSDEPRECATED inline bool isMtMk5_200() const
-	{
-		return 0 != XsDeviceId_isMtMk5_200(this);
-	}
-	/*! \brief \copybrief XsDeviceId_isMtMk5_300(const struct XsDeviceId*) */
-	XSDEPRECATED inline bool isMtMk5_300() const
-	{
-		return 0 != XsDeviceId_isMtMk5_300(this);
-	}
-	/*! \brief \copybrief XsDeviceId_isMtMk5_710(const struct XsDeviceId*) */
-	XSDEPRECATED inline bool isMtMk5_710() const
-	{
-		return 0 != XsDeviceId_isMtMk5_710(this);
-	}
+    /*! \brief \copybrief XsDeviceId_isMtMk4(const struct XsDeviceId*) */
+    XSDEPRECATED inline bool isMtMk4() const
+    {
+        return 0 != XsDeviceId_isMtMk4(this);
+    }
+    /*! \brief \copybrief XsDeviceId_isMtMk4_X(const struct XsDeviceId*) */
+    XSDEPRECATED inline bool isMtMk4_X() const
+    {
+        return 0 != XsDeviceId_isMtMk4_X(this);
+    }
+    /*! \brief \copybrief XsDeviceId_isMtMk4_1(const struct XsDeviceId*) */
+    XSDEPRECATED inline bool isMtMk4_1() const
+    {
+        return 0 != XsDeviceId_isMtMk4_1(this);
+    }
+    /*! \brief \copybrief XsDeviceId_isMtMk4_2(const struct XsDeviceId*) */
+    XSDEPRECATED inline bool isMtMk4_2() const
+    {
+        return 0 != XsDeviceId_isMtMk4_2(this);
+    }
+    /*! \brief \copybrief XsDeviceId_isMtMk4_3(const struct XsDeviceId*) */
+    XSDEPRECATED inline bool isMtMk4_3() const
+    {
+        return 0 != XsDeviceId_isMtMk4_3(this);
+    }
+    /*! \brief \copybrief XsDeviceId_isMtMk4_7(const struct XsDeviceId*) */
+    XSDEPRECATED inline bool isMtMk4_7() const
+    {
+        return 0 != XsDeviceId_isMtMk4_7(this);
+    }
+    /*! \brief \copybrief XsDeviceId_isMtMk4_X0(const struct XsDeviceId*) */
+    XSDEPRECATED inline bool isMtMk4_X0() const
+    {
+        return 0 != XsDeviceId_isMtMk4_X0(this);
+    }
+    /*! \brief \copybrief XsDeviceId_isMtMk4_10(const struct XsDeviceId*) */
+    XSDEPRECATED inline bool isMtMk4_10() const
+    {
+        return 0 != XsDeviceId_isMtMk4_10(this);
+    }
+    /*! \brief \copybrief XsDeviceId_isMtMk4_20(const struct XsDeviceId*) */
+    XSDEPRECATED inline bool isMtMk4_20() const
+    {
+        return 0 != XsDeviceId_isMtMk4_20(this);
+    }
+    /*! \brief \copybrief XsDeviceId_isMtMk4_30(const struct XsDeviceId*) */
+    XSDEPRECATED inline bool isMtMk4_30() const
+    {
+        return 0 != XsDeviceId_isMtMk4_30(this);
+    }
+    /*! \brief \copybrief XsDeviceId_isMtMk4_X00(const struct XsDeviceId*) */
+    XSDEPRECATED inline bool isMtMk4_X00() const
+    {
+        return 0 != XsDeviceId_isMtMk4_X00(this);
+    }
+    /*! \brief \copybrief XsDeviceId_isMtMk4_100(const struct XsDeviceId*) */
+    XSDEPRECATED inline bool isMtMk4_100() const
+    {
+        return 0 != XsDeviceId_isMtMk4_100(this);
+    }
+    /*! \brief \copybrief XsDeviceId_isMtMk4_200(const struct XsDeviceId*) */
+    XSDEPRECATED inline bool isMtMk4_200() const
+    {
+        return 0 != XsDeviceId_isMtMk4_200(this);
+    }
+    /*! \brief \copybrief XsDeviceId_isMtMk4_300(const struct XsDeviceId*) */
+    XSDEPRECATED inline bool isMtMk4_300() const
+    {
+        return 0 != XsDeviceId_isMtMk4_300(this);
+    }
+    /*! \brief \copybrief XsDeviceId_isMtMk4_400(const struct XsDeviceId*) */
+    XSDEPRECATED inline bool isMtMk4_400() const
+    {
+        return 0 != XsDeviceId_isMtMk4_400(this);
+    }
+    /*! \brief \copybrief XsDeviceId_isMtMk4_500(const struct XsDeviceId*) */
+    XSDEPRECATED inline bool isMtMk4_500() const
+    {
+        return 0 != XsDeviceId_isMtMk4_500(this);
+    }
+    /*! \brief \copybrief XsDeviceId_isMtMk4_600(const struct XsDeviceId*) */
+    XSDEPRECATED inline bool isMtMk4_600() const
+    {
+        return 0 != XsDeviceId_isMtMk4_600(this);
+    }
+    /*! \brief \copybrief XsDeviceId_isMtMk4_700(const struct XsDeviceId*) */
+    XSDEPRECATED inline bool isMtMk4_700() const
+    {
+        return 0 != XsDeviceId_isMtMk4_700(this);
+    }
+    /*! \brief \copybrief XsDeviceId_isMtMk4_710(const struct XsDeviceId*) */
+    XSDEPRECATED inline bool isMtMk4_710() const
+    {
+        return 0 != XsDeviceId_isMtMk4_710(this);
+    }
+    /*! \brief \copybrief XsDeviceId_isMtMk4_800(const struct XsDeviceId*) */
+    XSDEPRECATED inline bool isMtMk4_800() const
+    {
+        return 0 != XsDeviceId_isMtMk4_800(this);
+    }
+    /*! \brief \copybrief XsDeviceId_isMtMk4_900(const struct XsDeviceId*) */
+    XSDEPRECATED inline bool isMtMk4_900() const
+    {
+        return 0 != XsDeviceId_isMtMk4_900(this);
+    }
+    /*! \brief \copybrief XsDeviceId_isMtMk5(const struct XsDeviceId*) */
+    XSDEPRECATED inline bool isMtMk5() const
+    {
+        return 0 != XsDeviceId_isMtMk5(this);
+    }
+    /*! \brief \copybrief XsDeviceId_isMtMk5_X0(const struct XsDeviceId*) */
+    XSDEPRECATED inline bool isMtMk5_X0() const
+    {
+        return 0 != XsDeviceId_isMtMk5_X0(this);
+    }
+    /*! \brief \copybrief XsDeviceId_isMtMk5_10(const struct XsDeviceId*) */
+    XSDEPRECATED inline bool isMtMk5_10() const
+    {
+        return 0 != XsDeviceId_isMtMk5_10(this);
+    }
+    /*! \brief \copybrief XsDeviceId_isMtMk5_20(const struct XsDeviceId*) */
+    XSDEPRECATED inline bool isMtMk5_20() const
+    {
+        return 0 != XsDeviceId_isMtMk5_20(this);
+    }
+    /*! \brief \copybrief XsDeviceId_isMtMk5_30(const struct XsDeviceId*) */
+    XSDEPRECATED inline bool isMtMk5_30() const
+    {
+        return 0 != XsDeviceId_isMtMk5_30(this);
+    }
+    /*! \brief \copybrief XsDeviceId_isMtMk5_X00(const struct XsDeviceId*) */
+    XSDEPRECATED inline bool isMtMk5_X00() const
+    {
+        return 0 != XsDeviceId_isMtMk5_X00(this);
+    }
+    /*! \brief \copybrief XsDeviceId_isMtMk5_100(const struct XsDeviceId*) */
+    XSDEPRECATED inline bool isMtMk5_100() const
+    {
+        return 0 != XsDeviceId_isMtMk5_100(this);
+    }
+    /*! \brief \copybrief XsDeviceId_isMtMk5_200(const struct XsDeviceId*) */
+    XSDEPRECATED inline bool isMtMk5_200() const
+    {
+        return 0 != XsDeviceId_isMtMk5_200(this);
+    }
+    /*! \brief \copybrief XsDeviceId_isMtMk5_300(const struct XsDeviceId*) */
+    XSDEPRECATED inline bool isMtMk5_300() const
+    {
+        return 0 != XsDeviceId_isMtMk5_300(this);
+    }
+    /*! \brief \copybrief XsDeviceId_isMtMk5_710(const struct XsDeviceId*) */
+    XSDEPRECATED inline bool isMtMk5_710() const
+    {
+        return 0 != XsDeviceId_isMtMk5_710(this);
+    }
 
-	//============================================================================================================
+    //============================================================================================================
 
 private:
 #endif
-	uint64_t m_deviceId;		//!< The serialnumber of a device
-	char m_productCode[XSDEVICEID_PRODUCT_CODE_LEN];		//!< The productcode of a device
-	uint32_t m_productVariant;	//!< The product variant of a device
-	uint16_t m_hardwareVersion;	//!< The hardware version of a device
-	uint16_t m_subDevice;		//!< The index of a sub-device, ie a finger in an Xsens Glove. 1-based, 0 = the whole device (default)
+    uint64_t m_deviceId;        //!< The serialnumber of a device
+    char m_productCode[XSDEVICEID_PRODUCT_CODE_LEN];        //!< The productcode of a device
+    uint32_t m_productVariant;    //!< The product variant of a device
+    uint16_t m_hardwareVersion;    //!< The hardware version of a device
+    uint16_t m_subDevice;        //!< The index of a sub-device, ie a finger in an Xsens Glove. 1-based, 0 = the whole device (default)
 };
 
 typedef struct XsDeviceId XsDeviceId;
@@ -886,39 +886,39 @@ namespace std
 template<typename _CharT, typename _Traits>
 basic_ostream<_CharT, _Traits>& operator<<(basic_ostream<_CharT, _Traits>& o, XsDeviceId const& xd)
 {
-	return (o << xd.toString());
+    return (o << xd.toString());
 }
 }
 
 inline XsString& operator<<(XsString& o, XsDeviceId const& xd)
 {
-	o.append(xd.toString());
-	return o;
+    o.append(xd.toString());
+    return o;
 }
 
 /*! \brief Use this function to strip the trailing spaces from an internal product code
-	\param pc The product code string to convert
-	\param maxSz The maximum number of characters to convert
-	\return A std::string representation of the supplied string, without trailing spaces
+    \param pc The product code string to convert
+    \param maxSz The maximum number of characters to convert
+    \return A std::string representation of the supplied string, without trailing spaces
 */
 static std::string makeNiceProductCode(char const* pc, int maxSz = 20)
 {
-	if (maxSz <= 0 && pc)
-		maxSz = 20;
-	std::string result(pc ? pc : "", (unsigned int) maxSz);
-	std::string::size_type thingy = result.find(" ");
-	if (thingy != std::string::npos && (int) thingy < maxSz)
-		result.erase(result.begin() + (unsigned)thingy, result.end());
-	return result;
+    if (maxSz <= 0 && pc)
+        maxSz = 20;
+    std::string result(pc ? pc : "", (unsigned int) maxSz);
+    std::string::size_type thingy = result.find(" ");
+    if (thingy != std::string::npos && (int) thingy < maxSz)
+        result.erase(result.begin() + (unsigned)thingy, result.end());
+    return result;
 }
 /*! \brief Use this function to strip the trailing spaces from an internal product code
-	\param pc The product code string to convert
-	\param maxSz The maximum number of characters to convert
-	\return A std::string representation of the supplied string, without trailing spaces
+    \param pc The product code string to convert
+    \param maxSz The maximum number of characters to convert
+    \return A std::string representation of the supplied string, without trailing spaces
 */
 inline static std::string makeNiceProductCode(uint8_t const* pc, int maxSz = 20)
 {
-	return makeNiceProductCode((char const*) pc, maxSz);
+    return makeNiceProductCode((char const*) pc, maxSz);
 }
 #endif
 

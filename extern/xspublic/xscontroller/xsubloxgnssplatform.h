@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -34,20 +34,20 @@
 #define XSUBLOXGNSSPLATFORM_H
 
 /*! \brief Used to select u-blox GNSS chip platform
-	\sa XsDevice::setUbloxGnssPlatform
-	\details These enum values represent different platform setting for the u-blox GNSS chip
+    \sa XsDevice::setUbloxGnssPlatform
+    \details These enum values represent different platform setting for the u-blox GNSS chip
 */
 enum XsUbloxGnssPlatform
 {
-	XGP_Portable				= 0,
-	XGP_Stationary				= 2,
-	XGP_Pedestrian				= 3,
-	XGP_Automotive				= 4,
-	XGP_AtSea					= 5,
-	XGP_Airborne1g				= 6,
-	XGP_Airborne2g				= 7,
-	XGP_Airborne4g				= 8,	//!< Airborne with <4g Acceleration
-	XGP_Wrist					= 9
+    XGP_Portable                = 0,
+    XGP_Stationary                = 2,
+    XGP_Pedestrian                = 3,
+    XGP_Automotive                = 4,
+    XGP_AtSea                    = 5,
+    XGP_Airborne1g                = 6,
+    XGP_Airborne2g                = 7,
+    XGP_Airborne4g                = 8,    //!< Airborne with <4g Acceleration
+    XGP_Wrist                    = 9
 };
 
 typedef enum XsUbloxGnssPlatform XsUbloxGnssPlatform;

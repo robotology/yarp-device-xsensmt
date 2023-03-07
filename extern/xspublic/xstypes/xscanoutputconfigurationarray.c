@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -34,66 +34,66 @@
 #include "xscanoutputconfiguration.h"
 
 /*! \struct XsCanOutputConfigurationArray
-	\brief A list of XsCanOutputConfiguration values
-	\sa XsArray
+    \brief A list of XsCanOutputConfiguration values
+    \sa XsArray
 */
 
 /*! \copydoc XsArrayDescriptor::itemSwap
-	\note Specialization for XsCanOutputConfiguration*/
+    \note Specialization for XsCanOutputConfiguration*/
 void swapXsCanOutputConfiguration(XsCanOutputConfiguration* a, XsCanOutputConfiguration* b)
 {
-	XsCanOutputConfiguration tmp = *a;
-	*a = *b;
-	*b = tmp;
+    XsCanOutputConfiguration tmp = *a;
+    *a = *b;
+    *b = tmp;
 }
 
 /*! \copydoc XsArrayDescriptor::itemCopy
-	\note Specialization for XsCanOutputConfiguration*/
+    \note Specialization for XsCanOutputConfiguration*/
 void copyXsCanOutputConfiguration(XsCanOutputConfiguration* to, XsCanOutputConfiguration const* from)
 {
-	*to = *from;
+    *to = *from;
 }
 
 /*! \copydoc XsArrayDescriptor::itemCompare
-	\note Specialization for XsCanOutputConfiguration*/
+    \note Specialization for XsCanOutputConfiguration*/
 int compareXsCanOutputConfiguration(XsCanOutputConfiguration const* a, XsCanOutputConfiguration const* b)
 {
-	if (a->m_dataIdentifier != b->m_dataIdentifier || a->m_frequency != b->m_frequency || a->m_id != b->m_id || a->m_frameFormat != b->m_frameFormat)
-	{
-		if (a->m_dataIdentifier == b->m_dataIdentifier)
-		{
-			if (a->m_frequency == b->m_frequency)
-			{
-				if (a->m_id == b->m_id)
-					return (a->m_frameFormat < b->m_frameFormat) ? -1 : 1;
-				return (a->m_id < b->m_id) ? -1 : 1;
-			}
-			return (a->m_frequency < b->m_frequency) ? -1 : 1;
-		}
-		return (a->m_dataIdentifier < b->m_dataIdentifier) ? -1 : 1;
-	}
+    if (a->m_dataIdentifier != b->m_dataIdentifier || a->m_frequency != b->m_frequency || a->m_id != b->m_id || a->m_frameFormat != b->m_frameFormat)
+    {
+        if (a->m_dataIdentifier == b->m_dataIdentifier)
+        {
+            if (a->m_frequency == b->m_frequency)
+            {
+                if (a->m_id == b->m_id)
+                    return (a->m_frameFormat < b->m_frameFormat) ? -1 : 1;
+                return (a->m_id < b->m_id) ? -1 : 1;
+            }
+            return (a->m_frequency < b->m_frequency) ? -1 : 1;
+        }
+        return (a->m_dataIdentifier < b->m_dataIdentifier) ? -1 : 1;
+    }
 
-	return 0;
+    return 0;
 }
 
 
 //! \brief Descriptor for XsCanOutputConfigurationArray
 XsArrayDescriptor const g_xsCanOutputConfigurationArrayDescriptor =
 {
-	sizeof(XsCanOutputConfiguration),
-	XSEXPCASTITEMSWAP swapXsCanOutputConfiguration,	// swap
-	0,												// construct
-	XSEXPCASTITEMCOPY copyXsCanOutputConfiguration,	// copy construct
-	0,												// destruct
-	XSEXPCASTITEMCOPY copyXsCanOutputConfiguration,	// copy
-	XSEXPCASTITEMCOMP compareXsCanOutputConfiguration,	// compare
-	XSEXPCASTRAWCOPY XsArray_rawCopy	// raw copy
+    sizeof(XsCanOutputConfiguration),
+    XSEXPCASTITEMSWAP swapXsCanOutputConfiguration,    // swap
+    0,                                                // construct
+    XSEXPCASTITEMCOPY copyXsCanOutputConfiguration,    // copy construct
+    0,                                                // destruct
+    XSEXPCASTITEMCOPY copyXsCanOutputConfiguration,    // copy
+    XSEXPCASTITEMCOMP compareXsCanOutputConfiguration,    // compare
+    XSEXPCASTRAWCOPY XsArray_rawCopy    // raw copy
 };
 
 /*! \copydoc XsArray_constructDerived
-	\note Specialization for XsCanOutputConfigurationArray
+    \note Specialization for XsCanOutputConfigurationArray
 */
 void XsCanOutputConfigurationArray_construct(XsCanOutputConfigurationArray* thisPtr, XsSize count, XsCanOutputConfiguration const* src)
 {
-	XsArray_construct(thisPtr, &g_xsCanOutputConfigurationArrayDescriptor, count, src);
+    XsArray_construct(thisPtr, &g_xsCanOutputConfigurationArrayDescriptor, count, src);
 }

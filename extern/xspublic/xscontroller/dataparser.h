@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -44,45 +44,45 @@ struct XsMessage;
 class DataParser : protected xsens::StandardThread
 {
 public:
-	DataParser();
-	~DataParser() override;
+    DataParser();
+    ~DataParser() override;
 
-	/*! \brief Read available data from the open IO device
-		\param raw A buffer that will receive the read data.
-		\returns XRV_OK if successful
-	*/
-	virtual XsResultValue readDataToBuffer(XsByteArray& raw) = 0;
+    /*! \brief Read available data from the open IO device
+        \param raw A buffer that will receive the read data.
+        \returns XRV_OK if successful
+    */
+    virtual XsResultValue readDataToBuffer(XsByteArray& raw) = 0;
 
-	/*! \brief Read all messages from the buffered read data after adding new data supplied in \a rawIn
-		\param rawIn The byte array with all data
-		\param messages The message to process
-		\returns The messages that were read.
-	*/
-	virtual XsResultValue processBufferedData(const XsByteArray& rawIn, std::deque<XsMessage>& messages) = 0;
+    /*! \brief Read all messages from the buffered read data after adding new data supplied in \a rawIn
+        \param rawIn The byte array with all data
+        \param messages The message to process
+        \returns The messages that were read.
+    */
+    virtual XsResultValue processBufferedData(const XsByteArray& rawIn, std::deque<XsMessage>& messages) = 0;
 
-	//! \copybrief Communicator::handleMessage
-	virtual void handleMessage(const XsMessage& message) = 0;
+    //! \copybrief Communicator::handleMessage
+    virtual void handleMessage(const XsMessage& message) = 0;
 
-	void addRawData(const XsByteArray& arr);
-	void clear();
-	void terminate();
+    void addRawData(const XsByteArray& arr);
+    void clear();
+    void terminate();
 
-	//! \returns The parser type
-	virtual const char* parserType() const
-	{
-		return "DataParser";
-	}
+    //! \returns The parser type
+    virtual const char* parserType() const
+    {
+        return "DataParser";
+    }
 
 protected:
-	void initFunction() override;
-	int32_t innerFunction() override;
-	void signalStopThread(void) override;
+    void initFunction() override;
+    int32_t innerFunction() override;
+    void signalStopThread(void) override;
 
 private:
-	xsens::Mutex m_incomingMutex;
-	std::queue<XsByteArray> m_incoming;
-	xsens::WaitEvent m_newDataEvent;
-	char m_parserType[128];
+    xsens::Mutex m_incomingMutex;
+    std::queue<XsByteArray> m_incoming;
+    xsens::WaitEvent m_newDataEvent;
+    char m_parserType[128];
 };
 
 #endif

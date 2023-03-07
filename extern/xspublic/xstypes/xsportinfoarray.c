@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -33,45 +33,45 @@
 #include "xsportinfoarray.h"
 
 /*! \struct XsPortInfoArray
-	\brief A list of XsPortInfo values
-	\sa XsArray
+    \brief A list of XsPortInfo values
+    \sa XsArray
 */
 
 void copyPortInfo(XsPortInfo* dest, XsPortInfo const* src)
 {
-	memcpy(dest, src, sizeof(XsPortInfo));
+    memcpy(dest, src, sizeof(XsPortInfo));
 }
 
 int comparePortInfo(XsPortInfo const* a, XsPortInfo const* b)
 {
-	if ((memcmp(&a->m_deviceId, &b->m_deviceId, sizeof(XsDeviceId)) == 0) &&
-		(memcmp(&a->m_portName, &b->m_portName, sizeof(a->m_portName)) == 0) && //lint !e545 Taking this address is no problem here
-		(a->m_baudrate == b->m_baudrate) &&
-		(a->m_linesOptions == b->m_linesOptions) &&
-		(a->m_vid == b->m_vid) &&
-		(a->m_pid == b->m_pid))
-		return 0;
-	else
-		return -1;
+    if ((memcmp(&a->m_deviceId, &b->m_deviceId, sizeof(XsDeviceId)) == 0) &&
+        (memcmp(&a->m_portName, &b->m_portName, sizeof(a->m_portName)) == 0) && //lint !e545 Taking this address is no problem here
+        (a->m_baudrate == b->m_baudrate) &&
+        (a->m_linesOptions == b->m_linesOptions) &&
+        (a->m_vid == b->m_vid) &&
+        (a->m_pid == b->m_pid))
+        return 0;
+    else
+        return -1;
 }
 
 //! \brief Descriptor for XsPortInfoArray
 XsArrayDescriptor const g_xsPortInfoArrayDescriptor =
 {
-	sizeof(XsPortInfo),
-	XSEXPCASTITEMSWAP XsPortInfo_swap,	// swap
-	XSEXPCASTITEMMAKE XsPortInfo_clear,	// construct
-	XSEXPCASTITEMCOPY copyPortInfo,		// copy construct
-	0,									// destruct
-	XSEXPCASTITEMCOPY copyPortInfo,		// copy
-	XSEXPCASTITEMCOMP comparePortInfo,	// compare
-	XSEXPCASTRAWCOPY XsArray_rawCopy	// raw copy
+    sizeof(XsPortInfo),
+    XSEXPCASTITEMSWAP XsPortInfo_swap,    // swap
+    XSEXPCASTITEMMAKE XsPortInfo_clear,    // construct
+    XSEXPCASTITEMCOPY copyPortInfo,        // copy construct
+    0,                                    // destruct
+    XSEXPCASTITEMCOPY copyPortInfo,        // copy
+    XSEXPCASTITEMCOMP comparePortInfo,    // compare
+    XSEXPCASTRAWCOPY XsArray_rawCopy    // raw copy
 };
 
 /*! \copydoc XsArray_constructDerived
-	\note Specialization for XsPortInfoArray
+    \note Specialization for XsPortInfoArray
 */
 void XsPortInfoArray_construct(XsPortInfoArray* thisPtr, XsSize count, XsPortInfo const* src)
 {
-	XsArray_construct(thisPtr, &g_xsPortInfoArrayDescriptor, count, src);
+    XsArray_construct(thisPtr, &g_xsPortInfoArrayDescriptor, count, src);
 }

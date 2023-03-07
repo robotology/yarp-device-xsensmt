@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -36,70 +36,70 @@
 #include "pstdint.h"
 
 /*! \brief Pressure data.
-	\details Contains the pressure data and the pressure age
+    \details Contains the pressure data and the pressure age
 */
 struct XsPressure
 {
 #ifdef __cplusplus
-	/*! \brief Create an empty XsPressure
-	*/
-	explicit XsPressure()
-		: m_pressure(0)
-		, m_pressureAge(0xFFu)
-	{
-	}
+    /*! \brief Create an empty XsPressure
+    */
+    explicit XsPressure()
+        : m_pressure(0)
+        , m_pressureAge(0xFFu)
+    {
+    }
 
-	/*! \brief Create an XsPressure
-		\param pressure the pressure
-		\param age the pressure age
-	*/
-	explicit XsPressure(double pressure, uint8_t age = 0)
-		: m_pressure(pressure)
-		, m_pressureAge(age)
-	{
-	}
+    /*! \brief Create an XsPressure
+        \param pressure the pressure
+        \param age the pressure age
+    */
+    explicit XsPressure(double pressure, uint8_t age = 0)
+        : m_pressure(pressure)
+        , m_pressureAge(age)
+    {
+    }
 
-	/*! \brief Create a new XsPressure as copy from \a other
-		\param other the pressure carrier to copy from
-	*/
-	inline XsPressure(XsPressure const& other) :
-		m_pressure(other.m_pressure),
-		m_pressureAge(other.m_pressureAge)
-	{
-	}
+    /*! \brief Create a new XsPressure as copy from \a other
+        \param other the pressure carrier to copy from
+    */
+    inline XsPressure(XsPressure const& other) :
+        m_pressure(other.m_pressure),
+        m_pressureAge(other.m_pressureAge)
+    {
+    }
 
-	/*! \brief Copy the data from \a other
-		\param other the pressure carrier to copy from
-		\return this
-	*/
-	inline XsPressure const& operator=(XsPressure const& other)
-	{
-		m_pressure = other.m_pressure;
-		m_pressureAge = other.m_pressureAge;
-		return *this;
-	}
+    /*! \brief Copy the data from \a other
+        \param other the pressure carrier to copy from
+        \return this
+    */
+    inline XsPressure const& operator=(XsPressure const& other)
+    {
+        m_pressure = other.m_pressure;
+        m_pressureAge = other.m_pressureAge;
+        return *this;
+    }
 
-	/*! \brief Return true if this is equal to \a other
-		\param other the pressure carrier to compare against
-		\return true if both XsPressures are equal
-	*/
-	inline bool operator==(XsPressure const& other) const
-	{
-		return other.m_pressure == m_pressure && other.m_pressureAge == m_pressureAge;
-	}
+    /*! \brief Return true if this is equal to \a other
+        \param other the pressure carrier to compare against
+        \return true if both XsPressures are equal
+    */
+    inline bool operator==(XsPressure const& other) const
+    {
+        return other.m_pressure == m_pressure && other.m_pressureAge == m_pressureAge;
+    }
 
-	/*! \brief Return true if this is not equal to \a other
-		\param other the pressure carrier to compare against
-		\return true if both XsPressures differ
-	*/
-	inline bool operator!=(XsPressure const& other) const
-	{
-		return other.m_pressure != m_pressure || other.m_pressureAge != m_pressureAge;
-	}
+    /*! \brief Return true if this is not equal to \a other
+        \param other the pressure carrier to compare against
+        \return true if both XsPressures differ
+    */
+    inline bool operator!=(XsPressure const& other) const
+    {
+        return other.m_pressure != m_pressure || other.m_pressureAge != m_pressureAge;
+    }
 
 #endif
-	double		m_pressure;		//!< Pressure in Pascal
-	uint8_t		m_pressureAge;	//!< Age of pressure data in samples
+    double        m_pressure;        //!< Pressure in Pascal
+    uint8_t        m_pressureAge;    //!< Age of pressure data in samples
 };
 typedef struct XsPressure XsPressure;
 

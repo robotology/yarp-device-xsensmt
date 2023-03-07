@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -44,7 +44,7 @@ extern "C" {
 extern XsArrayDescriptor const XSTYPES_DLL_API g_xsFilterProfileArrayDescriptor;
 
 #ifndef __cplusplus
-#define XSFILTERPROFILEARRAY_INITIALIZER	XSARRAY_INITIALIZER(&g_xsFilterProfileArrayDescriptor)
+#define XSFILTERPROFILEARRAY_INITIALIZER    XSARRAY_INITIALIZER(&g_xsFilterProfileArrayDescriptor)
 
 struct XsFilterProfile;
 
@@ -57,42 +57,42 @@ XSTYPES_DLL_API void XsFilterProfileArray_construct(XsFilterProfileArray* thisPt
 #endif
 
 #ifdef __cplusplus
-	struct XsFilterProfileArray : public XsArrayImpl<XsFilterProfile, g_xsFilterProfileArrayDescriptor, XsFilterProfileArray>
-	{
-		//! \brief Constructs an XsFilterProfileArray
-		inline explicit XsFilterProfileArray(XsSize sz = 0, XsFilterProfile const* src = 0)
-			: ArrayImpl(sz, src)
-		{
-		}
+    struct XsFilterProfileArray : public XsArrayImpl<XsFilterProfile, g_xsFilterProfileArrayDescriptor, XsFilterProfileArray>
+    {
+        //! \brief Constructs an XsFilterProfileArray
+        inline explicit XsFilterProfileArray(XsSize sz = 0, XsFilterProfile const* src = 0)
+            : ArrayImpl(sz, src)
+        {
+        }
 
-		//! \brief Constructs an XsFilterProfileArray as a copy of \a other
-		inline XsFilterProfileArray(XsFilterProfileArray const& other)
-			: ArrayImpl(other)
-		{
-		}
+        //! \brief Constructs an XsFilterProfileArray as a copy of \a other
+        inline XsFilterProfileArray(XsFilterProfileArray const& other)
+            : ArrayImpl(other)
+        {
+        }
 
-		//! \brief Constructs an XsFilterProfileArray that references the data supplied in \a ref
-		inline explicit XsFilterProfileArray(XsFilterProfile* ref, XsSize sz, XsDataFlags flags /* = XSDF_None */)
-			: ArrayImpl(ref, sz, flags)
-		{
-		}
+        //! \brief Constructs an XsFilterProfileArray that references the data supplied in \a ref
+        inline explicit XsFilterProfileArray(XsFilterProfile* ref, XsSize sz, XsDataFlags flags /* = XSDF_None */)
+            : ArrayImpl(ref, sz, flags)
+        {
+        }
 
 #ifndef SWIG
-		/*! \brief Swap the contents the \a first and \a second array */
-		friend void swap(XsFilterProfileArray& first, XsFilterProfileArray& second)
-		{
-			first.swap(second);
-		}
+        /*! \brief Swap the contents the \a first and \a second array */
+        friend void swap(XsFilterProfileArray& first, XsFilterProfileArray& second)
+        {
+            first.swap(second);
+        }
 #endif
 
 #ifndef XSENS_NOITERATOR
-		//! \brief Constructs an XsFilterProfileArray with the array bound by the supplied iterators \a beginIt and \a endIt
-		template <typename Iterator>
-		inline XsFilterProfileArray(Iterator beginIt, Iterator endIt)
-			: ArrayImpl(beginIt, endIt)
-		{
-		}
+        //! \brief Constructs an XsFilterProfileArray with the array bound by the supplied iterators \a beginIt and \a endIt
+        template <typename Iterator>
+        inline XsFilterProfileArray(Iterator beginIt, Iterator endIt)
+            : ArrayImpl(beginIt, endIt)
+        {
+        }
 #endif
-	};
+    };
 #endif
 #endif

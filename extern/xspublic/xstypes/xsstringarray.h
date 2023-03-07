@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -43,14 +43,14 @@ extern "C" {
 extern XsArrayDescriptor const XSTYPES_DLL_API g_xsStringArrayDescriptor;
 
 #ifndef __cplusplus
-#define XSSTRINGARRAY_INITIALIZER	XSARRAY_INITIALIZER(&g_xsStringArrayDescriptor)
+#define XSSTRINGARRAY_INITIALIZER    XSARRAY_INITIALIZER(&g_xsStringArrayDescriptor)
 struct XsString;
 
 XSARRAY_STRUCT(XsStringArray, struct XsString);
 typedef struct XsStringArray XsStringArray;
 
 XSTYPES_DLL_API void XsStringArray_construct(XsStringArray* thisPtr, XsSize count, struct XsString const* src);
-#define XsStringArray_destruct(thisPtr)		XsArray_destruct(thisPtr)
+#define XsStringArray_destruct(thisPtr)        XsArray_destruct(thisPtr)
 #endif
 XSTYPES_DLL_API void XsStringArray_fromSplicedString(struct XsStringArray* thisPtr, struct XsString const* src, struct XsString const* separators);
 XSTYPES_DLL_API void XsStringArray_join(struct XsStringArray const* thisPtr, struct XsString* result, struct XsString const* separator);
@@ -60,125 +60,125 @@ XSTYPES_DLL_API void XsStringArray_join(struct XsStringArray const* thisPtr, str
 
 struct XsStringArray : public XsArrayImpl<XsString, g_xsStringArrayDescriptor, XsStringArray>
 {
-	//! \brief Constructs an XsStringArray
-	inline explicit XsStringArray(XsSize sz = 0, XsString const* src = 0)
-		: ArrayImpl(sz, src)
-	{
-	}
+    //! \brief Constructs an XsStringArray
+    inline explicit XsStringArray(XsSize sz = 0, XsString const* src = 0)
+        : ArrayImpl(sz, src)
+    {
+    }
 
-	//! \brief Constructs an XsStringArray as a copy of \a other
-	inline XsStringArray(XsStringArray const& other)
-		: ArrayImpl(other)
-	{
-	}
+    //! \brief Constructs an XsStringArray as a copy of \a other
+    inline XsStringArray(XsStringArray const& other)
+        : ArrayImpl(other)
+    {
+    }
 
-	//! \brief Constructs an XsStringArray that references the data supplied in \a ref
-	inline explicit XsStringArray(XsString* ref, XsSize sz, XsDataFlags flags /* = XSDF_None */)
-		: ArrayImpl(ref, sz, flags)
-	{
-	}
+    //! \brief Constructs an XsStringArray that references the data supplied in \a ref
+    inline explicit XsStringArray(XsString* ref, XsSize sz, XsDataFlags flags /* = XSDF_None */)
+        : ArrayImpl(ref, sz, flags)
+    {
+    }
 
 #ifndef SWIG
-	/*! \brief Swap the contents the \a first and \a second array */
-	friend void swap(XsStringArray& first, XsStringArray& second)
-	{
-		first.swap(second);
-	}
+    /*! \brief Swap the contents the \a first and \a second array */
+    friend void swap(XsStringArray& first, XsStringArray& second)
+    {
+        first.swap(second);
+    }
 #endif
 
 #ifndef XSENS_NOITERATOR
-	//! \brief Constructs an XsStringArray with the array bound by the supplied iterators \a beginIt and \a endIt
-	template <typename Iterator>
-	inline XsStringArray(Iterator beginIt, Iterator endIt)
-		: ArrayImpl(beginIt, endIt)
-	{
-	}
+    //! \brief Constructs an XsStringArray with the array bound by the supplied iterators \a beginIt and \a endIt
+    template <typename Iterator>
+    inline XsStringArray(Iterator beginIt, Iterator endIt)
+        : ArrayImpl(beginIt, endIt)
+    {
+    }
 #endif
 
-	/*! \brief Join the non-empty strings contained in the XsStringArray into one XsString, separating each item with \a separator
-		\param separator An optional separator string to put between substrings
-		\return The joined string
-	*/
-	XsString join(XsString const& separator) const
-	{
-		XsString tmp;
-		XsStringArray_join(this, &tmp, &separator);
-		return tmp;
-	}
+    /*! \brief Join the non-empty strings contained in the XsStringArray into one XsString, separating each item with \a separator
+        \param separator An optional separator string to put between substrings
+        \return The joined string
+    */
+    XsString join(XsString const& separator) const
+    {
+        XsString tmp;
+        XsStringArray_join(this, &tmp, &separator);
+        return tmp;
+    }
 
-	/*! \copydoc XsStringArray_fromSplicedString */
-	void fromSplicedString(XsString const& src, XsString const& separators)
-	{
-		XsStringArray_fromSplicedString(this, &src, &separators);
-	}
+    /*! \copydoc XsStringArray_fromSplicedString */
+    void fromSplicedString(XsString const& src, XsString const& separators)
+    {
+        XsStringArray_fromSplicedString(this, &src, &separators);
+    }
 
-	//! \brief Constructs an XsStringArray from an XsString \a src that is split up at each \a separator
-	inline explicit XsStringArray(XsString const& src, XsString const& separators)
-		: ArrayImpl()
-	{
-		XsStringArray_fromSplicedString(this, &src, &separators);
-	}
+    //! \brief Constructs an XsStringArray from an XsString \a src that is split up at each \a separator
+    inline explicit XsStringArray(XsString const& src, XsString const& separators)
+        : ArrayImpl()
+    {
+        XsStringArray_fromSplicedString(this, &src, &separators);
+    }
 
-	/*! \brief find same string in array which can be case insensitive or not
-		\param needle String to be found
-		\param isCaseSensitive Optional, default is true
-		\return place of needle in the array or -1 if the string was not found
-	*/
-	ptrdiff_t find(XsString const& needle, bool isCaseSensitive = true) const
-	{
-		if (isCaseSensitive)
-			return XsArrayImpl<XsString, g_xsStringArrayDescriptor, XsStringArray>::find(needle);
+    /*! \brief find same string in array which can be case insensitive or not
+        \param needle String to be found
+        \param isCaseSensitive Optional, default is true
+        \return place of needle in the array or -1 if the string was not found
+    */
+    ptrdiff_t find(XsString const& needle, bool isCaseSensitive = true) const
+    {
+        if (isCaseSensitive)
+            return XsArrayImpl<XsString, g_xsStringArrayDescriptor, XsStringArray>::find(needle);
 
-		if (size() == 0)
-			return -1;
+        if (size() == 0)
+            return -1;
 
-		XsString needleLower(needle);
-		for (XsString::iterator c = needleLower.begin(); c != needleLower.end(); ++c)
-			*c = tolower(*c);
+        XsString needleLower(needle);
+        for (XsString::iterator c = needleLower.begin(); c != needleLower.end(); ++c)
+            *c = tolower(*c);
 
-		for (XsSize i = 0; i < size(); ++i) // loop over all elements of the lists
-		{
-			XsString const& a = at(i);
-			if (a.size() != needleLower.size())
-				continue;
+        for (XsSize i = 0; i < size(); ++i) // loop over all elements of the lists
+        {
+            XsString const& a = at(i);
+            if (a.size() != needleLower.size())
+                continue;
 
-			bool found = true;
-			for (XsSize j = 0; j < a.size(); ++j)
-			{
-				if (tolower(a[j]) != needleLower[j])
-				{
-					found = false;
-					break;
-				}
-			}
+            bool found = true;
+            for (XsSize j = 0; j < a.size(); ++j)
+            {
+                if (tolower(a[j]) != needleLower[j])
+                {
+                    found = false;
+                    break;
+                }
+            }
 
-			if (found)
-				return (ptrdiff_t)i;
-		}
-		return -1;
-	}
+            if (found)
+                return (ptrdiff_t)i;
+        }
+        return -1;
+    }
 
-	/*! \brief find the first item where startsWith(needle) returns true will be returned
-		\param needle String to be found
-		\param isCaseSensitive Optional, default is true
-		\return place of needle in the array or -1 if the string was not found
-	*/
-	ptrdiff_t findPrefix(XsString const& needle, bool isCaseSensitive = true) const
-	{
-		if (size() == 0)
-			return -1;
+    /*! \brief find the first item where startsWith(needle) returns true will be returned
+        \param needle String to be found
+        \param isCaseSensitive Optional, default is true
+        \return place of needle in the array or -1 if the string was not found
+    */
+    ptrdiff_t findPrefix(XsString const& needle, bool isCaseSensitive = true) const
+    {
+        if (size() == 0)
+            return -1;
 
-		for (XsSize i = 0; i < size(); ++i) // loop over all elements of the lists
-		{
-			XsString const& a = at(i);
-			if (a.size() < needle.size())
-				continue;
+        for (XsSize i = 0; i < size(); ++i) // loop over all elements of the lists
+        {
+            XsString const& a = at(i);
+            if (a.size() < needle.size())
+                continue;
 
-			if (a.startsWith(needle, isCaseSensitive))
-				return (ptrdiff_t)i;
-		}
-		return -1;
-	}
+            if (a.startsWith(needle, isCaseSensitive))
+                return (ptrdiff_t)i;
+        }
+        return -1;
+    }
 };
 #endif
 

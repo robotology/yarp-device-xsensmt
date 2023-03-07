@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -34,36 +34,36 @@
 #include "xsquaternion.h"
 
 /*! \struct XsQuaternionArray
-	\brief A list of XsQuaternion values
-	\sa XsArray
-	\details new elements are not initialized
+    \brief A list of XsQuaternion values
+    \sa XsArray
+    \details new elements are not initialized
 */
 
 
 /*! \copydoc XsArrayDescriptor::itemCompare
-	\note Specialization for int*/
+    \note Specialization for int*/
 int compareQuat(XsQuaternion const* a, XsQuaternion const* b)
 {
-	return XsQuaternion_compare(a, b, 0.0);
+    return XsQuaternion_compare(a, b, 0.0);
 }
 
 //! \brief Descriptor for XsQuaternionArray
 XsArrayDescriptor const g_xsQuaternionArrayDescriptor =
 {
-	sizeof(XsQuaternion),
-	XSEXPCASTITEMSWAP XsQuaternion_swap,
-	0,											// item construct
-	XSEXPCASTITEMCOPY XsQuaternion_copy,
-	0,											// item destruct
-	XSEXPCASTITEMCOPY XsQuaternion_copy,
-	XSEXPCASTITEMCOMP compareQuat,
-	XSEXPCASTRAWCOPY XsArray_rawCopy
+    sizeof(XsQuaternion),
+    XSEXPCASTITEMSWAP XsQuaternion_swap,
+    0,                                            // item construct
+    XSEXPCASTITEMCOPY XsQuaternion_copy,
+    0,                                            // item destruct
+    XSEXPCASTITEMCOPY XsQuaternion_copy,
+    XSEXPCASTITEMCOMP compareQuat,
+    XSEXPCASTRAWCOPY XsArray_rawCopy
 };
 
 /*! \copydoc XsArray_constructDerived
-	\note Specialization for XsQuaternionArray
+    \note Specialization for XsQuaternionArray
 */
 void XsQuaternionArray_construct(XsQuaternionArray* thisPtr, XsSize count, XsQuaternion const* src)
 {
-	XsArray_construct(thisPtr, &g_xsQuaternionArrayDescriptor, count, src);
+    XsArray_construct(thisPtr, &g_xsQuaternionArrayDescriptor, count, src);
 }

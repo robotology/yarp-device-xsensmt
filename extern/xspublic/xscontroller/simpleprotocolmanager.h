@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -37,34 +37,34 @@
 #include "protocolhandler.h"
 
 /*! \brief A very basic protocol manager
-	\details This protocol manager supports only the xbus protocol
+    \details This protocol manager supports only the xbus protocol
 */
 class SimpleProtocolManager : public IProtocolManager
 {
 public:
-	/*! \copydoc IProtocolManager::findMessage
-	*/
-	MessageLocation findMessage(XsProtocolType& type, const XsByteArray& raw) override
-	{
-		return m_protocolHandler.findMessage(type, raw);
-	};
+    /*! \copydoc IProtocolManager::findMessage
+    */
+    MessageLocation findMessage(XsProtocolType& type, const XsByteArray& raw) override
+    {
+        return m_protocolHandler.findMessage(type, raw);
+    };
 
-	/*! \copydoc IProtocolManager::convertToMessage
-	*/
-	XsMessage convertToMessage(XsProtocolType& type, MessageLocation& location, const XsByteArray& raw) override
-	{
-		(void)type;
-		return m_protocolHandler.convertToMessage(location, raw);
-	};
+    /*! \copydoc IProtocolManager::convertToMessage
+    */
+    XsMessage convertToMessage(XsProtocolType& type, MessageLocation& location, const XsByteArray& raw) override
+    {
+        (void)type;
+        return m_protocolHandler.convertToMessage(location, raw);
+    };
 
-	/*! \copydoc IProtocolManager::validateMessage
-	*/
-	bool validateMessage(XsMessage const& msg) const override
-	{
-		return msg.isChecksumOk();
-	}
+    /*! \copydoc IProtocolManager::validateMessage
+    */
+    bool validateMessage(XsMessage const& msg) const override
+    {
+        return msg.isChecksumOk();
+    }
 private:
-	ProtocolHandler m_protocolHandler; //!< Standard protocol handler; used for finding messages.
+    ProtocolHandler m_protocolHandler; //!< Standard protocol handler; used for finding messages.
 };
 
 #endif

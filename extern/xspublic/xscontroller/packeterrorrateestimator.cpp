@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -37,21 +37,21 @@
 #define PER_UPDATE_PERIOD_MILLISECONDS (10000)
 #define INVALID_PACKET_RATE (-1)
 
-/*!	\class PacketErrorRateEstimator
-	\brief Thread to periodically estimate packet error rate based on expected packet rate
+/*!    \class PacketErrorRateEstimator
+    \brief Thread to periodically estimate packet error rate based on expected packet rate
 
-	The Packet Error Rate (PER) is estimated based on the ratio of the number of
-	received packets compared to the number of expected packets within a time
-	window. The estimator operates as a thread that periodically updates the
-	PER estimate.
+    The Packet Error Rate (PER) is estimated based on the ratio of the number of
+    received packets compared to the number of expected packets within a time
+    window. The estimator operates as a thread that periodically updates the
+    PER estimate.
 */
 
 /*! \brief Constructor */
 PacketErrorRateEstimator::PacketErrorRateEstimator()
-	: m_expectedPacketsPerSecond(INVALID_PACKET_RATE)
-	, m_receivedPacketCount(0)
-	, m_packetErrorRate(0)
-	, m_previousUpdateTime(0)
+    : m_expectedPacketsPerSecond(INVALID_PACKET_RATE)
+    , m_receivedPacketCount(0)
+    , m_packetErrorRate(0)
+    , m_previousUpdateTime(0)
 {
 }
 
@@ -60,73 +60,73 @@ PacketErrorRateEstimator::~PacketErrorRateEstimator()
 {
 }
 
-/*!	\brief Set the expected packet reception rate in packets per second
-	\param packetsPerSecond The number of packets expected to be received per second
+/*!    \brief Set the expected packet reception rate in packets per second
+    \param packetsPerSecond The number of packets expected to be received per second
 */
 void PacketErrorRateEstimator::setExpectedPacketsPerSecond(int16_t packetsPerSecond)
 {
-	xsens::Lock lock(&m_mutex);
-	m_expectedPacketsPerSecond = packetsPerSecond;
+    xsens::Lock lock(&m_mutex);
+    m_expectedPacketsPerSecond = packetsPerSecond;
 }
 
-/*!	\brief Indicate that a packet has been received
-	\details Should be called for every in order packet received by the device. Reception
-	of out of order packets, e.g. retransmissions, or late packets, should not
-	trigger a call to this function.
+/*!    \brief Indicate that a packet has been received
+    \details Should be called for every in order packet received by the device. Reception
+    of out of order packets, e.g. retransmissions, or late packets, should not
+    trigger a call to this function.
 */
 void PacketErrorRateEstimator::packetReceived(void)
 {
-	xsens::Lock lock(&m_mutex);
-	++m_receivedPacketCount;
+    xsens::Lock lock(&m_mutex);
+    ++m_receivedPacketCount;
 }
 
-/*!	\brief Return the currently estimated packet error rate
-	\return The packet error rate as a percentage
+/*!    \brief Return the currently estimated packet error rate
+    \return The packet error rate as a percentage
 */
 uint8_t PacketErrorRateEstimator::packetErrorRate(void) const
 {
-	xsens::Lock lock(&m_mutex);
-	return m_packetErrorRate;
+    xsens::Lock lock(&m_mutex);
+    return m_packetErrorRate;
 }
 
 /*! \brief Initializes the estimation parameters */
 void PacketErrorRateEstimator::initFunction(void)
 {
-	xsNameThisThread("Packet Error Rate Estimator");
-	m_previousUpdateTime = XsTimeStamp::nowMs();
+    xsNameThisThread("Packet Error Rate Estimator");
+    m_previousUpdateTime = XsTimeStamp::nowMs();
 }
 
 /*! \brief Updates the packet error rate estimate periodically */
 int32_t PacketErrorRateEstimator::innerFunction(void)
 {
-	xsens::Lock lock(&m_mutex);
+    xsens::Lock lock(&m_mutex);
 
-	const int64_t now = XsTimeStamp::nowMs();
+    const int64_t now = XsTimeStamp::nowMs();
 
-	if (m_expectedPacketsPerSecond > 0)
-	{
-		const int64_t msSinceLastUpdate = now - m_previousUpdateTime;
+    if (m_expectedPacketsPerSecond > 0)
+    {
+        const int64_t msSinceLastUpdate = now - m_previousUpdateTime;
 
-		if (msSinceLastUpdate > 0)
-		{
-			const float expectedPackets = (float)floor(m_expectedPacketsPerSecond * (msSinceLastUpdate / 1000));
-			float packetDeliveryRate = 100.0f * (m_receivedPacketCount / expectedPackets);
+        if (msSinceLastUpdate > 0)
+        {
+            const float expectedPackets = (float)floor(m_expectedPacketsPerSecond * (msSinceLastUpdate / 1000));
+            float packetDeliveryRate = 100.0f * (m_receivedPacketCount / expectedPackets);
 
-			if (packetDeliveryRate > 100.0f)
-				packetDeliveryRate = 100.0f;
+            if (packetDeliveryRate > 100.0f)
+                packetDeliveryRate = 100.0f;
 
-			m_packetErrorRate = (uint8_t)(100 - (int)floor(packetDeliveryRate));
-			JLDEBUGG("Received " << m_receivedPacketCount << " packets in " << msSinceLastUpdate << " ms. Delivery rate: " << (int)(packetDeliveryRate) << "%. Error rate: " << (int)m_packetErrorRate << "%.");
-		}
-		else
-		{
-			m_packetErrorRate = 0;
-			JLDEBUGG("Received " << m_receivedPacketCount << " packets in " << msSinceLastUpdate << " ms. Delivery rate unknown (100%). Error rate unknown (" << (int)m_packetErrorRate << "%).");
-		}
-	}
+            m_packetErrorRate = (uint8_t)(100 - (int)floor(packetDeliveryRate));
+            JLDEBUGG("Received " << m_receivedPacketCount << " packets in " << msSinceLastUpdate << " ms. Delivery rate: " << (int)(packetDeliveryRate) << "%. Error rate: " << (int)m_packetErrorRate << "%.");
+        }
+        else
+        {
+            m_packetErrorRate = 0;
+            JLDEBUGG("Received " << m_receivedPacketCount << " packets in " << msSinceLastUpdate << " ms. Delivery rate unknown (100%). Error rate unknown (" << (int)m_packetErrorRate << "%).");
+        }
+    }
 
-	m_receivedPacketCount = 0;
-	m_previousUpdateTime = now;
+    m_receivedPacketCount = 0;
+    m_previousUpdateTime = now;
 
-	return PER_UPDATE_PERIOD_MILLISECONDS;
+    return PER_UPDATE_PERIOD_MILLISECONDS;
 }

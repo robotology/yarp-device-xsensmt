@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -34,41 +34,41 @@
 #include <iostream>
 
 /*! \class ConsoleLogger
-	\brief A class that is used to log messages to the console
+    \brief A class that is used to log messages to the console
 */
 
 /*! \brief Constructs a ConsoleLogger
-	\param[in] logLevel The initial log level to use as log level for console logging (std out)
-	\param[in] errLevel The initial log level to use as log level for error logging (std err)
+    \param[in] logLevel The initial log level to use as log level for console logging (std out)
+    \param[in] errLevel The initial log level to use as log level for error logging (std err)
 */
 ConsoleLogger::ConsoleLogger(JournalLogLevel logLevel, JournalLogLevel errLevel)
-	: AdditionalLoggerBase(logLevel)
+    : AdditionalLoggerBase(logLevel)
 {
-	setDebugLevel(errLevel);
+    setDebugLevel(errLevel);
 }
 
 /*! \brief Write a log line to the console
-	\param[in] level The log level
-	\param[in] file The name of the file from which the logging originates (not used)
-	\param[in] line The line number from which the logging originates (not used)
-	\param[in] function The name of the function from which the logging originates
-	\param[in] msg The actual log message
+    \param[in] level The log level
+    \param[in] file The name of the file from which the logging originates (not used)
+    \param[in] line The line number from which the logging originates (not used)
+    \param[in] function The name of the function from which the logging originates
+    \param[in] msg The actual log message
 */
 void ConsoleLogger::log(JournalLogLevel level, char const* file, int line, char const* function, std::string const& msg)
 {
-	(void)file;
-	(void)line;
-	// get just the function name
-	size_t p = strlen(function);
-	while (p > 0)
-	{
-		if (function[p - 1] == ':')
-			break;
-		--p;
-	}
+    (void)file;
+    (void)line;
+    // get just the function name
+    size_t p = strlen(function);
+    while (p > 0)
+    {
+        if (function[p - 1] == ':')
+            break;
+        --p;
+    }
 
-	if (level >= logLevel())
-		std::cout << function + p << ": " << msg << std::endl;
-	if (level >= debugLevel())
-		std::cerr << function + p << ": " << msg << std::endl;
+    if (level >= logLevel())
+        std::cout << function + p << ": " << msg << std::endl;
+    if (level >= debugLevel())
+        std::cerr << function + p << ": " << msg << std::endl;
 }

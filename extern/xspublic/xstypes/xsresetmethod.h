@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -33,24 +33,24 @@
 #ifndef XSRESETMETHOD_H
 #define XSRESETMETHOD_H
 
-/*!	\addtogroup enums Global enumerations
-	@{
+/*!    \addtogroup enums Global enumerations
+    @{
 */
 
 //AUTO namespace xstypes {
 /*! \brief Orientation reset type. */
 enum XsResetMethod
 {
-	XRM_StoreAlignmentMatrix	= 0,				//!< \brief Store the current object alignment matrix to persistent memory
-	XRM_Heading					= 1,				//!< \brief Reset the heading (yaw)
-	XRM_Object					= 3,				//!< \brief Reset the attitude (roll, pitch), same as XRM_Inclination
-	XRM_Inclination				= XRM_Object,		//!< \brief Reset the inclination (roll, pitch), same as XRM_Object
-	XRM_Alignment				= 4,				//!< \brief Reset heading and attitude \details This effectively combines the XRM_Heading and XRM_Object
-	XRM_Global					= XRM_Alignment,	//!< \brief Reset the full orientation of the device \details Obsolete. Use XRM_Alignment instead.
-	XRM_DefaultHeading			= 5,				//!< \brief Revert to default behaviour for heading, undoes XRM_Heading
-	XRM_DefaultInclination		= 6,				//!< \brief Revert to default behaviour for inclination, undoes XRM_Inclination
-	XRM_DefaultAlignment		= 7,				//!< \brief Revert to default behaviour for heading and inclination, undoes any reset
-	XRM_None										//!< \brief No reset planned
+    XRM_StoreAlignmentMatrix    = 0,                //!< \brief Store the current object alignment matrix to persistent memory
+    XRM_Heading                    = 1,                //!< \brief Reset the heading (yaw)
+    XRM_Object                    = 3,                //!< \brief Reset the attitude (roll, pitch), same as XRM_Inclination
+    XRM_Inclination                = XRM_Object,        //!< \brief Reset the inclination (roll, pitch), same as XRM_Object
+    XRM_Alignment                = 4,                //!< \brief Reset heading and attitude \details This effectively combines the XRM_Heading and XRM_Object
+    XRM_Global                    = XRM_Alignment,    //!< \brief Reset the full orientation of the device \details Obsolete. Use XRM_Alignment instead.
+    XRM_DefaultHeading            = 5,                //!< \brief Revert to default behaviour for heading, undoes XRM_Heading
+    XRM_DefaultInclination        = 6,                //!< \brief Revert to default behaviour for inclination, undoes XRM_Inclination
+    XRM_DefaultAlignment        = 7,                //!< \brief Revert to default behaviour for heading and inclination, undoes any reset
+    XRM_None                                        //!< \brief No reset planned
 };
 /*! @} */
 typedef enum XsResetMethod XsResetMethod;

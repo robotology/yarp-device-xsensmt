@@ -5,16 +5,16 @@
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
 //  
-//  1.	Redistributions of source code must retain the above copyright notice,
-//  	this list of conditions, and the following disclaimer.
+//  1.    Redistributions of source code must retain the above copyright notice,
+//      this list of conditions, and the following disclaimer.
 //  
-//  2.	Redistributions in binary form must reproduce the above copyright notice,
-//  	this list of conditions, and the following disclaimer in the documentation
-//  	and/or other materials provided with the distribution.
+//  2.    Redistributions in binary form must reproduce the above copyright notice,
+//      this list of conditions, and the following disclaimer in the documentation
+//      and/or other materials provided with the distribution.
 //  
-//  3.	Neither the names of the copyright holders nor the names of their contributors
-//  	may be used to endorse or promote products derived from this software without
-//  	specific prior written permission.
+//  3.    Neither the names of the copyright holders nor the names of their contributors
+//      may be used to endorse or promote products derived from this software without
+//      specific prior written permission.
 //  
 //  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
 //  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
@@ -36,50 +36,50 @@
 #include <xstypes/xstypesconfig.h>
 
 #ifdef XSENS_NO_EXCEPTIONS
-	#define	XSNOEXCEPT
-	#define	XSNOEXCEPT_ARG(a)
-	// support for exceptions is disabled, just do whatever assert(0) does
-	#ifdef XSENS_DEBUG
-		#include <assert.h>
-		#ifdef XSENS_FW_ASSERT_FUNC
-			#define XM_THROW(a)		XSENS_FW_ASSERT_FUNC(a, __FILE__, (unsigned) __LINE__)
-		#else
-			#define XM_THROW(a)		assert(a)
-		#endif
-		#define XM_THROW_DEFINED	1
-	#else
-		#define XM_THROW(a)			((void) 0)
-		#define XM_THROW_DEFINED	0
-	#endif
+    #define    XSNOEXCEPT
+    #define    XSNOEXCEPT_ARG(a)
+    // support for exceptions is disabled, just do whatever assert(0) does
+    #ifdef XSENS_DEBUG
+        #include <assert.h>
+        #ifdef XSENS_FW_ASSERT_FUNC
+            #define XM_THROW(a)        XSENS_FW_ASSERT_FUNC(a, __FILE__, (unsigned) __LINE__)
+        #else
+            #define XM_THROW(a)        assert(a)
+        #endif
+        #define XM_THROW_DEFINED    1
+    #else
+        #define XM_THROW(a)            ((void) 0)
+        #define XM_THROW_DEFINED    0
+    #endif
 #else
-	#include <xstypes/xsexception.h>
-	#define XM_THROW_DEFINED	1
+    #include <xstypes/xsexception.h>
+    #define XM_THROW_DEFINED    1
 
-	#if __cplusplus >= 201103L
-		#define	XSNOEXCEPT			noexcept
-		#define	XSNOEXCEPT_ARG(a)	noexcept(#a)
-	#else
-		#define	XSNOEXCEPT
-		#define	XSNOEXCEPT_ARG(a)
-	#endif
+    #if __cplusplus >= 201103L
+        #define    XSNOEXCEPT            noexcept
+        #define    XSNOEXCEPT_ARG(a)    noexcept(#a)
+    #else
+        #define    XSNOEXCEPT
+        #define    XSNOEXCEPT_ARG(a)
+    #endif
 
-	#ifdef XSEXCEPTION_H
-		#ifdef _MSC_VER
-			#define XETHROW(a)	throw XsException(XRV_ERROR, XsString(__FUNCTION__ " ") << XsString(a))
-		#elif defined __GNUC__
-			#define XETHROW(a)	throw XsException(XRV_ERROR, XsString(__PRETTY_FUNCTION__) << " " << XsString(a))
-		#else
-			#define XETHROW(a)	throw XsException(XRV_ERROR, XsString(__func__) << " " << XsString(a))
-		#endif
-	#else
-		#define XETHROW(a)	throw (a)
-	#endif
+    #ifdef XSEXCEPTION_H
+        #ifdef _MSC_VER
+            #define XETHROW(a)    throw XsException(XRV_ERROR, XsString(__FUNCTION__ " ") << XsString(a))
+        #elif defined __GNUC__
+            #define XETHROW(a)    throw XsException(XRV_ERROR, XsString(__PRETTY_FUNCTION__) << " " << XsString(a))
+        #else
+            #define XETHROW(a)    throw XsException(XRV_ERROR, XsString(__func__) << " " << XsString(a))
+        #endif
+    #else
+        #define XETHROW(a)    throw (a)
+    #endif
 
-	#if defined(XSENS_DEBUG) && defined(_WIN32) // && !defined(_WIN64) unclear why this clause was added in xsens_math.h rev 871 by RZA
-		#define XM_THROW(a) do { xsens::DebugTools::mathThrowBreakFunc(); XETHROW(a); } while(0)
-	#else
-		#define XM_THROW(a) do { XETHROW(a); } while(0)
-	#endif
+    #if defined(XSENS_DEBUG) && defined(_WIN32) // && !defined(_WIN64) unclear why this clause was added in xsens_math.h rev 871 by RZA
+        #define XM_THROW(a) do { xsens::DebugTools::mathThrowBreakFunc(); XETHROW(a); } while(0)
+    #else
+        #define XM_THROW(a) do { XETHROW(a); } while(0)
+    #endif
 #endif
 
 namespace xsens
