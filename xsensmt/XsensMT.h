@@ -339,7 +339,7 @@ private:
     bool m_isSensorMeasurementAvailable{false};
 
     // Interface exposed by the Xsens MT Software suite
-	XsControl* m_xsensControl;
+    XsControl* m_xsensControl;
     XsDevice* m_xsensDevice;
     XsPortInfo m_portInfo;
 
