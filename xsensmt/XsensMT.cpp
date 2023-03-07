@@ -123,22 +123,22 @@ bool XsensMT::open(yarp::os::Searchable &config)
 
     m_portInfo = XsPortInfo(comPortString, XsBaud::numericToRate(baudRate));
 
-	m_xsensControl = XsControl::construct();
-	assert(m_xsensControl != 0);
+    m_xsensControl = XsControl::construct();
+    assert(m_xsensControl != 0);
 
 
     yInfo("xsensmt: Opening serial port %s with baud rate %d and output period %4.4f seconds.", comPortString.c_str(), baudRate, m_outputPeriod);
-	if (!m_xsensControl->openPort(comPortString, XsBaud::numericToRate(baudRate)))
+    if (!m_xsensControl->openPort(comPortString, XsBaud::numericToRate(baudRate)))
     {
-		yError("Could not open port. Aborting.");
+        yError("Could not open port. Aborting.");
         return false;
     }
 
-	// Get the device object
-	m_xsensDevice = m_xsensControl->device(m_portInfo.deviceId());
-	assert(m_xsensDevice != 0);
+    // Get the device object
+    m_xsensDevice = m_xsensControl->device(m_portInfo.deviceId());
+    assert(m_xsensDevice != 0);
 
-	yDebug() << "Device: " << m_xsensDevice->productCode().toStdString() << ", with ID: " << m_xsensDevice->deviceId().toString().toStdString() << " opened.";
+    yDebug() << "Device: " << m_xsensDevice->productCode().toStdString() << ", with ID: " << m_xsensDevice->deviceId().toString().toStdString() << " opened.";
 
     yInfo("xsensmt: Putting device into configuration mode.");
     // Put the device into configuration mode before configuring the device
@@ -256,6 +256,9 @@ bool XsensMT::open(yarp::os::Searchable &config)
     // start thread
     m_sensorThread = std::thread(std::bind(&XsensMT::sensorReadLoop, this));
 
+    // Create and attach callback handler to device
+    m_xsensDevice->addCallbackHandler(&m_callback);
+
     return true;
 }
 
@@ -267,13 +270,17 @@ bool XsensMT::close()
         m_sensorThread.join();
     }
 
-    // yDebug("xsensmt: Closing Xsens port %s.", m_portInfo.portName().toStdString().c_str());
-    // m_xsensControl->closePort(m_portInfo.portName().toStdString());
-    //
-    // yDebug("xsensmt: Freeing Xsens control object.");
-    // m_xsensControl->destruct();
+    if(m_xsensControl)
+    {
+        yDebug("xsensmt: Closing Xsens port %s.", m_portInfo.portName().toStdString().c_str());
+        m_xsensControl->closePort(m_portInfo.portName().toStdString());
 
-    return true;
+        yDebug("xsensmt: Freeing Xsens control object.");
+        m_xsensControl->destruct();
+        m_xsensControl = nullptr;
+    }
+
+        return true;
 }
 
 yarp::os::Stamp XsensMT::getLastInputStamp()
@@ -284,10 +291,6 @@ yarp::os::Stamp XsensMT::getLastInputStamp()
 
 void XsensMT::sensorReadLoop()
 {
-	// Create and attach callback handler to device
-	CallbackHandler callback;
-	m_xsensDevice->addCallbackHandler(&callback);
-
     XsEuler euler;
     XsVector acc;
     XsVector gyro;
@@ -295,10 +298,10 @@ void XsensMT::sensorReadLoop()
 
     while (!m_isDeviceClosing)
     {
-		if (callback.packetAvailable())
-		{
-			// Retrieve a packet
-			XsDataPacket packet = callback.getNextPacket();
+        if (m_callback.packetAvailable())
+        {
+            // Retrieve a packet
+            XsDataPacket packet = m_callback.getNextPacket();
 
             // Get the euler data (for compatibility with the old xsensmtx icub-main driver)
             euler = packet.orientationEuler();
