@@ -10,8 +10,7 @@
 
 #include <xstypes/xsdatapacket.h>
 #include <xstypes/xsportinfo.h>
-#include <xscontroller/serialportcommunicator.h>
-
+#include <xscontroller/xscontrol_def.h>
 #include <xscontroller/mtibasedevice.h>
 
 #include <yarp/dev/DeviceDriver.h>
@@ -35,28 +34,10 @@ namespace dev
 }
 }
 
-
-// Expose protected methods
-namespace yarp
-{
-namespace dev
-{
-    class YARPSerialPortCommunicator: public SerialPortCommunicator {
-        public:
-        XsResultValue readDataToBuffer(XsByteArray& raw) override
-        {
-            return this->readDataToBuffer(raw);
-        }
-
-        XsResultValue processBufferedData(const XsByteArray& rawIn, std::deque<XsMessage>& messages) override
-        {
-            return this->processBufferedData(rawIn, messages);
-        }
-
-    };
-}
-}
-
+/**
+ * \section CallbackHandler Controls reading data from XsDevice object
+ * \brief This class is copied from the Public Xsens device API example MTi receive data.
+**/
 class CallbackHandler : public XsCallback
 {
 public:
@@ -348,12 +329,6 @@ private:
     double m_outputPeriod;
     double m_outputFrequency;
     
-    // Send a SetFilterProfile message to set the filter profile
-    bool setFilterProfile(const uint16_t profile);
-
-    // Send a SetOptionFlags message to set the option flags
-    bool setOptionFlags(const uint32_t setFlags, const uint32_t clearFlags);
-
     int m_nchannels{12};
     double m_timeoutInSecond{0.1};
 
@@ -364,8 +339,7 @@ private:
     bool m_isSensorMeasurementAvailable{false};
 
     // Interface exposed by the Xsens MT Software suite
-    YARPSerialPortCommunicator m_xsensCommunicator;
-    // MtiBaseDevice* m_xsensDevice;
+	XsControl* m_xsensControl;
     XsDevice* m_xsensDevice;
     XsPortInfo m_portInfo;
 
