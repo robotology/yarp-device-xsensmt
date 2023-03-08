@@ -8,7 +8,10 @@
 #ifndef XSENS_MT_YARP_DRIVER
 #define XSENS_MT_YARP_DRIVER
 
-#include "deviceclass.h"
+#include <xstypes/xsdatapacket.h>
+#include <xstypes/xsportinfo.h>
+#include <xscontroller/xscontrol_def.h>
+#include <xscontroller/mtibasedevice.h>
 
 #include <yarp/dev/DeviceDriver.h>
 #include <yarp/dev/IGenericSensor.h>
@@ -21,6 +24,7 @@
 #include <mutex>
 #include <string>
 #include <thread>
+#include <list>
 
 namespace yarp
 {
@@ -29,6 +33,59 @@ namespace dev
     class XsensMT;
 }
 }
+
+/**
+ * \section CallbackHandler Controls reading data from XsDevice object
+ * \brief This class is copied from the Public Xsens device API example MTi receive data.
+**/
+class CallbackHandler : public XsCallback
+{
+public:
+    CallbackHandler(size_t maxBufferSize = 5)
+        : m_maxNumberOfPacketsInBuffer(maxBufferSize)
+        , m_numberOfPacketsInBuffer(0)
+    {
+    }
+
+    virtual ~CallbackHandler() throw()
+    {
+    }
+
+    bool packetAvailable() const
+    {
+        xsens::Lock locky(&m_mutex);
+        return m_numberOfPacketsInBuffer > 0;
+    }
+
+    XsDataPacket getNextPacket()
+    {
+        assert(packetAvailable());
+        xsens::Lock locky(&m_mutex);
+        XsDataPacket oldestPacket(m_packetBuffer.front());
+        m_packetBuffer.pop_front();
+        --m_numberOfPacketsInBuffer;
+        return oldestPacket;
+    }
+
+protected:
+    void onLiveDataAvailable(XsDevice*, const XsDataPacket* packet) override
+    {
+        xsens::Lock locky(&m_mutex);
+        assert(packet != 0);
+        while (m_numberOfPacketsInBuffer >= m_maxNumberOfPacketsInBuffer)
+            (void)getNextPacket();
+
+        m_packetBuffer.push_back(*packet);
+        ++m_numberOfPacketsInBuffer;
+        assert(m_numberOfPacketsInBuffer <= m_maxNumberOfPacketsInBuffer);
+    }
+private:
+    mutable xsens::Mutex m_mutex;
+
+    size_t m_maxNumberOfPacketsInBuffer;
+    size_t m_numberOfPacketsInBuffer;
+    std::list<XsDataPacket> m_packetBuffer;
+};
 
 
 /**
@@ -272,12 +329,6 @@ private:
     double m_outputPeriod;
     double m_outputFrequency;
     
-    // Send a SetFilterProfile message to set the filter profile
-    bool setFilterProfile(const uint16_t profile);
-
-    // Send a SetOptionFlags message to set the option flags
-    bool setOptionFlags(const uint32_t setFlags, const uint32_t clearFlags);
-
     int m_nchannels{12};
     double m_timeoutInSecond{0.1};
 
@@ -288,8 +339,10 @@ private:
     bool m_isSensorMeasurementAvailable{false};
 
     // Interface exposed by the Xsens MT Software suite
-    DeviceClass m_xsensDevice;
+    XsControl* m_xsensControl{nullptr};
+    XsDevice* m_xsensDevice{nullptr};
     XsPortInfo m_portInfo;
+    CallbackHandler m_callback;
 
     yarp::os::Stamp  m_lastReadStamp;
 
