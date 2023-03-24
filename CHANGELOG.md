@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Update Extern library to the latest XDA (2022.0.0) (https://github.com/robotology/yarp-device-xsensmt/pull/38).
 
+Add the possibility to set a different frequency for each sensor exposed by the device (https://github.com/robotology/yarp-device-xsensmt/pull/40).
+
 ## [0.2.2] - 2022-11-17
 
 Fix compatibility with YARP 3.8 (https://github.com/robotology/yarp-device-xsensmt/pull/36).
