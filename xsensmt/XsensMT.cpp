@@ -364,6 +364,18 @@ bool XsensMT::open(yarp::os::Searchable &config)
         return false;
     }
 
+    if(config.check("reset"))
+    {
+        bool okReset = m_xsensDevice->resetOrientation(XRM_Alignment);
+        if(okReset)
+        {
+            yDebug() << "the reset was successful";
+        } else 
+        {
+            yWarning() << "the reset failed";
+        }
+    }
+
     // Create and attach callback handler to device
     m_xsensDevice->addCallbackHandler(&m_callback);
 

@@ -42,3 +42,5 @@ Makefile
 # Clangd files
 **/.cache
 **/compile_commands.json
+
+.vscode
