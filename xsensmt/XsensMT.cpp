@@ -365,9 +365,9 @@ bool XsensMT::open(yarp::os::Searchable &config)
     }
 
     // reset the orientation if the 'reset' parameter is true
-    if(config.check("reset"))
+    if(config.check("resetSensorOrientation"))
     {
-        if(config.find("reset").asBool())
+        if(config.find("resetSensorOrientation").asBool())
         {
             bool okReset = m_xsensDevice->resetOrientation(XRM_Alignment);
             if(okReset)

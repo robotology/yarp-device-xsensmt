@@ -112,7 +112,7 @@ protected:
 * | xsensmt_euler_period     | double  |    seconds   | xsensmt_period  | No   | Period of querying the Euler Xsens MT* device | The frequency of publishing the information is determined by the device that attaches this one |
 * | xsensmt_position_period     | double  |    seconds   | xsensmt_period  | No   | Period of querying the Position Xsens MT* device | The frequency of publishing the information is determined by the device that attaches this one |
 * | xsensmt_linear_velocity_period     | double  |    seconds   | xsensmt_period  | No   | Period of querying the linear velocity Xsens MT* device | The frequency of publishing the information is determined by the device that attaches this one |
-* | reset          | bool   |        | False         | No        | Option to be set to true if the orientation has to be reset as the device starts.  | |
+* | resetSensorOrientation | bool|   | False  | No        | Option to be set to true if the orientation has to be reset as the device starts.  | |
 **/
 class yarp::dev::XsensMT : public yarp::dev::IGenericSensor,
                            public yarp::dev::IPreciselyTimed,
