@@ -364,15 +364,19 @@ bool XsensMT::open(yarp::os::Searchable &config)
         return false;
     }
 
+    // reset the orientation if the 'reset' parameter is true
     if(config.check("reset"))
     {
-        bool okReset = m_xsensDevice->resetOrientation(XRM_Alignment);
-        if(okReset)
+        if(config.find("reset").asBool())
         {
-            yDebug() << "the reset was successful";
-        } else 
-        {
-            yWarning() << "the reset failed";
+            bool okReset = m_xsensDevice->resetOrientation(XRM_Alignment);
+            if(okReset)
+            {
+                yInfo() << "xsensmt: resetting the orientation";
+            } else 
+            {
+                yWarning() << "xsensmt: the reset of the orientation failed";
+            }
         }
     }
 
