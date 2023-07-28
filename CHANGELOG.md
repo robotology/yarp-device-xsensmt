@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+Added an option to reset the orientation of the IMU (https://github.com/robotology/yarp-device-xsensmt/pull/43)
+
 Update Extern library to the latest XDA (2022.0.0) (https://github.com/robotology/yarp-device-xsensmt/pull/38).
 
 Add the possibility to set a different frequency for each sensor exposed by the device (https://github.com/robotology/yarp-device-xsensmt/pull/40).
