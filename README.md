@@ -91,4 +91,4 @@ The following table contains the parameters currently supported by the device
 | `xsensmt_euler_period`     | double  |    seconds   | `xsensmt_period`  | No   | Period of querying the Euler Xsens MT* device | The frequency of publishing the information is determined by the device that attaches this one |
 | `xsensmt_position_period`     | double  |    seconds   | `xsensmt_period`  | No   | Period of querying the Position Xsens MT* device | The frequency of publishing the information is determined by the device that attaches this one |
 | `xsensmt_linear_velocity_period`     | double  |    seconds   | `xsensmt_period`  | No   | Period of querying the linear velocity Xsens MT* device | The frequency of publishing the information is determined by the device that attaches this one |
-
+| `resetSensorOrientation` | bool|   | `false`  | No        | Option to be set to true if the orientation has to be reset as the device starts.  | |
