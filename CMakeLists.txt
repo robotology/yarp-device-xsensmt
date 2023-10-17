@@ -1,6 +1,5 @@
-# Copyright (C) 2017-2020 Fondazione Istituto Italiano di Tecnologia
-# Authors: Silvio Traversaro <silvio.traversaro@iit.it>
-# CopyPolicy: Released under the terms of the LGPLv2.1 or later, see LICENSE
+# SPDX-FileCopyrightText: Fondazione Istituto Italiano di Tecnologia (IIT)
+# SPDX-License-Identifier: BSD-3-Clause
 
 cmake_minimum_required(VERSION 3.5)
 project(yarp-device-xsensmt)

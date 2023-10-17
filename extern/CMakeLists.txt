@@ -1,6 +1,5 @@
-# Copyright (C) 2017-2023 Fondazione Istituto Italiano di Tecnologia
-# Authors: Silvio Traversaro <silvio.traversaro@iit.it>
-# CopyPolicy: Released under the terms of the LGPLv2.1 or later, see LICENSE
+# SPDX-FileCopyrightText: Fondazione Istituto Italiano di Tecnologia (IIT)
+# SPDX-License-Identifier: BSD-3-Clause
 
 # The code contained in this directory is imported directly from the src_cpp example
 # in the MT Software Suite, version 2022.0.0, available from https://www.movella.com/support/software-documentation/
